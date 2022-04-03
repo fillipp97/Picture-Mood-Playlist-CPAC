@@ -16,7 +16,7 @@
   },
   "scripts": {
     "client": "cd client && npm start",
-    "server": "cd server && conda activate CPAC && set FLASK_ENV=development && flask run ",
+    "server": "cd server && conda activate CPAC && set FLASK_ENV=development && flask run --debugger",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

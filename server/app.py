@@ -1,9 +1,7 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from flask import Flask, url_for, session, request, redirect
-import json
 import time
-import pandas as pd
 import os
 import shutil
 from dotenv import load_dotenv 
@@ -89,3 +87,12 @@ def create_spotify_oauth():
             client_secret=CLIENT_SECRET,
             redirect_uri=url_for('authorize', _external=True),
             scope="user-library-read")
+
+
+@app.route('/uploadFile', methods=['GET', 'POST'])
+def upload_im():
+    image = request.files['Image'].read()
+    f = open('image.jpg','wb')
+    f.write(image)
+    f.close()
+    return '200'

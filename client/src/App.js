@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import { Component } from 'react';
+import UploadImage from './Components/UploadImage';
 import axios from "axios"
-import Dropdown from './Components/Dropdown';
 class App extends Component {
   constructor(props){
     super(props);
@@ -81,26 +81,22 @@ class App extends Component {
   render(){
     let loginok='Logged In'
   return (
+    <div className='root'>
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div className='mainContainer'>
+
+        <UploadImage></UploadImage>
         <button onClick={this.handleOnClickLogin}>{this.state.loggedIn ? loginok:'LOGIN'}</button>
         <button onClick={this.handleGetSongs}>GET YOUR SONGS</button>
         <button onClick={this.checklogin}>LOGOUT</button>
-        <Dropdown songs={this.state.songs}></Dropdown>
+
+
+        </div>
+        
        
       </header>
+    </div>
     </div>
   );
 }
