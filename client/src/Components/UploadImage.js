@@ -38,56 +38,24 @@ class UploadImage extends Component{
         axios.post("/uploadFile", formData);
       };
       
-      // File content to be displayed after
-      // file upload is complete
-      fileData = () => {
-      
-        if (this.state.selectedFile) {
-           
-          return (
-            <div>
-              <h2>File Details:</h2>
-               
-  <p>File Name: {this.state.selectedFile.name}</p>
-   
-               
-  <p>File Type: {this.state.selectedFile.type}</p>
-   
-               
-  <p>
-                Last Modified:{" "}
-                {this.state.selectedFile.lastModifiedDate.toDateString()}
-              </p>
-   
-            </div>
-          );
-        } else {
-          return (
-            <div>
-              <br />
-              <h4>Choose before Pressing the Upload button</h4>
-            </div>
-          );
+      getFile=()=>{
+        if(this.state.selectedFile!=null){
+          let image = URL.createObjectURL(this.state.selectedFile)
+          return <img style={{height: '25vh', width: '50vw'}} src={image} />
         }
-      };
+      }
       
       render() {
       
         return (
           <div>
-              <h1>
-                GeeksforGeeks
-              </h1>
-              <h3>
-                File Upload using React!
-              </h3>
+              {this.getFile()}
               <div>
                   <input type="file" onChange={this.onFileChange} />
                   <button onClick={this.onFileUpload}>
                     Upload!
                   </button>
               </div>
-            {this.fileData()}
           </div>
         );
       }

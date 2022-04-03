@@ -85,7 +85,7 @@ class App extends Component {
     <div className="App">
       <header className="App-header">
         <div className='mainContainer'>
-
+        
         <UploadImage></UploadImage>
         <button onClick={this.handleOnClickLogin}>{this.state.loggedIn ? loginok:'LOGIN'}</button>
         <button onClick={this.handleGetSongs}>GET YOUR SONGS</button>
