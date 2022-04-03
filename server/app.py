@@ -1,20 +1,28 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from flask import Flask, url_for, session, request, redirect
+import json
 import time
 import pandas as pd
+import os
+import shutil
+from dotenv import load_dotenv 
+
+
+load_dotenv('.env')
+CLIENT_ID=os.getenv('CLIENT_ID')
+CLIENT_SECRET=os.getenv('CLIENT_SECRET')
 # App config
 app = Flask(__name__)
 
-app.secret_key = 'SOMETHING-RANDOM'
+app.secret_key = '4njigv9nipvls'
 app.config['SESSION_COOKIE_NAME'] = 'spotify-login-session'
 
-@app.route('/')
+@app.route('/login')
 def login():
     sp_oauth = create_spotify_oauth()
     auth_url = sp_oauth.get_authorize_url()
-    print(auth_url)
-    return redirect(auth_url)
+    return auth_url
 
 @app.route('/authorize')
 def authorize():
@@ -22,51 +30,46 @@ def authorize():
     session.clear()
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
-    session["token_info"] = token_info
-    return redirect("/getTracks")
+    session['token_info'] = token_info
+    return redirect('http://localhost:3000')
+
 
 @app.route('/logout')
 def logout():
     for key in list(session.keys()):
         session.pop(key)
-    return redirect('/')
+    session.clear()
+    try:
+        os.remove('.cache')
+    except:
+        pass
+    try:
+        shutil.rmtree('__pycache__')
+    except:
+        pass
+    return redirect('http://localhost:3000')
+
 
 @app.route('/getTracks')
-def get_all_tracks():
+def get_tracks():
     session['token_info'], authorized = get_token()
     session.modified = True
     if not authorized:
-        return redirect('/')
+        return { 'result': 'bad' }
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
-    results = []
-    iter = 0
-    while True:
-        offset = iter * 50
-        iter += 1
-        curGroup = sp.current_user_saved_tracks(limit=50, offset=offset)['items']
-        for idx, item in enumerate(curGroup):
-            track = item['track']
-            val = track['name'] + " - " + track['artists'][0]['name']
-            results += [val]
-        if (len(curGroup) < 50):
-            break
-    
-    df = pd.DataFrame(results, columns=["song names"]) 
-    df.to_csv('songs.csv', index=False)
-    return "done"
+    currGroup = sp.current_user_saved_tracks(limit=50, offset=0)['items']
+    return {'result': 'ok', 'songs': currGroup}
 
 
-# Checks to see if token is valid and gets a new token if not
+
 def get_token():
     token_valid = False
-    token_info = session.get("token_info", {})
+    token_info = session.get('token_info', {})
 
-    # Checking if the session already has a token stored
     if not (session.get('token_info', False)):
-        token_valid = False
+        token_valid=False
         return token_info, token_valid
-
-    # Checking if token has expired
+    
     now = int(time.time())
     is_token_expired = session.get('token_info').get('expires_at') - now < 60
 
@@ -79,9 +82,10 @@ def get_token():
     return token_info, token_valid
 
 
+
 def create_spotify_oauth():
-    return SpotifyOAuth(
-            client_id="8f557ee4e5ad43578fb9c4f31ea9a382",
-            client_secret="f1a255cfcac44b3eaac4bef9837a9738",
+        return SpotifyOAuth(
+            client_id=CLIENT_ID,
+            client_secret=CLIENT_SECRET,
             redirect_uri=url_for('authorize', _external=True),
             scope="user-library-read")
