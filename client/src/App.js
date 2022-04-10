@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      loggedIn: false
+      loggedIn: 0
     }
   }
 
@@ -27,11 +27,11 @@ class App extends Component {
       const res=response.data
       if(res.result === 'bad'){ //user not logged in
         console.log('USER NOT LOGGED IN')
-        this.setState({loggedIn: false})
+        this.setState({loggedIn: 1})
 
       }else{
         console.log('USER LOGGED IN')
-        this.setState({loggedIn: true})
+        this.setState({loggedIn: 2})
       }
 
     })
@@ -64,7 +64,7 @@ class App extends Component {
     })
     .then((response)=>{
       const res = response.data
-      this.setState({authLink: res, loggedIn: true}, ()=>{console.log('REINDIRIZZO'); window.location=this.state.authLink})
+      this.setState({authLink: res}, ()=>{console.log('REINDIRIZZO'); window.location=this.state.authLink; this.setState({loggedIn: true})})
       
     }).catch((error)=>{
       if(error.response){
@@ -129,9 +129,14 @@ class App extends Component {
         <header className="App-header">
           <div className='mainContainer'>
             
-            <NotLoggedIn login={this.state.loggedIn}></NotLoggedIn>
+            <NotLoggedIn className='appear'
+            login={this.state.loggedIn}
+            onClick={this.handleOnClickLogin}
+            >
 
-            <LoggedIn 
+            </NotLoggedIn>
+
+            <LoggedIn className='appear'
             login={this.state.loggedIn} 
             handleGetSongs={this.handleGetSongs} 
             handleCovers={this.handleCovers} 

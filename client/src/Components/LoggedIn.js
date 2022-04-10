@@ -9,7 +9,7 @@ class LoggedIn extends Component{
         
         console.log(this.props.login)
 
-        if(this.props.login){
+        if(this.props.login===2){
             return(
                 
                     <>
