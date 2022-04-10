@@ -58,6 +58,17 @@ def get_tracks():
     currGroup = sp.current_user_saved_tracks(limit=50, offset=0)['items']
     return {'result': 'ok', 'songs': currGroup}
 
+@app.route('/getCovers')
+def get_covers():
+    session['token_info'], authorized = get_token()
+    session.modified = True
+    if not authorized:
+        return { 'result': 'bad' }
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    currGroup = sp.current_user_saved_tracks(limit=50, offset=0)['items']
+    link = currGroup[0]['track']['album']['images'][1]['url']
+    return {'result': 'ok', 'links': link}
+
 
 
 def get_token():

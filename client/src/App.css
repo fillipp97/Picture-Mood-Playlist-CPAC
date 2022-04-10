@@ -4,8 +4,11 @@
   background-color:rgb(255, 255, 255);
 }
 
+
+
 .App {
   text-align: center;
+  background-color: #61dafb;
 }
 
 .App-logo {
@@ -20,7 +23,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #87ecc2;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -28,6 +31,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  
 }
 
 .App-link {
@@ -43,6 +47,7 @@
   }
 }
 
+/*
 .mainContainer{
   width: 95vw;
   height: 90vh;
@@ -68,4 +73,33 @@
         inset 0 0.3vmin 0.9vmin 0.5vmin rgba(70, 117, 8, 0.37),
         inset 0 -10px 1vmin 0.5px rgba(8, 78, 26, 0.295);     
 }
+*/
 
+
+.mainContainer{
+  align-self: center;
+  height: 90vh;
+  width: 80vw;
+  align-items: center;
+  
+}
+
+
+.Button{
+  height: 30px;
+  width:auto;
+  border-radius: 10px;
+  opacity: 80%;
+  background-color: #05912f;
+  color: white;
+  box-shadow: 0 0 0 1px black;
+  margin: 5px;
+
+}
+
+.albumArtContainer{
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+
+}

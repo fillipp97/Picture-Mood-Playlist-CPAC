@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Component } from "react";
+import './UploadImage.css'
 
 class UploadImage extends Component{
 
@@ -41,18 +42,22 @@ class UploadImage extends Component{
       getFile=()=>{
         if(this.state.selectedFile!=null){
           let image = URL.createObjectURL(this.state.selectedFile)
-          return <img style={{height: '25vh', width: '50vw'}} src={image} />
+          return <img src={image} />
         }
       }
       
       render() {
       
         return (
-          <div>
+          <div className="uploadFileContainer">
+              <div className="ImageContainer">
               {this.getFile()}
-              <div>
+              </div>
+              <div className="InputContainer">
+                <label className="Button inputB"> Select File
                   <input type="file" onChange={this.onFileChange} />
-                  <button onClick={this.onFileUpload}>
+                  </label>
+                  <button className="Button" onClick={this.onFileUpload}>
                     Upload!
                   </button>
               </div>
