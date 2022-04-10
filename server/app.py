@@ -107,3 +107,12 @@ def upload_im():
     f.write(image)
     f.close()
     return '200'
+
+
+@app.route('/checkLogState')
+def checkLogState():
+    session['token_info'], authorized = get_token()
+    session.modified = True
+    if not authorized:
+        return { 'result': 'bad' }
+    else: return {'result': 'ok'}

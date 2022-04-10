@@ -1,8 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
 import { Component } from 'react';
-import UploadImage from './Components/UploadImage';
+
 import axios from "axios"
+import NotLoggedIn from './Components/NotLoggedIn';
+import LoggedIn from './Components/LoggedIn';
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -11,8 +14,30 @@ class App extends Component {
     }
   }
 
+  
+  componentDidMount=()=>{
+    this.checkIfLoggedIn()
+  }
 
-  checklogin=()=>{
+  checkIfLoggedIn=()=>{
+    axios({
+      method: 'GET',
+      url: '/checkLogState'
+    }).then((response)=>{
+      const res=response.data
+      if(res.result === 'bad'){ //user not logged in
+        console.log('USER NOT LOGGED IN')
+        this.setState({loggedIn: false})
+
+      }else{
+        console.log('USER LOGGED IN')
+        this.setState({loggedIn: true})
+      }
+
+    })
+  }
+
+  logout=()=>{
     axios({
       method: "GET",
       url:"/logout"
@@ -98,28 +123,23 @@ class App extends Component {
   }
 
   render(){
-    let loginok='Logged In'
   return (
     <div className='root'>
       <div className="App">
         <header className="App-header">
           <div className='mainContainer'>
-          
-            <UploadImage></UploadImage>
             
-            <div className='controlButtons'>      
-            
-            <button className='Button' onClick={this.handleOnClickLogin}>{this.state.loggedIn ? loginok:'LOGIN'}</button>
-            <button className='Button' onClick={this.handleGetSongs}>GET YOUR SONGS</button>
-            <button className='Button' onClick={this.handleCovers}>Get songs Covers</button>
-            <button className='Button' onClick={this.checklogin}>LOGOUT</button>
-            </div>
-            <div className='albumArtContainer'>
-               {this.renderCovers()}
+            <NotLoggedIn login={this.state.loggedIn}></NotLoggedIn>
 
-            </div>
+            <LoggedIn 
+            login={this.state.loggedIn} 
+            handleGetSongs={this.handleGetSongs} 
+            handleCovers={this.handleCovers} 
+            logout={this.logout}
+            renderCovers={this.renderCovers}>
             
-              
+
+            </LoggedIn>
               
           </div>
           
