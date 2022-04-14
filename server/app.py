@@ -66,7 +66,7 @@ def get_covers():
         return { 'result': 'bad' }
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     currGroup = sp.current_user_saved_tracks(limit=50, offset=0)['items']
-    link = currGroup[0]['track']['album']['images'][1]['url']
+    link = currGroup[0]['track']['album']['images'][0]['url']
     return {'result': 'ok', 'links': link}
 
 

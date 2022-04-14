@@ -6,6 +6,7 @@ import axios from "axios"
 import NotLoggedIn from './Components/NotLoggedIn';
 import LoggedIn from './Components/LoggedIn';
 
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -142,9 +143,9 @@ class App extends Component {
             handleCovers={this.handleCovers} 
             logout={this.logout}
             renderCovers={this.renderCovers}>
-            
-
             </LoggedIn>
+
+            
               
           </div>
           

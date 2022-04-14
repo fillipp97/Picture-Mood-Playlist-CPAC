@@ -1,20 +1,36 @@
 import { Component } from "react";
 import UploadImage from './UploadImage';
+import { WebcamCapture} from './Webcam'
 
 class LoggedIn extends Component{
-
+  constructor(props){
+    super(props);
+    this.state={
+      useWebcam: 0,
+    }
+  }
 
 
     render(){
-        
-        console.log(this.props.login)
+        const {useWebcam}=this.state;
+        let input;
+        if(useWebcam===0){
+          input = false
+        }
+        if(useWebcam===1){
+           input=(<WebcamCapture/>)
+        }
+        if(useWebcam===2){
+           input=(<UploadImage></UploadImage>)
+        }
 
         if(this.props.login===2){
             return(
                 
                     <>
-                      <UploadImage></UploadImage>
-                      
+                      <h1>Upload Your Image!</h1>
+                      {input}
+
                       <div className='controlButtons'>      
                       
                       <button className='Button' onClick={this.props.handleGetSongs}>GET YOUR SONGS</button>
@@ -25,6 +41,7 @@ class LoggedIn extends Component{
                         {this.props.renderCovers()}
       
                       </div>
+                      
                       </>
                 
             )
