@@ -29,10 +29,10 @@ export const WebcamCapture = () => {
 
                 {image == '' ? <Webcam
                     audio={false}
-                    height={200}
+                    height={490}
                     ref={webcamRef}
                     screenshotFormat="image/jpeg"
-                    width={220}
+                    width={500}
                     videoConstraints={videoConstraints}
                 /> : <img src={image} />}
             </div>
@@ -42,14 +42,14 @@ export const WebcamCapture = () => {
                         e.preventDefault();
                         setImage('')
                     }}
-                        className="webcam-btn">
+                        className="Button">
                         Retake Image</button>
                          :
                     <button onClick={(e) => {
                         e.preventDefault();
                         capture();
                     }}
-                        className="webcam-btn">Capture</button>
+                        className="Button">Capture</button>
                 }
             </div>
         </div>

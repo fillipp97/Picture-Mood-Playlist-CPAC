@@ -1,51 +1,89 @@
 import { Component } from "react";
 import UploadImage from './UploadImage';
 import { WebcamCapture} from './Webcam'
-
+import './LoggedIn.css'
 class LoggedIn extends Component{
   constructor(props){
     super(props);
     this.state={
       useWebcam: 0,
+      urls: []
     }
   }
 
+
+  componentDidMount(){
+    this.props.handleGetSongs()
+  }
+
+
+  renderCovers=()=>{
+    const {songs}=this.props;
+    let urls = songs.map((item)=>
+      item.track.album.images[1].url
+    )
+
+    if(typeof(urls) !== 'undefined' && urls != null){
+      return (urls.map((url)=>(
+      <img src={url}></img>)))
+    }
+  }
+
+
+    handleInputPicture=()=>{
+        this.setState({useWebcam: 2})
+    }
+    handleInputCamera=()=>{
+      this.setState({useWebcam: 1})
+  }
+    handleBack=()=>{
+      this.setState({useWebcam: 0})
+    }
 
     render(){
         const {useWebcam}=this.state;
         let input;
         if(useWebcam===0){
-          input = false
+          input = (
+            <>
+            <div className="uploadChoiceContainer">
+              <button className='Button' onClick={this.handleInputPicture}>Upload Picture</button>
+              <button className='Button' onClick={this.handleInputCamera}>Take a Picture</button>
+              
+            </div>
+            </>
+          )
         }
         if(useWebcam===1){
-           input=(<WebcamCapture/>)
+           input=(
+           <>
+           <WebcamCapture/>
+           <button className='Button' onClick={this.handleBack}>Back</button>
+           </>
+           )
+           
         }
         if(useWebcam===2){
-           input=(<UploadImage></UploadImage>)
+           input=(<>
+           <UploadImage></UploadImage>
+           <button className='Button' onClick={this.handleBack}>Back</button>
+           </>
+           )
         }
 
-        if(this.props.login===2){
-            return(
-                
+        
+            return(               
                     <>
-                      <h1>Upload Your Image!</h1>
+                        <div className="foreground">
+                        <h1>Upload Your Image!</h1>
                       {input}
-
-                      <div className='controlButtons'>      
-                      
-                      <button className='Button' onClick={this.props.handleGetSongs}>GET YOUR SONGS</button>
-                      <button className='Button' onClick={this.props.handleCovers}>Get songs Covers</button>
-                      <button className='Button' onClick={this.props.logout}>LOGOUT</button>
-                      </div>
-                      <div className='albumArtContainer'>
-                        {this.props.renderCovers()}
-      
-                      </div>
-                      
+                        </div>
+                      <div className="cover-container">
+                        {this.renderCovers()}
+                      </div>                      
                       </>
                 
             )
-        }
     }
 }
 

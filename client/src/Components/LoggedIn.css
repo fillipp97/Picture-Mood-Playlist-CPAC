@@ -1,0 +1,11 @@
+.cover-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction:row;
+}
+
+.cover-container img{
+    height: 10vw;
+    width: auto;
+}

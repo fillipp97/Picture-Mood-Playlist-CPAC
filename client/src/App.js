@@ -11,7 +11,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      loggedIn: 0
+      loggedIn: 1,
+      songs: []
     }
   }
 
@@ -65,7 +66,7 @@ class App extends Component {
     })
     .then((response)=>{
       const res = response.data
-      this.setState({authLink: res}, ()=>{console.log('REINDIRIZZO'); window.location=this.state.authLink; this.setState({loggedIn: true})})
+      this.setState({authLink: res}, ()=>{console.log('REINDIRIZZO'); window.location=this.state.authLink;})
       
     }).catch((error)=>{
       if(error.response){
@@ -77,6 +78,8 @@ class App extends Component {
   }
   
   handleGetSongs=()=>{
+    console.log(this.state.loggedIn)
+    
     axios({
       method: "GET",
       url:"/getTracks"
@@ -91,11 +94,8 @@ class App extends Component {
       console.log(res.songs.map((songobj)=>
         songobj.track.name
       ))
-      let songs =res.songs.map((songobj)=>
-      songobj.track.name
-    )
-      
-      
+
+    
     }}).catch((error)=>{
       if(error.response){
         console.log(error.response)
@@ -106,22 +106,6 @@ class App extends Component {
     })
   }
   
-  handleCovers=()=>{
-    const {songs}=this.state;
-
-    let urls = songs.map((item)=>
-      item.track.album.images[1].url
-    )
-    this.setState({urls: urls})
-  }
-
-  renderCovers=()=>{
-    let {urls} = this.state
-    if(typeof(urls) !== 'undefined' && urls != null){
-      return (urls.map((url)=>(
-      <img src={url}></img>)))
-    }
-  }
 
   render(){
   return (
@@ -129,21 +113,21 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <div className='mainContainer'>
+            {typeof(this.state.urls) !== 'undefined' && this.state.urls != null && this.renderCovers()}
             
-            <NotLoggedIn className='appear'
+            {this.state.loggedIn===1 && <NotLoggedIn 
             login={this.state.loggedIn}
             onClick={this.handleOnClickLogin}
             >
 
-            </NotLoggedIn>
+            </NotLoggedIn>}
 
-            <LoggedIn className='appear'
+            { this.state.loggedIn===2 &&<LoggedIn 
             login={this.state.loggedIn} 
             handleGetSongs={this.handleGetSongs} 
-            handleCovers={this.handleCovers} 
-            logout={this.logout}
-            renderCovers={this.renderCovers}>
-            </LoggedIn>
+            songs={this.state.songs} 
+            logout={this.logout}>
+            </LoggedIn>}
 
             
               
