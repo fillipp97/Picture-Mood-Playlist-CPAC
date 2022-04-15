@@ -94,6 +94,7 @@ class App extends Component {
       console.log(res.songs.map((songobj)=>
         songobj.track.name
       ))
+      return res.songs
 
     
     }}).catch((error)=>{

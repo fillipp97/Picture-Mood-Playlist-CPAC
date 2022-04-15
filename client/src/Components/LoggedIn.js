@@ -17,12 +17,15 @@ class LoggedIn extends Component{
   }
 
  splitVector=(urls)=>{
-   const chunkSize = 10;
-   const Matrix = Array(Math.floor(urls.length/10))
-   for(let i=0; i<urls.length; i+=chunkSize){
-     const chunk = Array(10)
-     for(let j=0; j<10;j++){
-       chunk.push(urls[i+j])
+   const chunkSize = 20;
+   const vertSize=15;
+   const Matrix = Array();
+   
+   for(let i=0; i<vertSize*chunkSize; i+=chunkSize){
+     const chunk = Array()
+     for(let j=0; j<chunkSize;j++){
+       let index=(i+j) % urls.length
+       chunk.push(urls[index])
      }
      Matrix.push(chunk)
    }
@@ -38,10 +41,14 @@ class LoggedIn extends Component{
     if(typeof(urls) !== 'undefined' && urls != null){
       let vectors = this.splitVector(urls)
       console.log(vectors)
-      
-      
-      return (urls.map((url)=>(
-      <img src={url}></img>)))
+  
+      return (vectors.map((url_vector)=>(
+        <div className={"cover-container-internal" }>        
+          {url_vector.map((url)=>(
+              <img src={url}></img>))}
+              
+        </div>
+      )))
     }
   }
 
@@ -90,13 +97,18 @@ class LoggedIn extends Component{
         
             return(               
                     <>
-                        <div className="foreground">
+                       <div className="logged-container">
+                       
+                      <div className="foreground">
                         <h1>Upload Your Image!</h1>
                       {input}
-                        </div>
-                      <div className="cover-container">
+                        </div> 
+                        <div className="vignette"></div>
+                        <div className="cover-container">
+                        
                         {this.renderCovers()}
-                      </div>                      
+                      </div>    
+                      </div>              
                       </>
                 
             )

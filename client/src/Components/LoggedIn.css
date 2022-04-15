@@ -1,11 +1,51 @@
+.logged-container{
+    height: 100%;
+    width: 100%;
+    align-items: center;
+
+}
+
+.vignette{
+    background-color: rgb(4, 12, 8);
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    opacity: 60%;
+}
 .cover-container{
     height: 100%;
     width: 100%;
     display: flex;
+    flex-direction:column;
+    margin-top: 0px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 0;
+}
+.cover-container-internal{
+    
+    display: flex;
     flex-direction:row;
+    object-fit: fill;
 }
 
+
 .cover-container img{
-    height: 10vw;
+    height: 100px;
     width: auto;
+    
+}
+
+.foreground{
+    position: absolute;
+    transform: translate(-50%);
+    left: calc(100vw/2);
+    width: fit-content;
+    z-index: 2;
+    animation-name: run;
+    animation-duration: 2s;
+    animation: linear infinite alternate;
 }
