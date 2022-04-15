@@ -16,6 +16,18 @@ class LoggedIn extends Component{
     this.props.handleGetSongs()
   }
 
+ splitVector=(urls)=>{
+   const chunkSize = 10;
+   const Matrix = Array(Math.floor(urls.length/10))
+   for(let i=0; i<urls.length; i+=chunkSize){
+     const chunk = Array(10)
+     for(let j=0; j<10;j++){
+       chunk.push(urls[i+j])
+     }
+     Matrix.push(chunk)
+   }
+   return Matrix
+  }
 
   renderCovers=()=>{
     const {songs}=this.props;
@@ -24,6 +36,10 @@ class LoggedIn extends Component{
     )
 
     if(typeof(urls) !== 'undefined' && urls != null){
+      let vectors = this.splitVector(urls)
+      console.log(vectors)
+      
+      
       return (urls.map((url)=>(
       <img src={url}></img>)))
     }
