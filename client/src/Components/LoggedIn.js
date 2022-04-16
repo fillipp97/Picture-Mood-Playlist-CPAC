@@ -7,7 +7,6 @@ class LoggedIn extends Component{
     super(props);
     this.state={
       useWebcam: 0,
-      urls: []
     }
   }
 
@@ -18,13 +17,13 @@ class LoggedIn extends Component{
 
  splitVector=(urls)=>{
    const chunkSize = 20;
-   const vertSize=15;
+   const vertSize=10;
    const Matrix = Array();
    
    for(let i=0; i<vertSize*chunkSize; i+=chunkSize){
      const chunk = Array()
      for(let j=0; j<chunkSize;j++){
-       let index=(i+j) % urls.length
+       let index=(i+j+Math.floor(Math.random()*urls.length)) % urls.length
        chunk.push(urls[index])
      }
      Matrix.push(chunk)
