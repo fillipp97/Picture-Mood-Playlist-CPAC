@@ -1,3 +1,5 @@
+
+
 .logged-container{
     height: 100%;
     width: 100%;
@@ -6,13 +8,13 @@
 }
 
 .vignette{
-    background-color: rgb(4, 12, 8);
+    background: radial-gradient(#000000, #585858);
     position: absolute;
     top: 0;
     height: 100%;
     width: 100%;
     z-index: 1;
-    opacity: 60%;
+    opacity: 75%;
 }
 .cover-container{
     height: 100%;
@@ -25,11 +27,43 @@
     top: 0;
     z-index: 0;
 }
-.cover-container-internal{
+.cover-container-internal0{
     
     display: flex;
     flex-direction:row;
     object-fit: fill;
+    position: relative;
+    animation-name: even;
+    animation-duration: 15s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.5,0.8,0.5,0.2);
+}
+
+@keyframes even {
+    0% {left: -2%;}
+    50% {left: 2%;}
+    100% {left: -2%}
+    
+}
+
+
+.cover-container-internal1{
+    
+    display: flex;
+    flex-direction:row;
+    object-fit: fill;
+    position: relative;
+    animation-name: odd;
+    animation-duration: 15s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0.5,0.8,0.5,0.2);
+}
+@keyframes odd {
+    0% {left: 2%;}
+    50% {left: -2%;}
+    100% {left: 2%}
+    
 }
 
 

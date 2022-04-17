@@ -41,8 +41,8 @@ class LoggedIn extends Component{
       let vectors = this.splitVector(urls)
       console.log(vectors)
   
-      return (vectors.map((url_vector)=>(
-        <div className={"cover-container-internal" }>        
+      return (vectors.map((url_vector,id)=>(
+        <div className={"cover-container-internal" + (id % 2) } style={{animationDelay: Math.random()*3 + 's'}}>        
           {url_vector.map((url)=>(
               <img src={url}></img>))}
               

@@ -114,7 +114,6 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <div className='mainContainer'>
-            {typeof(this.state.urls) !== 'undefined' && this.state.urls != null && this.renderCovers()}
             
             {this.state.loggedIn===1 && <NotLoggedIn 
             login={this.state.loggedIn}
