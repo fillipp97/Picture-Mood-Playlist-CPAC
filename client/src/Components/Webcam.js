@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import Webcam from "react-webcam";
 import UploadButton from './UploadButton';
+import {  useEffect } from 'react';
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
+}
 
 
 
@@ -11,11 +19,11 @@ const videoConstraints = {
     facingMode: "user"
 };
 
-export const WebcamCapture = () => {
+export const WebcamCapture = ({onUpload}) => {
 
     const [image,setImage]=useState('');
     const webcamRef = React.useRef(null);
-
+    const {height,width}=useWindowDimensions();
     
     const capture = React.useCallback(
         () => {
@@ -23,6 +31,22 @@ export const WebcamCapture = () => {
         setImage(imageSrc)
         
         });
+
+    function useWindowDimensions() {
+        const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+        
+        useEffect(() => {
+            function handleResize() {
+            setWindowDimensions(getWindowDimensions());
+            }
+        
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }, []);
+        
+        return windowDimensions;
+        }
+          
 
     function b64toBlob(dataURI) {
 
@@ -40,17 +64,17 @@ export const WebcamCapture = () => {
         <div className="webcam-container">
             <div className="webcam-img">
 
-                {image == '' ? <Webcam
+                {image === '' ? <Webcam
                     audio={false}
-                    height={490}
+                    height={0.5*height} 
                     ref={webcamRef}
                     screenshotFormat="image/jpeg"
-                    width={500}
+                    width={0.5*height}
                     videoConstraints={videoConstraints}
-                /> : <img src={image} style={{position: 'relative', margin: '4.4vh', top: '2vh'}}/>}
+                /> : <img src={image} />}
             </div>
             <div >
-                {image != '' ?
+                {image !== '' ?
                     (<>
                     <button onClick={(e) => {
                         e.preventDefault();
@@ -58,7 +82,7 @@ export const WebcamCapture = () => {
                     }}
                         className="Button camera">
                         Retake Image</button>
-                        <UploadButton file={b64toBlob(image)}></UploadButton>
+                        <UploadButton file={b64toBlob(image)} onUpload={onUpload}></UploadButton>
                         </>
                         )
                          :

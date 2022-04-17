@@ -30,6 +30,8 @@ class UploadButton extends Component{
         // Request made to the backend api
         // Send formData object
         axios.post("/uploadFile", formData);
+
+        this.props.onUpload()
       };
 
 

@@ -108,6 +108,7 @@ def upload_im():
     f.close()
     return '200'
 
+# Here we must insert the core of the program, Since flask doesn't provide a functionality in order to run functions after return, we should use something like KEEP ALIVE
 
 @app.route('/checkLogState')
 def checkLogState():

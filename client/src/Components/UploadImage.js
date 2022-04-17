@@ -41,7 +41,7 @@ class UploadImage extends Component{
                   <input type="file" name="file" id="file" className='custom-file-input' onChange={this.onFileChange} />
                   <label for='file' className="Button">Chose File</label>
 
-                  <UploadButton file={this.state.selectedFile}></UploadButton>
+                  <UploadButton file={this.state.selectedFile} onUpload={this.props.onUpload}></UploadButton>
               </div>
           </div>
         );

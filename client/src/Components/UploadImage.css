@@ -8,7 +8,8 @@
     width: 98%;
     height: auto;
     background-size: contain;
-    border: 1px solid rgb(205, 245, 212);
+    background-image: radial-gradient(ellipse farthest-corner at 45px 45px, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0.425) );
+    border: 1px solid rgba(205, 245, 212, 0.486);
 }
 
 
@@ -42,9 +43,15 @@ img {
     border: 2px solid transparent;
     background: 
     linear-gradient(rgb(149, 228, 149), rgb(149, 228, 149)) padding-box,
-    linear-gradient(to right, rgb(80, 80, 80), rgb(39, 39, 39)) border-box;
+    linear-gradient(to bottom, rgb(126, 126, 126), rgb(39, 39, 39)) border-box;
     font-size: 0.46em;
     color: black;
     line-height: 340%;
     height: 4.5vh;
+  }
+
+  input#file + label:active{
+    background: 
+    linear-gradient(rgb(149, 228, 149), rgb(149, 228, 149)) padding-box,
+    linear-gradient(to bottom, rgb(39, 39, 39), rgb(158, 158, 158)) border-box;
   }

@@ -7,6 +7,7 @@ class LoggedIn extends Component{
     super(props);
     this.state={
       useWebcam: 0,
+      ImageUploaded: false,
     }
   }
 
@@ -15,11 +16,18 @@ class LoggedIn extends Component{
     this.props.handleGetSongs()
   }
 
+  componentDidUpdate(){
+    console.log(this.state)
+  }
+
+  pictureUploaded=()=>{
+    this.setState({ImageUploaded: !this.state.ImageUploaded})
+  }
+
  splitVector=(urls)=>{
    const chunkSize = 20;
    const vertSize=10;
    const Matrix = Array();
-   
    for(let i=0; i<vertSize*chunkSize; i+=chunkSize){
      const chunk = Array()
      for(let j=0; j<chunkSize;j++){
@@ -62,6 +70,7 @@ class LoggedIn extends Component{
       this.setState({useWebcam: 0})
     }
 
+
     render(){
         const {useWebcam}=this.state;
         let input;
@@ -79,7 +88,7 @@ class LoggedIn extends Component{
         if(useWebcam===1){
            input=(
            <>
-           <WebcamCapture/>
+           <WebcamCapture onUpload={this.pictureUploaded}/>
            <button className='Button camera' onClick={this.handleBack}>Back</button>
            </>
            )
@@ -87,20 +96,35 @@ class LoggedIn extends Component{
         }
         if(useWebcam===2){
            input=(<>
-           <UploadImage></UploadImage>
+           <UploadImage onUpload={this.pictureUploaded}></UploadImage>
            <button className='Button camera' onClick={this.handleBack}>Back</button>
            </>
            )
         }
 
         
+
+        
             return(               
-                    <>
+                     this.state.ImageUploaded === false ? <>
                        <div className="logged-container">
                        
                       <div className="foreground">
                         <h1>Upload Your Image!</h1>
                       {input}
+                        </div> 
+                        <div className="vignette"></div>
+                        <div className="cover-container">
+                        
+                        {this.renderCovers()}
+                      </div>    
+                      </div>              
+                      </> : <>
+                       <div className="logged-container">
+                       
+                      <div className="foreground">
+                        
+                        Something is shown here and at the end playlist's songs are shown 
                         </div> 
                         <div className="vignette"></div>
                         <div className="cover-container">

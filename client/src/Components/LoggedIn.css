@@ -1,11 +1,11 @@
 
 
-.logged-container{
+/*.logged-container{
     height: 100%;
     width: 100%;
     align-items: center;
 
-}
+}*/
 
 .vignette{
     background: radial-gradient(#000000, #585858);
@@ -40,10 +40,13 @@
     animation-timing-function: cubic-bezier(0.5,0.8,0.5,0.2);
 }
 
+
+
+
 @keyframes even {
-    0% {left: -2%;}
-    50% {left: 2%;}
-    100% {left: -2%}
+    0% {left: -100px;}
+    50% {left: 0px;}
+    100% {left: -100px;}
     
 }
 
@@ -60,9 +63,9 @@
     animation-timing-function: cubic-bezier(0.5,0.8,0.5,0.2);
 }
 @keyframes odd {
-    0% {left: 2%;}
-    50% {left: -2%;}
-    100% {left: 2%}
+    0% {left: 0px;}
+    50% {left: -100px;}
+    100% {left: 0px}
     
 }
 
