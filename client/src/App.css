@@ -79,6 +79,7 @@
   margin: 3vw;
 }
 
+
 h1{
   color: rgb(143, 231, 187);
   text-shadow: 2px 2px 5px black;
@@ -121,4 +122,8 @@ h1{
 @-o-keyframes fadein {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+.camera{
+  margin: 1vh;
 }

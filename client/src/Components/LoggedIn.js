@@ -80,7 +80,7 @@ class LoggedIn extends Component{
            input=(
            <>
            <WebcamCapture/>
-           <button className='Button' onClick={this.handleBack}>Back</button>
+           <button className='Button camera' onClick={this.handleBack}>Back</button>
            </>
            )
            
@@ -88,7 +88,7 @@ class LoggedIn extends Component{
         if(useWebcam===2){
            input=(<>
            <UploadImage></UploadImage>
-           <button className='Button' onClick={this.handleBack}>Back</button>
+           <button className='Button camera' onClick={this.handleBack}>Back</button>
            </>
            )
         }

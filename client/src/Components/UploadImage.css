@@ -2,8 +2,15 @@
     width: 98%;
     height: auto;
     background-size: contain;
+}
+
+.ImageContainerA{
+    width: 98%;
+    height: auto;
+    background-size: contain;
     border: 1px solid rgb(205, 245, 212);
 }
+
 
 img {
     width: 100%;
@@ -15,21 +22,29 @@ img {
     display: block;
 }
 
-input[type="file"]{
-    display: none;
-}
 
+.custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+  }
 
-.inputB {
+  .custom-file-input{
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+
+  }
+
+  input#file + label{
     display: inline-block;
-    padding: 3px;
-    width: auto;
-    height: 20px;
-    border-radius: 10px;
-    opacity: 80%;
-    background-color: #05912f;
-    color: white;
-    box-shadow: 0 0 0 1px black;
-    margin: 5px;
-    text-align: center;
-}
+    border: 2px solid transparent;
+    background: 
+    linear-gradient(rgb(149, 228, 149), rgb(149, 228, 149)) padding-box,
+    linear-gradient(to right, rgb(80, 80, 80), rgb(39, 39, 39)) border-box;
+    font-size: 0.46em;
+    color: black;
+    line-height: 340%;
+    height: 4.5vh;
+  }
