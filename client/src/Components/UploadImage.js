@@ -25,7 +25,7 @@ class UploadImage extends Component{
       getFile=()=>{
         if(this.state.selectedFile!=null){
           let image = URL.createObjectURL(this.state.selectedFile)
-          return <img src={image} />
+          return <img src={image} className="animated" />
         }
       }
       
@@ -39,7 +39,7 @@ class UploadImage extends Component{
               <div className="InputContainer">
               
                   <input type="file" name="file" id="file" className='custom-file-input' onChange={this.onFileChange} />
-                  <label for='file' className="Button">Chose File</label>
+                  <label for='file' className="Button animated">Chose File</label>
 
                   <UploadButton file={this.state.selectedFile} onUpload={this.props.onUpload}></UploadButton>
               </div>

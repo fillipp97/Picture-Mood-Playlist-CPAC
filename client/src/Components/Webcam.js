@@ -71,7 +71,7 @@ export const WebcamCapture = ({onUpload}) => {
                     screenshotFormat="image/jpeg"
                     width={0.5*height}
                     videoConstraints={videoConstraints}
-                /> : <img src={image} />}
+                /> : <img src={image} className="animated" />}
             </div>
             <div >
                 {image !== '' ?
@@ -80,7 +80,7 @@ export const WebcamCapture = ({onUpload}) => {
                         e.preventDefault();
                         setImage('')
                     }}
-                        className="Button camera">
+                        className="Button camera animated">
                         Retake Image</button>
                         <UploadButton file={b64toBlob(image)} onUpload={onUpload}></UploadButton>
                         </>
@@ -90,7 +90,7 @@ export const WebcamCapture = ({onUpload}) => {
                         e.preventDefault();
                         capture();
                     }}
-                        className="Button camera">Capture</button>
+                        className="Button camera animated">Capture</button>
                 }
             </div>
         </div>

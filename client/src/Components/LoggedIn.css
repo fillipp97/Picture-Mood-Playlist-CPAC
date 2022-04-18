@@ -34,7 +34,7 @@
     object-fit: fill;
     position: relative;
     animation-name: even;
-    animation-duration: 15s;
+    animation-duration: 30s;
     animation-iteration-count: infinite;
     animation-fill-mode: both;
     animation-timing-function: cubic-bezier(0.5,0.8,0.5,0.2);
@@ -58,7 +58,7 @@
     object-fit: fill;
     position: relative;
     animation-name: odd;
-    animation-duration: 15s;
+    animation-duration: 30s;
     animation-iteration-count: infinite;
     animation-timing-function: cubic-bezier(0.5,0.8,0.5,0.2);
 }

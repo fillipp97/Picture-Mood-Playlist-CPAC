@@ -2,6 +2,7 @@ import { Component } from "react";
 import UploadImage from './UploadImage';
 import { WebcamCapture} from './Webcam'
 import './LoggedIn.css'
+import Entertainment from "./Entertainment";
 class LoggedIn extends Component{
   constructor(props){
     super(props);
@@ -11,13 +12,8 @@ class LoggedIn extends Component{
     }
   }
 
-
   componentDidMount(){
     this.props.handleGetSongs()
-  }
-
-  componentDidUpdate(){
-    console.log(this.state)
   }
 
   pictureUploaded=()=>{
@@ -50,9 +46,9 @@ class LoggedIn extends Component{
       console.log(vectors)
   
       return (vectors.map((url_vector,id)=>(
-        <div className={"cover-container-internal" + (id % 2) } style={{animationDelay: Math.random()*3 + 's'}}>        
+        <div className={"cover-container-internal" + (id % 2) + ' animated' } style={{animationDelay: Math.random()*3 + 's'}}>        
           {url_vector.map((url)=>(
-              <img src={url}></img>))}
+              <img src={url} className="animated"></img>))}
               
         </div>
       )))
@@ -70,6 +66,7 @@ class LoggedIn extends Component{
       this.setState({useWebcam: 0})
     }
 
+    
 
     render(){
         const {useWebcam}=this.state;
@@ -78,8 +75,8 @@ class LoggedIn extends Component{
           input = (
             <>
             <div className="uploadChoiceContainer">
-              <button className='Button' onClick={this.handleInputPicture}>Upload Picture</button>
-              <button className='Button' onClick={this.handleInputCamera}>Take a Picture</button>
+              <button className='Button animated' onClick={this.handleInputPicture}>Upload Picture</button>
+              <button className='Button animated' onClick={this.handleInputCamera}>Take a Picture</button>
               
             </div>
             </>
@@ -89,7 +86,7 @@ class LoggedIn extends Component{
            input=(
            <>
            <WebcamCapture onUpload={this.pictureUploaded}/>
-           <button className='Button camera' onClick={this.handleBack}>Back</button>
+           <button className='Button camera animated' onClick={this.handleBack}>Back</button>
            </>
            )
            
@@ -97,20 +94,18 @@ class LoggedIn extends Component{
         if(useWebcam===2){
            input=(<>
            <UploadImage onUpload={this.pictureUploaded}></UploadImage>
-           <button className='Button camera' onClick={this.handleBack}>Back</button>
+           <button className='Button camera animated' onClick={this.handleBack}>Back</button>
            </>
            )
         }
-
-        
-
+  
         
             return(               
                      this.state.ImageUploaded === false ? <>
                        <div className="logged-container">
                        
                       <div className="foreground">
-                        <h1>Upload Your Image!</h1>
+                        <h1 className="animated">Upload Your Image!</h1>
                       {input}
                         </div> 
                         <div className="vignette"></div>
@@ -119,20 +114,7 @@ class LoggedIn extends Component{
                         {this.renderCovers()}
                       </div>    
                       </div>              
-                      </> : <>
-                       <div className="logged-container">
-                       
-                      <div className="foreground">
-                        
-                        Something is shown here and at the end playlist's songs are shown 
-                        </div> 
-                        <div className="vignette"></div>
-                        <div className="cover-container">
-                        
-                        {this.renderCovers()}
-                      </div>    
-                      </div>              
-                      </>
+                      </> : <Entertainment renderCovers={this.renderCovers}></Entertainment>
                 
             )
     }

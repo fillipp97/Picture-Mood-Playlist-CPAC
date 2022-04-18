@@ -36,7 +36,7 @@ class UploadButton extends Component{
 
 
     render(){
-        return(<button className="Button" onClick={this.onFileUpload}>
+        return(<button className="Button animated" onClick={this.onFileUpload}>
         Upload!
       </button>)
     }
