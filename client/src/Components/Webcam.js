@@ -80,7 +80,7 @@ export const WebcamCapture = ({onUpload}) => {
                         e.preventDefault();
                         setImage('')
                     }}
-                        className="Button camera animated">
+                        className="Button camera">
                         Retake Image</button>
                         <UploadButton file={b64toBlob(image)} onUpload={onUpload}></UploadButton>
                         </>
@@ -90,7 +90,7 @@ export const WebcamCapture = ({onUpload}) => {
                         e.preventDefault();
                         capture();
                     }}
-                        className="Button camera animated">Capture</button>
+                        className="Button camera">Capture</button>
                 }
             </div>
         </div>

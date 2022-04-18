@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import { Component } from 'react';
 
@@ -114,7 +114,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <div className='mainContainer'>
-            
+          
             {this.state.loggedIn===1 && <NotLoggedIn 
             login={this.state.loggedIn}
             onClick={this.handleOnClickLogin}
@@ -130,7 +130,8 @@ class App extends Component {
             </LoggedIn>}
 
             
-              
+            
+            
           </div>
           
         

@@ -31,25 +31,18 @@ render(){
 console.log(this.state.counter)
     return(
         <>
-                       <div className="logged-container">
-                       
-                      <div className="foreground">
+                      
                         
-                        {<h1 className="animated">{question.q}</h1>}
+                        {<h1 >{question.q}</h1>}
                         
                         {(question.r).map((res)=>{
                         return(
                         <>
-                        <button className="Button animated" onClick={()=>this.setState({counter: (this.state.counter+1) % this.state.sentences.length})}>{res}</button>
+                        <button className="Button" onClick={()=>this.setState({counter: (this.state.counter+1) % this.state.sentences.length})}>{res}</button>
                         </>)})}
 
-                        </div> 
-                        <div className="vignette"></div>
-                        <div className="cover-container">
                         
-                        {this.props.renderCovers()}
-                      </div>    
-                      </div>              
+              
                       </>
     )
 }

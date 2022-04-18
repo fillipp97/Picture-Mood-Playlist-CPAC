@@ -1,8 +1,10 @@
+import { useState } from "react";
+import { useEffect } from "react";
 
 
 
-function RenderCovers(){
-
+function RenderCovers(props){
+    const [covers,setCovers]=useState();
 
     const splitVector=(urls)=>{
         const chunkSize = 20;
@@ -19,8 +21,9 @@ function RenderCovers(){
         }
         return Matrix
        }
-     
-    const songs=this.props.song;
+    
+    useEffect( ()=>{
+    const songs=props.songs;
     let urls = songs.map((item)=>
     item.track.album.images[1].url
     )
@@ -29,14 +32,19 @@ function RenderCovers(){
     let vectors = splitVector(urls)
     console.log(vectors)
 
-    return (vectors.map((url_vector,id)=>(
-        <div className={"cover-container-internal" + (id % 2) }>        
-        {url_vector.map((url)=>(
-            <img src={url}></img>))}
+    let coversVar = (vectors.map((url_vector,id)=>(
+        <div key={id} className={"cover-container-internal" + (id % 2) }>        
+        {url_vector.map((url,id)=>(
+            <img key={id} src={url}></img>))}
             
         </div>
     )))
+    setCovers(coversVar)
     }
+    
+  },[props.songs])
+
+  return covers
        
 }
 
