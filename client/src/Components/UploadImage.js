@@ -36,9 +36,9 @@ class UploadImage extends Component{
               <div className={"ImageContainer" + this.state.active}>
               {this.getFile()}
               </div>
-              <div className="InputContainer">
+              <div className="InputContainer"> 
               
-                  <input type="file" name="file" id="file" className='custom-file-input' onChange={this.onFileChange} />
+                  <input type="file" name="file" id="file" accept="image/png , image/gif , image/jpeg"   className='custom-file-input' onChange={this.onFileChange} />
                   <label htmlFor='file' className="Button">Chose File</label>
 
                   <UploadButton file={this.state.selectedFile} onUpload={this.props.onUpload}></UploadButton>
