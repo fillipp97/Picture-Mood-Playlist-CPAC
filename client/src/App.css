@@ -77,20 +77,35 @@
 
 }
 
+.Button {
+  font-family: "Roboto", sans-serif;
+  font-weight: 1000;
+  font-size: medium;
 
-.Button{
+  cursor: pointer;
+  transition: transform 0.3s ease;
   border-radius: 20px;
   opacity: 90%;
-  background-color: rgb(149, 228, 149);/*rgb(104, 104, 243);*/
+  /* background-color: rgb(149, 228, 149);   */
+  /* background-color: rgb(104, 104, 243); */
+  /* background: linear-gradient(90deg, #0162c8, #55e7fc); */
+  background: linear-gradient(10deg, rgb(149, 228, 149), #55e7fc);
+  box-shadow: 0 4px 10px 0 rgba(49, 196, 190, 0.75);
   height: 5vh;
   width: 20vw;
   min-width: 110px;
-  margin: 3vw;
-  
+  margin: 4.6vw;
 }
 
 .Button:hover {
   transform: translateY(-3px);
+  color: white;
+  border: 0;
+
+  background-color: #b9e769;
+  -webkit-box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
+  -moz-box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
+  box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
 }
 
 h1{
