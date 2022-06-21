@@ -5,7 +5,7 @@ import time
 import os
 import shutil
 from dotenv import load_dotenv 
-
+from Components.Spotify import Spoty
 
 load_dotenv('.env')
 CLIENT_ID=os.getenv('CLIENT_ID')
@@ -97,7 +97,7 @@ def create_spotify_oauth():
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
             redirect_uri=url_for('authorize', _external=True),
-            scope="user-library-read")
+            scope="user-library-read,user-top-read,user-read-private")
 
 
 @app.route('/uploadFile', methods=['GET', 'POST'])
@@ -108,7 +108,20 @@ def upload_im():
     f.close()
     return '200'
 
+@app.route('/getResult')
 # Here we must insert the core of the program, Since flask doesn't provide a functionality in order to run functions after return, we should use something like KEEP ALIVE
+def result():
+    session['token_info'], authorized = get_token()
+    session.modified = True
+    if not authorized:
+        return { 'result': 'bad' }
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    #preferences = sp.current_user_top_tracks()
+    preferences=sp.audio_features(tracks='2KfZlHUvngihMWV72wnmhL')
+    
+    print(preferences)
+    return '200'
+
 
 @app.route('/checkLogState')
 def checkLogState():

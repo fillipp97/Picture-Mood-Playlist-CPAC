@@ -9,6 +9,7 @@ import {
   Transition,
   TransitionGroup,
 } from 'react-transition-group';
+import axios from "axios";
 
 class LoggedIn extends Component{
   constructor(props){
@@ -74,6 +75,16 @@ class LoggedIn extends Component{
       this.setState({useWebcam: 0})
     }
 
+    getPreferences=()=>{
+      axios({
+        method: 'GET',
+        url: '/getResult'
+      }).then((response)=>{
+        const res=response.data
+        
+      })
+    }
+
     
 
     render(){
@@ -87,7 +98,7 @@ class LoggedIn extends Component{
               <button className='Button' onClick={this.handleInputPicture}>Upload Picture</button>
     
               <button className='Button' onClick={this.handleInputCamera}>Take a Picture</button>
-           
+              <button onClick={this.getPreferences} className="Button" style={{zIndex: 999}}>Get suggestions</button>
             </div>
             </>
           )
