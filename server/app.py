@@ -10,6 +10,8 @@ from Components.Spotify import Spoty
 load_dotenv('.env')
 CLIENT_ID=os.getenv('CLIENT_ID')
 CLIENT_SECRET=os.getenv('CLIENT_SECRET')
+print("CLIENT_ID: ", CLIENT_ID)
+print("CLIENT_SECRET: ", CLIENT_SECRET)
 # App config
 app = Flask(__name__)
 
@@ -104,7 +106,6 @@ def create_spotify_oauth():
 def upload_im():
     image = request.files['Image'].read()
     f = open('image.jpg','wb')
-    f.write(image)
     f.close()
     return '200'
 

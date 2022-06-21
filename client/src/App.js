@@ -1,4 +1,5 @@
-
+// import React from 'react'
+// import ReactDOM from 'react-dom'
 import './App.css';
 import { Component } from 'react';
 
@@ -131,13 +132,7 @@ class App extends Component {
             songs={this.state.songs} 
             logout={this.logout}>
             </LoggedIn>}
-
-            
-            
-            
           </div>
-          
-        
         </header>
     </div>
     </div>
