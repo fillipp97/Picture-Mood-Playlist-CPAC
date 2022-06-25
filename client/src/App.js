@@ -31,7 +31,6 @@ class App extends Component {
       if(res.result === 'bad'){ //user not logged in
         console.log('USER NOT LOGGED IN')
         this.setState({loggedIn: 1})
-
       }else{
         console.log('USER LOGGED IN')
         this.setState({loggedIn: 2})

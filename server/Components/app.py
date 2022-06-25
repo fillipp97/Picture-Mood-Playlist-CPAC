@@ -1,17 +1,28 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from flask import Flask, url_for, session, request, redirect
+from flask import Flask, url_for, session, request, redirect, jsonify
 import time
 import os
 import shutil
 from dotenv import load_dotenv 
-from Components.Spotify import Spoty
+from enum import unique
+from multiprocessing.connection import wait
+from random import choice
+from numpy import choose
+import object_detection
+from object_detection import get_object,detect_img, download_and_resize_image,hub,detector,run_detector
+import Spotify
+import Translations
+from time import sleep
+import Azure_api
+from Azure_api import get_mood, emotion_detect
+# from Components.Spotify import Spoty
 
 load_dotenv('.env')
 CLIENT_ID=os.getenv('CLIENT_ID')
 CLIENT_SECRET=os.getenv('CLIENT_SECRET')
-print("CLIENT_ID: ", CLIENT_ID)
-print("CLIENT_SECRET: ", CLIENT_SECRET)
+# print("CLIENT_ID: ", CLIENT_ID)
+# print("CLIENT_SECRET: ", CLIENT_SECRET)
 # App config
 app = Flask(__name__)
 
@@ -105,22 +116,35 @@ def create_spotify_oauth():
 @app.route('/uploadFile', methods=['GET', 'POST'])
 def upload_im():
     image = request.files['Image'].read()
-    f = open('image.jpg','wb')
-    f.close()
-    return '200'
+    image_path = download_and_resize_image(image, 640, 480)
+    detect_img(image_path)
+
+    emotion_detect(image_path)
+
+    print("\nThe emotion_result is: ", get_mood())
+    print("\nThe object_result is: ", get_object())
+
+    obj= list(dict.fromkeys(get_object())) 
+    unique_songs=Translations.Get_Songs_from_mood(get_mood(),obj)
+    # print('\n Pool of songs:\n')
+    # i=0
+    # for song in unique_songs:
+    #     i+=1
+    # print(i,'-',song[0],song[1],song[3])
+    choice =Translations.make_a_choice(unique_songs)
+    # print('\n\n\n','The final choice is:\n', choice[0],choice[1],choice[3])
+    return jsonify({"choices": choice})
 
 @app.route('/getResult')
 # Here we must insert the core of the program, Since flask doesn't provide a functionality in order to run functions after return, we should use something like KEEP ALIVE
-def result():
+def getResult():
     session['token_info'], authorized = get_token()
     session.modified = True
     if not authorized:
         return { 'result': 'bad' }
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     #preferences = sp.current_user_top_tracks()
-    preferences=sp.audio_features(tracks='2KfZlHUvngihMWV72wnmhL')
-    
-    print(preferences)
+    sp.audio_features(tracks='2KfZlHUvngihMWV72wnmhL')
     return '200'
 
 
@@ -131,3 +155,6 @@ def checkLogState():
     if not authorized:
         return { 'result': 'bad' }
     else: return {'result': 'ok'}
+
+if __name__ == "__main__":
+    app.run(debug=True)
