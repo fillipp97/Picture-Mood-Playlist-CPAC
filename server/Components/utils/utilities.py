@@ -4,12 +4,7 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from ast import operator
-from contextlib import nullcontext
-from enum import unique
-from fnmatch import translate
-
-from matplotlib.pyplot import text
-import Components.Spotify as Spotify
+import Components.utils.Spotify as Spotify
 
 # import lyrics
 from langdetect import detect
@@ -45,7 +40,6 @@ target_mode=1
 
 """
 # from asyncio.windows_events import NULL
-from logging import NullHandler
 
 
 def get_par_from_mood(mood):
@@ -115,6 +109,10 @@ def get_par_from_mood(mood):
         # search for objects in lyrics
         parameters = {"mood": "noface"}
     return parameters
+
+
+def get_par_from_LLF():
+    pass
 
 
 def assign_score(words, text):

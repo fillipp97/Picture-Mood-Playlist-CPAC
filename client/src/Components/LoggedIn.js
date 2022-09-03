@@ -97,6 +97,7 @@ class LoggedIn extends Component {
           <div className="uploadChoiceContainer">
 
             <button className='Button' onClick={this.handleInputPicture}>Upload Picture</button>
+            <button className='Button' onClick={this.props.logout}>Logout</button>
 
             <button className='Button' onClick={this.handleInputCamera}>Take a Picture</button>
             <button onClick={this.getPreferences} className="Button" style={{ zIndex: 999 }}>Get suggestions</button>
@@ -112,18 +113,6 @@ class LoggedIn extends Component {
         </>
       )
 
-<<<<<<< Updated upstream
-    getPreferences=()=>{
-      axios({
-        method: 'GET',
-        url: '/getResult'
-      }).then((response)=>{
-        debugger
-        const res=response.data
-        
-      })
-=======
->>>>>>> Stashed changes
     }
     if (useWebcam === 2) {
       input = (<>
@@ -145,22 +134,6 @@ class LoggedIn extends Component {
           <div className="vignette"></div>
           <div className="cover-container">
 
-<<<<<<< Updated upstream
-    
-
-    render(){
-        const {useWebcam}=this.state;
-        let input;
-        if(useWebcam===0){
-          input = (
-            <>
-            <div className="uploadChoiceContainer">
-            
-              <button className='Button' onClick={this.handleInputPicture}>Upload Picture</button>
-              <button className='Button' onClick={this.props.handleLogout}>Logout</button>
-              <button className='Button' onClick={this.handleInputCamera}>Take a Picture</button>
-              <button onClick={this.getPreferences} className="Button" style={{zIndex: 999}}>Get suggestions</button>
-=======
             <RenderCovers songs={this.props.songs}></RenderCovers>
           </div>
         </div>
@@ -170,7 +143,6 @@ class LoggedIn extends Component {
 
             <div className="foreground">
               <Entertainment></Entertainment>
->>>>>>> Stashed changes
             </div>
             <div className="vignette"></div>
             <div className="cover-container">

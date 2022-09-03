@@ -39,12 +39,6 @@ class App extends Component {
     })
   }
 
-<<<<<<< Updated upstream
-  
- 
-=======
-
->>>>>>> Stashed changes
 
 
   logout = () => {
@@ -123,7 +117,7 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
             <div className='mainContainer'>
-              <button className='Button' onClick={this.logout}>Logout</button>
+
               {this.state.loggedIn === 1 && <NotLoggedIn
                 login={this.state.loggedIn}
                 onClick={this.handleOnClickLogin}
@@ -137,44 +131,13 @@ class App extends Component {
                 songs={this.state.songs}
                 logout={this.logout}>
               </LoggedIn>}
+
             </div>
           </header>
         </div>
       </div>
     );
   }
-<<<<<<< Updated upstream
-  
-
-  render(){
-  return (
-    <div className='root'>
-      <div className="App">
-        <header className="App-header">
-          <div className='mainContainer'>
-          
-            {this.state.loggedIn===1 && <NotLoggedIn 
-            login={this.state.loggedIn}
-            onClick={this.handleOnClickLogin}
-            >
-
-            </NotLoggedIn>}
-
-            { this.state.loggedIn===2 &&<LoggedIn 
-            login={this.state.loggedIn} 
-            handleGetSongs={this.handleGetSongs}
-            handleLogout = {this.logout} 
-            songs={this.state.songs} 
-            logout={this.logout}>
-            </LoggedIn>}
-          </div>
-        </header>
-    </div>
-    </div>
-  );
-}
-=======
->>>>>>> Stashed changes
 }
 
 export default App;
