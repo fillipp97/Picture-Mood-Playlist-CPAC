@@ -9,7 +9,7 @@ from enum import unique
 from fnmatch import translate
 
 from matplotlib.pyplot import text
-from .Spotify import *
+import Components.Spotify as Spotify
 
 # import lyrics
 from langdetect import detect
@@ -204,11 +204,11 @@ def Get_Songs_from_mood(mood, obj_in_pic):
     # Get a pool of songs from the recommended ones
     Songs = []
     # each time means 100 songs
-    Songs.extend(Spotify.get_recommendations(parameters))
-    Songs.extend(Spotify.get_recommendations(parameters))
-    while not Songs:
+    Songs.extend(Spotify.get_recommendations())
+    Songs.extend(Spotify.get_recommendations())
+    if not Songs:
         print("No songs identified ... \nRetrying")
-        Songs.extend(Spotify.get_recommendations(parameters))
+        # Songs.extend(Spotify.get_recommendations(parameters))
 
     # extract titles and artists
     song_titles = [Songs[i]["name"] for i in range(len(Songs))]
@@ -220,7 +220,7 @@ def Get_Songs_from_mood(mood, obj_in_pic):
             len(Songs), len(Songs) - len(unique_songs)
         )
     )
-
+    return unique_songs
     if parameters["mood"] == "noface":
         songs_and_texts = retrieve_lyrics(
             unique_songs

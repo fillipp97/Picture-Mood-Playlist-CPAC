@@ -29,12 +29,11 @@ from time import sleep
 from Components.Azure_api import get_mood, emotion_detect
 
 # from Components.Spotify import Spoty
-
-load_dotenv(".env")
+env_path = Path(__file__).parent.parent / ".env"
+load_dotenv(str(env_path))
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-# print("CLIENT_ID: ", CLIENT_ID)
-# print("CLIENT_SECRET: ", CLIENT_SECRET)
+
 # App config
 app = Flask(__name__)
 
@@ -121,6 +120,8 @@ def get_token():
 
 
 def create_spotify_oauth():
+    # print("CLIENT_ID: ", CLIENT_ID)
+    # print("CLIENT_SECRET: ", CLIENT_SECRET)
     return SpotifyOAuth(
         client_id=CLIENT_ID,
         client_secret=CLIENT_SECRET,
@@ -136,12 +137,13 @@ def upload_im():
     detect_img(image_path)
 
     emotion_detect(image_path)
+    mood = get_mood()
+    objects = get_object()
+    print("\nThe emotion_result is: ", mood)
+    print("\nThe object_result is: ", objects)
 
-    print("\nThe emotion_result is: ", get_mood())
-    print("\nThe object_result is: ", get_object())
-
-    obj = list(dict.fromkeys(get_object()))
-    unique_songs = Translations.Get_Songs_from_mood(get_mood(), obj)
+    obj = list(dict.fromkeys(objects))
+    unique_songs = Translations.Get_Songs_from_mood(mood, obj)
     # print('\n Pool of songs:\n')
     # i=0
     # for song in unique_songs:
