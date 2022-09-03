@@ -19,6 +19,10 @@
 # @title Imports and function definitions
 
 # For running inference on the TF-Hub module.
+from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).parent.parent.parent))
+
 import time
 import tensorflow as tf
 

@@ -1,3 +1,7 @@
+from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).parent.parent))
+
 import json
 from urllib import response
 from xml.dom.minidom import Identified
