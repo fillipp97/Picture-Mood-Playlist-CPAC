@@ -39,7 +39,7 @@ class App extends Component {
     })
   }
 
-
+  
  
 
   logout=()=>{
@@ -127,7 +127,8 @@ class App extends Component {
 
             { this.state.loggedIn===2 &&<LoggedIn 
             login={this.state.loggedIn} 
-            handleGetSongs={this.handleGetSongs} 
+            handleGetSongs={this.handleGetSongs}
+            handleLogout = {this.logout} 
             songs={this.state.songs} 
             logout={this.logout}>
             </LoggedIn>}

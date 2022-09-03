@@ -17,6 +17,7 @@ class LoggedIn extends Component{
     this.state={
       useWebcam: 0,
       ImageUploaded: false,
+      handleLogout: props.handleLogout
     }
   }
 
@@ -80,6 +81,7 @@ class LoggedIn extends Component{
         method: 'GET',
         url: '/getResult'
       }).then((response)=>{
+        debugger
         const res=response.data
         
       })
@@ -96,7 +98,7 @@ class LoggedIn extends Component{
             <div className="uploadChoiceContainer">
             
               <button className='Button' onClick={this.handleInputPicture}>Upload Picture</button>
-    
+              <button className='Button' onClick={this.props.handleLogout}>Logout</button>
               <button className='Button' onClick={this.handleInputCamera}>Take a Picture</button>
               <button onClick={this.getPreferences} className="Button" style={{zIndex: 999}}>Get suggestions</button>
             </div>
