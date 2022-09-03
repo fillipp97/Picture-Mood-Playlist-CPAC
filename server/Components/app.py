@@ -1,3 +1,4 @@
+from functools import reduce
 from pathlib import Path
 import sys
 
@@ -63,14 +64,14 @@ def logout():
     for key in list(session.keys()):
         session.pop(key)
     session.clear()
-    try:
-        os.remove(".cache")
-    except:
-        pass
-    try:
-        shutil.rmtree("__pycache__")
-    except:
-        pass
+    # try:
+    #     os.remove(".cache")
+    # except:
+    #     pass
+    # try:
+    #     shutil.rmtree("__pycache__")
+    # except:
+    #     pass
     return redirect("http://localhost:3000")
 
 
@@ -79,7 +80,10 @@ def get_tracks():
     session["token_info"], authorized = get_token()
     session.modified = True
     if not authorized:
-        return {"result": "bad"}
+        session.clear()
+        print("Not Logged in")
+        return redirect("http://localhost:3000")
+        # return {"result": "bad"}
     sp = spotipy.Spotify(auth=session.get("token_info").get("access_token"))
     currGroup = sp.current_user_saved_tracks(limit=50, offset=0)["items"]
     return {"result": "ok", "songs": currGroup}
@@ -90,7 +94,10 @@ def get_covers():
     session["token_info"], authorized = get_token()
     session.modified = True
     if not authorized:
-        return {"result": "bad"}
+        session.clear()
+        print("Not Logged in")
+        return redirect("http://localhost:3000")
+        # return {"result": "bad"}
     sp = spotipy.Spotify(auth=session.get("token_info").get("access_token"))
     currGroup = sp.current_user_saved_tracks(limit=50, offset=0)["items"]
     link = currGroup[0]["track"]["album"]["images"][0]["url"]

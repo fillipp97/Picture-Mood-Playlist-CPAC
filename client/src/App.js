@@ -9,106 +9,141 @@ import LoggedIn from './Components/LoggedIn';
 
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       loggedIn: 1,
       songs: []
     }
   }
 
-  
-  componentDidMount=()=>{
+
+  componentDidMount = () => {
     this.checkIfLoggedIn()
   }
 
-  checkIfLoggedIn=()=>{
+  checkIfLoggedIn = () => {
     axios({
       method: 'GET',
       url: '/checkLogState'
-    }).then((response)=>{
-      const res=response.data
-      if(res.result === 'bad'){ //user not logged in
+    }).then((response) => {
+      const res = response.data
+      if (res.result === 'bad') { //user not logged in
         console.log('USER NOT LOGGED IN')
-        this.setState({loggedIn: 1})
-      }else{
+        this.setState({ loggedIn: 1 })
+      } else {
         console.log('USER LOGGED IN')
-        this.setState({loggedIn: 2})
+        this.setState({ loggedIn: 2 })
       }
 
     })
   }
 
+<<<<<<< Updated upstream
   
  
+=======
 
-  logout=()=>{
+>>>>>>> Stashed changes
+
+
+  logout = () => {
     axios({
       method: "GET",
-      url:"/logout"
+      url: "/logout"
     })
-    .then((response)=>{
-      const res = response.data
-      
-      this.setState({ loggedIn: res}, console.log(this.state.loggedIn))
-      
-    }).catch((error)=>{
-      if(error.response){
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-      }
-    })
+      .then((response) => {
+        const res = response.data
+
+        this.setState({ loggedIn: 1 }, console.log(this.state.loggedIn))
+
+      }).catch((error) => {
+        if (error.response) {
+          console.log(error.response)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        }
+      })
   }
 
 
-  handleOnClickLogin= async ()=>{
+  handleOnClickLogin = async () => {
     axios({
       method: "GET",
-      url:"/login"
+      url: "/login"
     })
-    .then((response)=>{
-      const res = response.data
-      this.setState({authLink: res}, ()=>{console.log('REINDIRIZZO'); window.location=this.state.authLink;})
-      
-    }).catch((error)=>{
-      if(error.response){
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-      }
-    })
+      .then((response) => {
+        const res = response.data
+        this.setState({ authLink: res }, () => { console.log('Redirecting to Spotify'); window.location = this.state.authLink; })
+
+      }).catch((error) => {
+        if (error.response) {
+          console.log(error.response)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        }
+      })
   }
-  
-  handleGetSongs=()=>{
+
+  handleGetSongs = () => {
     console.log(this.state.loggedIn)
-    
+
     axios({
       method: "GET",
-      url:"/getTracks"
+      url: "/getTracks"
     })
-    .then((response)=>{
-      const res = response.data
-      if(res.result === 'bad'){
-        this.handleOnClickLogin()
-      }
-      if(res.result = 'ok'){
-        this.setState({songs: res.songs})
-      console.log(res.songs.map((songobj)=>
-        songobj.track.name
-      ))
-      return res.songs
+      .then((response) => {
+        const res = response.data
+        if (res.result === 'bad') {
+          this.handleOnClickLogin()
+        }
+        if (res.result = 'ok') {
+          this.setState({ songs: res.songs })
+          console.log(res.songs.map((songobj) =>
+            songobj.track.name
+          ))
+          return res.songs
 
-    
-    }}).catch((error)=>{
-      if(error.response){
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-        this.setState({loggedIn: false})
-      }
-    })
+
+        }
+      }).catch((error) => {
+        if (error.response) {
+          console.log(error.response)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+          this.setState({ loggedIn: false })
+        }
+      })
   }
+
+
+  render() {
+    return (
+      <div className='root'>
+        <div className="App">
+          <header className="App-header">
+            <div className='mainContainer'>
+              <button className='Button' onClick={this.logout}>Logout</button>
+              {this.state.loggedIn === 1 && <NotLoggedIn
+                login={this.state.loggedIn}
+                onClick={this.handleOnClickLogin}
+              >
+
+              </NotLoggedIn>}
+
+              {this.state.loggedIn === 2 && <LoggedIn
+                login={this.state.loggedIn}
+                handleGetSongs={this.handleGetSongs}
+                songs={this.state.songs}
+                logout={this.logout}>
+              </LoggedIn>}
+            </div>
+          </header>
+        </div>
+      </div>
+    );
+  }
+<<<<<<< Updated upstream
   
 
   render(){
@@ -138,6 +173,8 @@ class App extends Component {
     </div>
   );
 }
+=======
+>>>>>>> Stashed changes
 }
 
 export default App;
