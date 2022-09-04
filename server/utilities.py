@@ -1,10 +1,10 @@
 from pathlib import Path
 import sys
 
-sys.path.append(str(Path(__file__).parent.parent.parent))
+sys.path.append(str(Path(__file__).parent))
 
 from ast import operator
-import Components.utils.Spotify as Spotify
+from . import Spotify
 
 # import lyrics
 from langdetect import detect

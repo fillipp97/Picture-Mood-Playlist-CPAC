@@ -21,7 +21,7 @@
 from pathlib import Path
 import sys
 
-sys.path.append(str(Path(__file__).parent.parent.parent))
+sys.path.append(str(Path(__file__).parent))
 
 import time
 import tensorflow as tf

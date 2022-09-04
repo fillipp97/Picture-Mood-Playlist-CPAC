@@ -1,7 +1,7 @@
 from pathlib import Path
 import sys
 
-sys.path.append(str(Path(__file__).parent.parent.parent))
+sys.path.append(str(Path(__file__).parent))
 import time
 from spotipy.oauth2 import SpotifyOAuth
 from flask import Flask, url_for, session
@@ -9,7 +9,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-env_path = Path(__file__).parent.parent.parent / ".env"
+env_path = Path(__file__).parent / ".env"
 load_dotenv(str(env_path))
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")

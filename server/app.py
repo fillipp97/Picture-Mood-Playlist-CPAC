@@ -2,13 +2,13 @@ from pathlib import Path
 from random import randint, random, shuffle, choice
 import sys
 
-sys.path.append(str(Path(__file__).parent.parent))
+sys.path.append(str(Path(__file__).parent))
 import spotipy
 from flask import Flask, session, request, redirect
 import os
 from dotenv import load_dotenv
 
-from utils.object_detection import (
+from .object_detection import (
     get_object,
     detect_img,
     download_and_resize_image,
@@ -16,11 +16,11 @@ from utils.object_detection import (
     detector,
     run_detector,
 )
-from utils.utilities import get_par_from_mood, get_par_from_LLF
-from utils.Azure_api import get_mood, emotion_detect
-from utils.token_handlers import get_token, create_spotify_oauth, remove_token
-from utils.Musixmatch import get_lyrics
-from utils.Spotify import (
+from .utilities import get_par_from_mood, get_par_from_LLF
+from .Azure_api import get_mood, emotion_detect
+from .token_handlers import get_token, create_spotify_oauth, remove_token
+from .Musixmatch import get_lyrics
+from .Spotify import (
     valid_genres_for_seed,
     get_most_listened_artists,
     get_recommendations,
@@ -29,7 +29,7 @@ from utils.Spotify import (
 )
 
 # from Components.Spotify import Spoty
-env_path = Path(__file__).parent.parent / ".env"
+env_path = Path(__file__).parent / ".env"
 load_dotenv(str(env_path))
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")

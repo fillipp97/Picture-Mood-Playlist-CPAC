@@ -3,7 +3,7 @@
 from pathlib import Path
 import sys
 
-sys.path.append(str(Path(__file__).parent.parent.parent))
+sys.path.append(str(Path(__file__).parent))
 
 from flask import session, redirect
 import os
@@ -14,7 +14,7 @@ os.chdir(os.path.abspath(os.path.dirname(__file__)))
 
 import spotipy
 from dotenv import load_dotenv
-from utils.token_handlers import get_token
+from .token_handlers import get_token
 from typing import List
 
 # WE NEED A FUNCTION THAT TRANSLATES THE VALUES OF VALENCE-AROUSAL INTO THIS MULTIPLE PARAMETERS, AND TO SOME GENRES, THE FUNCTION TAKES AS INPUT THE OUTPUT OF AI
