@@ -10,6 +10,7 @@ import {
   TransitionGroup,
 } from 'react-transition-group';
 import axios from "axios";
+import FirstFiltering from "./FirstFiltering";
 
 class LoggedIn extends Component {
   constructor(props) {
@@ -17,7 +18,8 @@ class LoggedIn extends Component {
     this.state = {
       useWebcam: 0,
       ImageUploaded: false,
-      handleLogout: props.handleLogout
+      handleLogout: props.handleLogout,
+      imageStepResults: null
     }
   }
 
@@ -25,8 +27,11 @@ class LoggedIn extends Component {
     this.props.handleGetSongs()
   }
 
-  pictureUploaded = () => {
-    this.setState({ ImageUploaded: !this.state.ImageUploaded })
+  pictureUploaded = (results) => {
+    this.setState({ ImageUploaded: true })
+    this.setState({
+      imageStepResults: results
+    });
   }
 
   splitVector = (urls) => {
@@ -122,9 +127,13 @@ class LoggedIn extends Component {
       )
     }
 
+    const firstFilteringCallback = (value) => {
+      console.warn('firstFilteringCallback', value)
+    }
+
 
     return (
-      this.state.ImageUploaded === false ? <>
+      !this.state.imageStepResults ? <>
         <div className="logged-container">
 
           <div className="foreground">
@@ -142,7 +151,7 @@ class LoggedIn extends Component {
           <div className="logged-container">
 
             <div className="foreground">
-              <Entertainment></Entertainment>
+              <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
             </div>
             <div className="vignette"></div>
             <div className="cover-container">

@@ -1,5 +1,5 @@
 import { Component } from "react";
-import axios from "axios";
+import { uploadFile } from '../Services/ApiService';
 
 class UploadButton extends Component {
   constructor(props) {
@@ -15,29 +15,11 @@ class UploadButton extends Component {
 
   // On file upload (click the upload button)
   onFileUpload = () => {
-
-    // Create an object of formData
-    const formData = new FormData();
-
-    // Update the formData object
-    formData.append(
-      "Image",
-      this.props.file,
-      'Image.jpg'
-    );
-
-    // Details of the uploaded file
-    console.log(this.props.file);
-
-    // Request made to the backend api
-    // Send formData object
-    axios.post("/uploadFile", formData).then((response) => {
-
-      console.log(response)
-
+    uploadFile(this.props.file).then(data => {
+      this.props.onUpload(data)
+    }).catch(error => {
+      this.setState({ applicationError: error.response })
     })
-
-    this.props.onUpload()
   };
 
 
