@@ -1,6 +1,7 @@
 // import React from 'react'
 // import ReactDOM from 'react-dom'
 import './App.css';
+import { isLoggedIn, logIn, getTracks } from './Services/ApiService';
 import { Component } from 'react';
 
 import axios from "axios"
@@ -12,6 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      applicationError: null,
       loggedIn: 1,
       songs: []
     }
@@ -23,23 +25,12 @@ class App extends Component {
   }
 
   checkIfLoggedIn = () => {
-    axios({
-      method: 'GET',
-      url: '/checkLogState'
-    }).then((response) => {
-      const res = response.data
-      if (res.result === 'bad') { //user not logged in
-        console.log('USER NOT LOGGED IN')
-        this.setState({ loggedIn: 1 })
-      } else {
-        console.log('USER LOGGED IN')
-        this.setState({ loggedIn: 2 })
-      }
-
+    isLoggedIn().then(logged => {
+      this.setState({ loggedIn: logged ? 2 : 1 })
+    }).catch(error => {
+      this.setState({ applicationError: error.response })
     })
   }
-
-
 
   logout = () => {
     axios({
@@ -62,16 +53,12 @@ class App extends Component {
 
 
   handleOnClickLogin = async () => {
-    axios({
-      method: "GET",
-      url: "/login"
-    })
+    logIn()
       .then((response) => {
-        const res = response.data
-        this.setState({ authLink: res }, () => { console.log('Redirecting to Spotify'); window.location = this.state.authLink; })
-
+        this.setState({ authLink: response }, () => { console.log('Redirecting to Spotify'); window.location = this.state.authLink; })
       }).catch((error) => {
         if (error.response) {
+          this.setState({ applicationError: error.response })
           console.log(error.response)
           console.log(error.response.status)
           console.log(error.response.headers)
@@ -82,37 +69,26 @@ class App extends Component {
   handleGetSongs = () => {
     console.log(this.state.loggedIn)
 
-    axios({
-      method: "GET",
-      url: "/getTracks"
-    })
+    getTracks()
       .then((response) => {
-        const res = response.data
-        if (res.result === 'bad') {
+        if (response.result === 'bad') {
           this.handleOnClickLogin()
         }
-        if (res.result = 'ok') {
-          this.setState({ songs: res.songs })
-          console.log(res.songs.map((songobj) =>
+        if (response.result = 'ok') {
+          this.setState({ songs: response.songs })
+          console.log(response.songs.map((songobj) =>
             songobj.track.name
           ))
-          return res.songs
-
-
+          return response.songs
         }
-      }).catch((error) => {
-        if (error.response) {
-          console.log(error.response)
-          console.log(error.response.status)
-          console.log(error.response.headers)
-          this.setState({ loggedIn: false })
-        }
+      }).catch(error => {
+        this.setState({ applicationError: error.response })
       })
   }
 
 
   render() {
-    return (
+    return this.state.applicationError ? (<h1>Application error: {this.state.applicationError.statusText}</h1>) : (
       <div className='root'>
         <div className="App">
           <header className="App-header">
