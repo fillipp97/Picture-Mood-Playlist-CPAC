@@ -1,5 +1,8 @@
+from logging.config import dictConfig
+from math import isclose
 from pathlib import Path
 import sys
+from turtle import color
 
 sys.path.append(str(Path(__file__).parent))
 
@@ -11,6 +14,10 @@ from langdetect import detect
 from deep_translator import GoogleTranslator
 import operator
 import random
+from colorthief import ColorThief
+import webcolors
+from PIL import Image, ImageStat
+from sorcery import dict_of
 
 # import wordnet
 # from senti_classifier import senti_classifier
@@ -47,22 +54,24 @@ def get_par_from_mood(mood):
     if mood == "angry":
         min_energy = 0.8
         max_energy = 1
-        parameters = {"mood": mood, "min_energy": min_energy, "max_energy": max_energy}
-    elif mood == "fearful" or mood == "disgusted":
+        min_loudness = 0.6
+        min_speechiness = 0.5
+        parameters = dict_of(min_energy, max_energy, min_loudness, min_speechiness)
+    elif (
+        mood == "fearful"
+        or mood == "disgusted"
+        or mood == "contempt"
+        or mood == "anxious"
+    ):
         # sample from playlist
-        parameters = {"mood": "Sample_Horror"}
+        horror = True
+        parameters = dict_of(horror)
     elif mood == "happy":
         min_energy = 0.5
         max_energy = 0.9
         min_valence = 0.7
         max_valence = 1
-        parameters = {
-            "mood": mood,
-            "min_energy": min_energy,
-            "max_energy": max_energy,
-            "min_valence": min_valence,
-            "max_valence": max_valence,
-        }
+        parameters = dict_of(min_energy, max_energy, min_valence, max_valence)
     elif mood == "neutral":
         min_energy = 0.2
         max_energy = 0.6
@@ -71,48 +80,97 @@ def get_par_from_mood(mood):
         min_valence = 0.2
         max_valence = 0.6
 
-        parameters = {
-            "mood": mood,
-            "min_energy": min_energy,
-            "max_energy": max_energy,
-            "min_valence": min_valence,
-            "max_valence": max_valence,
-            "min_instrumentalness": min_instrumentalness,
-            "max_instrumentalness": max_instrumentalness,
-        }
+        parameters = dict_of(
+            min_energy,
+            max_energy,
+            min_instrumentalness,
+            max_instrumentalness,
+            min_valence,
+            max_valence,
+        )
     elif mood == "sad":
-        min_energy = 0
         max_energy = 0.3
-        min_valence = 0
         max_valence = 0.4
-        parameters = {
-            "mood": mood,
-            "min_energy": min_energy,
-            "max_energy": max_energy,
-            "min_valence": min_valence,
-            "max_valence": max_valence,
-        }
+        parameters = dict_of(max_energy, max_valence)
+    elif mood == "calm" or mood == "peaceful":
+        min_valence = 0.6
+        max_energy = 0.5
+        parameters = dict_of(min_valence, max_energy)
     elif mood == "surprised":
         min_energy = 0.4
         max_energy = 0.5
         min_valence = 0.6
         max_valence = 0.8
-        parameters = {
-            "mood": mood,
-            "min_energy": min_energy,
-            "max_energy": max_energy,
-            "min_valence": min_valence,
-            "max_valence": max_valence,
-        }
+        parameters = dict_of(min_energy, max_energy, min_valence, max_valence)
         # search for wow words in lyrics
-    elif mood == "noface":
-        # search for objects in lyrics
-        parameters = {"mood": "noface"}
+    elif mood == "darkness":
+        min_energy = 0.6
+        max_valence = 0.4
+        parameters = dict_of(min_energy, max_valence)
+
     return parameters
 
 
-def get_par_from_LLF():
-    pass
+def image_is_plain(path):
+
+    im = Image.open(path)
+    width, height = im.size
+
+    color_tuple = None
+    for w in range(0, width):
+        for h in range(0, height):
+            # this will hold the value of all the channels
+            if color_tuple is None:
+                color_tuple = im.getpixel((w, h))
+            else:
+                for i, el in enumerate(color_tuple):
+                    if not isclose(el, im.getpixel((w, h))[i], rel_tol=3):
+                        return False
+            # do something with the colors here
+    return True
+
+
+def get_colour_name(rgb_triplet):
+    min_colours = {}
+    for key, name in webcolors.CSS21_HEX_TO_NAMES.items():
+        r_c, g_c, b_c = webcolors.hex_to_rgb(key)
+        rd = (r_c - rgb_triplet[0]) ** 2
+        gd = (g_c - rgb_triplet[1]) ** 2
+        bd = (b_c - rgb_triplet[2]) ** 2
+        min_colours[(rd + gd + bd)] = name
+    return min_colours[min(min_colours.keys())]
+
+
+def dominant_color(image_path):
+    color_grabber = ColorThief(image_path)
+    color_code = color_grabber.get_color(quality=1)
+    color_name = get_colour_name(color_code)
+    return color_name
+
+
+def get_mood_from_LLF(image_path):
+    """Returns a mood from the dominant color of the picture"""
+    names_mood = {
+        "aqua": "calm",  # 00ffff
+        "black": "darkness",  # 000000
+        "blue": "calm",  # 0000ff
+        "fuchsia": "anxious",  # ff00ff
+        "green": "peaceful",  # 008000
+        "gray": "sad",  # 808080
+        "lime": "happy",  # 00ff00
+        "maroon": "nervous",  # 800000
+        "navy": "calm",  # 000080
+        "olive": "nervous",  # 808000
+        "purple": "terror",  # 800080
+        "red": "pleasure",  # ff0000
+        "silver": "sad",  # c0c0c0
+        "teal": "calm",  # 008080
+        "white": "peaceful",  # ffffff
+        "yellow": "happy",  # ffff00
+        "orange": "happy",  # ffa500
+    }
+    color_name = dominant_color(image_path)
+    return names_mood[color_name]
 
 
 def assign_score(words, text):

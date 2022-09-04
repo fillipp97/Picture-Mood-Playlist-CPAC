@@ -16,17 +16,24 @@ from .object_detection import (
     detector,
     run_detector,
 )
-from .utilities import get_par_from_mood, get_par_from_LLF
+from .utilities import (
+    get_par_from_mood,
+    get_mood_from_LLF,
+    image_is_plain,
+    dominant_color,
+)
 from .Azure_api import get_mood, emotion_detect
 from .token_handlers import get_token, create_spotify_oauth, remove_token
 from .Musixmatch import get_lyrics
 from .Spotify import (
+    get_recommendation_by_objects,
     valid_genres_for_seed,
     get_most_listened_artists,
     get_recommendations,
-    get_recommendation_by_text,
-    create_new_playlist,
+    get_recommendation_by_objects,
+    get_most_listened_tracks,
 )
+
 
 # from Components.Spotify import Spoty
 env_path = Path(__file__).parent / ".env"
@@ -108,6 +115,7 @@ def Step1():
     # Download Image
     image = request.files["Image"].read()
     image_path = download_and_resize_image(image, 640, 480)
+
     detect_img(image_path)
     # Try to detect face
     try:
@@ -122,11 +130,23 @@ def Step1():
         print("No objects identified")
         objects = None
     else:
+
+        for obj in objects:
+            if isinstance(obj, list):
+                for o in obj:
+                    if o == "Human":
+                        objects.extend(["Woman", "Man", "Person"])
+                    else:
+                        objects.append(o)
+                    objects.remove(obj)
         objects = list(set(objects))
     print("\nThe emotion_result is: ", mood)
     print("\nThe object_result is: ", objects)
     # Get possible seeds for the user to chose
-    # Get some top artists and some random secondary ones
+    # Get some top artists and some random secondary ones and some tracks
+    most_listened_tracks = get_most_listened_tracks(
+        limit=10, offset=0, time_range="long_term"
+    )
     artists = get_most_listened_artists(limit=10, offset=0, time_range="medium_term")
     artists_secondary = get_most_listened_artists(
         limit=10, offset=randint(1, 2), time_range="medium_term"
@@ -157,11 +177,16 @@ def Step1():
             artists_genres.append(new_gen)
 
     mixed_genres = artists_genres[:10]
+    if mood is None:
+        moodLLF = get_mood_from_LLF(image_path=image_path)
+    else:
+        moodLLF = None
     return {
         "mood": mood,
-        # "moodLLF": moodLLF,
+        "moodLLF": moodLLF,
         "objects": objects,
-        "genres": mixed_genres,
+        "tracks": most_listened_tracks,
+        "genres": mixed_genres,  # Keep for later
         "artists": mixed_artists,
     }
 
@@ -170,6 +195,7 @@ def Step1():
 def Step2():
     mood = request.args["mood"]
     objects = request.args["objects"]
+    moodLLF = request.args["moodLLF"]
     genres_seed = request.args["genres"]
     artists_seed = request.args["artists"]
 
@@ -185,10 +211,10 @@ def Step2():
         # optional text filtering
         return recommendations
     else:
-        texts = get_lyrics()
-        recommendations_by_text = get_recommendation_by_text(objects)
-        parameters_LLF = get_par_from_LLF()  # moodLLF)
-        recommendations_by_LLF = get_recommendations()  # parameters_LLF
+        pass
+        # recommendations_by_objects = get_recommendation_by_objects(objects)
+        # parameters_LLF = get_par_from_LLF(moodLLF)
+        # recommendations_by_LLF = get_recommendations()  # parameters_LLF
         # mix =
         # return recommendations
 
@@ -201,7 +227,7 @@ def Step3():
     songs = request.args["songs"]
     playlist_title = request.args["playlist_title"]
 
-    create_new_playlist(songs, playlist_title)
+    # create_new_playlist(songs, playlist_title)
 
 
 # obj = list(dict.fromkeys(objects))

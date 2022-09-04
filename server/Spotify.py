@@ -1,5 +1,6 @@
 #%%
 # Import libraries
+from cgitb import reset
 from pathlib import Path
 import sys
 
@@ -9,12 +10,13 @@ from flask import session, redirect
 import os
 import random
 from collections import Counter
+from spotipy import SpotifyClientCredentials
 
 os.chdir(os.path.abspath(os.path.dirname(__file__)))
 
 import spotipy
 from dotenv import load_dotenv
-from .token_handlers import get_token
+from token_handlers import get_token
 from typing import List
 
 # WE NEED A FUNCTION THAT TRANSLATES THE VALUES OF VALENCE-AROUSAL INTO THIS MULTIPLE PARAMETERS, AND TO SOME GENRES, THE FUNCTION TAKES AS INPUT THE OUTPUT OF AI
@@ -119,6 +121,25 @@ def get_most_listened_artists(
     return top_artists["items"]
 
 
+def get_most_listened_tracks(
+    limit: int = 10, offset: int = 0, time_range: str = "long_term"
+) -> list:
+    """Gets the most listened tracks for the current user
+
+    Args:
+        limit (int, optional): The number of artists to return. Defaults to 10. Max to 50.
+        offset (int, optional): The starting point in the complete list of artists. Defaults to 0.
+        time_range(str, optional): The time frame in which affinities are computed
+    Returns:
+        list: A list of the {limit} most listened artists
+    """
+    sp = req_handler()
+    top_tracks = sp.current_user_top_tracks(
+        limit=limit, offset=offset, time_range=time_range
+    )
+    return top_tracks["items"]
+
+
 # def get_possible_genres_seeds():
 #     #find the genres seeds that spotify allows
 #     params={}
@@ -212,20 +233,42 @@ def get_recommendations(
     return items
 
 
-def get_recommendation_by_text():
+def get_recommendation_by_objects(objects):
     # query by objects
-    pass
-
-
-def create_new_playlist(playlist_title: str, tracks: List[dict]):
-    sp = req_handler()
-    # Get User id
-    user = sp.current_user()
-    # Create playlist
-    sp.user_playlist_create(
-        user, playlist_title, public=True, collaborative=False, description=""
+    songs = []
+    spotify = spotipy.Spotify(
+        auth_manager=SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET)
     )
-    # Read playlists to find ID of the just created one
-    sp.user_playlists(user, limit=50, offset=0)
-    # Add the tracks
-    sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
+
+    for obj in objects:
+        res = spotify.search(q=obj, limit=5, type="track")
+        res = res["tracks"]["items"]
+        for song in res:
+            if obj in song["name"]:
+                songs.append(song)
+    return songs
+
+
+# def create_new_playlist(playlist_title: str, tracks: List[dict]):
+#     sp = req_handler()
+#     # Get User id
+#     user = sp.current_user()
+#     # Create playlist
+#     sp.user_playlist_create(
+#         user, playlist_title, public=True, collaborative=False, description=""
+#     )
+#     # Read playlists to find ID of the just created one
+#     sp.user_playlists(user, limit=50, offset=0)
+#     # Add the tracks
+#     sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
+
+if __name__ == "__main__":
+    result = get_recommendation_by_objects(["profondo rosso"])
+    spotify = spotipy.Spotify(
+        auth_manager=SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET)
+    )
+    song = spotify.search(q="horror", limit=5, type="track")
+
+    res = spotify.audio_features(song["tracks"]["items"][0]["id"])
+    print(song["tracks"]["items"][0]["name"], " : ", res)
+    # print([(name["name"], name["id"]) for name in result])
