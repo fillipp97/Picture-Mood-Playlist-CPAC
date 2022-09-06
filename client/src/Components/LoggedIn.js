@@ -11,6 +11,7 @@ import {
 } from 'react-transition-group';
 import axios from "axios";
 import FirstFiltering from "./FirstFiltering";
+import { getRecommendedSongs } from '../Services/ApiService';
 
 class LoggedIn extends Component {
   constructor(props) {
@@ -19,7 +20,10 @@ class LoggedIn extends Component {
       useWebcam: 0,
       ImageUploaded: false,
       handleLogout: props.handleLogout,
-      imageStepResults: null
+      imageStepResults: null,
+      imageStepController: 1,
+      songsStepResults: null,
+      songsStepController: 0,
     }
   }
 
@@ -30,7 +34,8 @@ class LoggedIn extends Component {
   pictureUploaded = (results) => {
     this.setState({ ImageUploaded: true })
     this.setState({
-      imageStepResults: results
+      imageStepResults: results,
+      imageStepController: 2
     });
   }
 
@@ -52,7 +57,7 @@ class LoggedIn extends Component {
   renderCovers = () => {
     const { songs } = this.props;
     let urls = songs.map((item) =>
-      item.track.album.images[1].url
+      item.track.album.images[2].url //1 is the most resoluted 2 is the least
     )
 
     if (typeof (urls) !== 'undefined' && urls != null) {
@@ -81,16 +86,19 @@ class LoggedIn extends Component {
     this.setState({ useWebcam: 0 })
   }
 
-  getPreferences = () => {
-    axios({
-      method: 'GET',
-      url: '/getResult'
-    }).then((response) => {
-      const res = response.data
 
-    })
+  handleGetRecommended = () => {
+    getRecommendedSongs(this.state.imageStepResults)
+      .then((response) => {
+        if (response.result === 'ok') {
+          this.setState({
+            recommendedSongs: response.recommendations,
+            recommendedLyrics: response.lyrics
+          })
+          console.log(response)
+        }
+      });
   }
-
 
 
   render() {
@@ -105,7 +113,7 @@ class LoggedIn extends Component {
             <button className='Button' onClick={this.props.logout}>Logout</button>
 
             <button className='Button' onClick={this.handleInputCamera}>Take a Picture</button>
-            <button onClick={this.getPreferences} className="Button" style={{ zIndex: 999 }}>Get suggestions</button>
+
           </div>
         </>
       )
@@ -133,35 +141,74 @@ class LoggedIn extends Component {
 
 
     return (
-      !this.state.imageStepResults ? <>
-        <div className="logged-container">
+      <>
+        {/* Three states are needed for each of the upcoming components:
+            0 - all not showing
+            1 - one part of code is active
+            2 - the other part of code is active 
+            Doing so it is possible to "mute" imageStepResults while showing recommendedSongsResults*/}
+        {
+          this.state.imageStepController === 1 && <>
+            <div className="logged-container">
 
-          <div className="foreground">
-            <h1 >Upload Your Image!</h1>
-            {input}
-          </div>
-          <div className="vignette"></div>
-          <div className="cover-container">
+              <div className="foreground">
+                <h1 >Upload Your Image!</h1>
+                {input}
+              </div>
+              <div className="vignette"></div>
+              <div className="cover-container">
 
-            <RenderCovers songs={this.props.songs}></RenderCovers>
-          </div>
-        </div>
-      </> :
-        <>
-          <div className="logged-container">
-
-            <div className="foreground">
-              <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
+                <RenderCovers songs={this.props.songs}></RenderCovers>
+              </div>
             </div>
-            <div className="vignette"></div>
-            <div className="cover-container">
+          </>
 
-              <RenderCovers songs={this.props.songs}></RenderCovers>
+
+
+        }
+
+        {
+          this.state.imageStepController === 2 &&
+          <>
+            <div className="logged-container">
+
+              <div className="foreground">
+                <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
+                <button className="Button" onClick={this.handleGetRecommended}>Send Song Request</button>
+              </div>
+              <div className="vignette"></div>
+              <div className="cover-container">
+
+                <RenderCovers songs={this.props.songs}></RenderCovers>
+              </div>
             </div>
-          </div>
-        </>
+          </>
+        }
+
+        {
+          this.state.songsStepController === 1 &&
+          <>
+
+            <div>songsStepController is {this.state.songsStepController}</div>
+
+          </>
+        }
 
 
+        {
+          this.state.songsStepController === 2 &&
+          <>
+
+            <div>songsStepController is {this.state.songsStepController}</div>
+
+          </>
+        }
+
+
+
+
+
+      </>
     )
   }
 }

@@ -32,6 +32,7 @@ from .Spotify import (
     get_recommendations,
     get_recommendation_by_objects,
     get_most_listened_tracks,
+    create_new_playlist,
 )
 
 
@@ -92,22 +93,24 @@ def get_tracks():
         # return {"result": "bad"}
     sp = spotipy.Spotify(auth=session.get("token_info").get("access_token"))
     currGroup = sp.current_user_saved_tracks(limit=50, offset=0)["items"]
+    print(currGroup[0]["track"]["album"]["images"])
     return {"result": "ok", "songs": currGroup}
 
 
-@app.route("/getCovers")
-def get_covers():
-    session["token_info"], authorized = get_token()
-    session.modified = True
-    if not authorized:
-        session.clear()
-        print("Not Logged in")
-        return redirect("http://localhost:3000")
-        # return {"result": "bad"}
-    sp = spotipy.Spotify(auth=session.get("token_info").get("access_token"))
-    currGroup = sp.current_user_saved_tracks(limit=50, offset=0)["items"]
-    link = currGroup[0]["track"]["album"]["images"][0]["url"]
-    return {"result": "ok", "links": link}
+# @app.route("/getCovers")
+# def get_covers():
+#     session["token_info"], authorized = get_token()
+#     session.modified = True
+#     if not authorized:
+#         session.clear()
+#         print("Not Logged in")
+#         return redirect("http://localhost:3000")
+#         # return {"result": "bad"}
+#     sp = spotipy.Spotify(auth=session.get("token_info").get("access_token"))
+#     currGroup = sp.current_user_saved_tracks(limit=50, offset=0)["items"]
+#     print(currGroup[0]["track"]["album"]["images"])
+#     link = currGroup[0]["track"]["album"]["images"][0]["url"]
+#     return {"result": "ok", "links": link}
 
 
 @app.route("/uploadFile", methods=["GET", "POST"])
@@ -130,26 +133,36 @@ def Step1():
         print("No objects identified")
         objects = None
     else:
-
+        objects = list(set(objects))
         for obj in objects:
-            if isinstance(obj, list):
-                for o in obj:
-                    if o == "Human":
-                        objects.extend(["Woman", "Man", "Person"])
-                    else:
-                        objects.append(o)
-                    objects.remove(obj)
+            print("\n\nObjects Iter : ", obj)
+            if "Human" in obj:
+                parts = obj.split(" ")
+                for part in parts:
+                    objects.append(part)
         objects = list(set(objects))
     print("\nThe emotion_result is: ", mood)
     print("\nThe object_result is: ", objects)
     # Get possible seeds for the user to chose
-    # Get some top artists and some random secondary ones and some tracks
+
+    # Get most listened tracks mixed with other tracks to insert variation
     most_listened_tracks = get_most_listened_tracks(
         limit=10, offset=0, time_range="long_term"
     )
+    tracks_secondary = get_most_listened_tracks(
+        limit=10, offset=randint(1, 2), time_range="long_term"
+    )
+    [
+        most_listened_tracks.append(secondary)
+        for secondary in tracks_secondary
+        if secondary not in most_listened_tracks
+    ]
+    shuffle(most_listened_tracks)
+    most_listened_tracks = most_listened_tracks[:10]
+    # Get some top artists
     artists = get_most_listened_artists(limit=10, offset=0, time_range="medium_term")
     artists_secondary = get_most_listened_artists(
-        limit=10, offset=randint(1, 2), time_range="medium_term"
+        limit=10, offset=randint(1, 2), time_range="long_term"
     )
     [
         artists.append(secondary)
@@ -158,13 +171,12 @@ def Step1():
     ]
     shuffle(artists)
     mixed_artists = artists[:10]
-    # get some random genres mized with genres in tune with the previous selected artists
+    # get some random genres mixed with genres in tune with the previous selected artists
     genres = valid_genres_for_seed()  # They are 126
     artists_genres = []
     for artist in artists:
         for genre in artist["genres"]:
-            for word in genre.split(" "):
-                artists_genres.append(word)
+            artists_genres.append(genre)
 
     for gen in artists_genres:
         if gen not in genres:
@@ -182,12 +194,13 @@ def Step1():
     else:
         moodLLF = None
     return {
+        "result": "ok",
         "mood": mood,
         "moodLLF": moodLLF,
         "objects": objects,
-        "tracks": most_listened_tracks,
-        "genres": mixed_genres,  # Keep for later
-        "artists": mixed_artists,
+        "tracksSeed": most_listened_tracks,
+        "genresSeed": mixed_genres,  # Keep for later
+        "artistsSeed": mixed_artists,
     }
 
 
@@ -196,50 +209,58 @@ def Step2():
     mood = request.args["mood"]
     objects = request.args["objects"]
     moodLLF = request.args["moodLLF"]
-    genres_seed = request.args["genres"]
-    artists_seed = request.args["artists"]
+    # List[strings] of genres
+    genres_seed = request.args["genresSeed"]
+    # List[strings] of artists' names
+    artists_seed = request.args["artistsSeed"]
+    # List[strings] of tracks ID
+    tracks_seed = request.args["tracksSeed"]
 
     if mood is not None:
         # Proceed with the branch with face
+        # Get parameters from mood
         parameters = get_par_from_mood(mood=mood)
+        # Get recommendations according to parameters
         recommendations = get_recommendations(
             seed_artists=artists_seed,
             seed_genres=genres_seed,
+            seed_tracks=tracks_seed,
             limit=20,
             kwargs=parameters,
         )
         # optional text filtering
         return recommendations
     else:
-        pass
-        # recommendations_by_objects = get_recommendation_by_objects(objects)
-        # parameters_LLF = get_par_from_LLF(moodLLF)
-        # recommendations_by_LLF = get_recommendations()  # parameters_LLF
-        # mix =
-        # return recommendations
-
-
-# IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
+        # Get 5 recommendations from each object in the image
+        recommendations_by_objects = get_recommendation_by_objects(objects)
+        # Get also parameters from a mood extracted by colors in the picture
+        parameters_LLF = get_par_from_mood(moodLLF)
+        # Get recommendations
+        recommendations_moodLLF = get_recommendations(
+            seed_artists=artists_seed,
+            seed_genres=genres_seed,
+            seed_tracks=tracks_seed,
+            limit=10,
+            kwargs=parameters_LLF,
+        )
+        # Mix all the results and get the first 20 OR CREATE A SCORING FUNCTION THAT USES THE TEXT TODO
+        mix = recommendations_by_objects.extend(recommendations_moodLLF)
+        # Ensure there are no duplicates
+        mix = list(set(mix))
+        shuffle(mix)
+        # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
+        return {"result": "ok", "recommendations": mix[:20], "lyrics": 0}
 
 
 @app.route("/savePlaylist", methods=["GET", "POST"])
 def Step3():
+    # List[strings] the song IDs
     songs = request.args["songs"]
+    # str , a title for the playlist
     playlist_title = request.args["playlist_title"]
 
-    # create_new_playlist(songs, playlist_title)
-
-
-# obj = list(dict.fromkeys(objects))
-# unique_songs = Translations.Get_Songs_from_mood(mood, obj)
-# # print('\n Pool of songs:\n')
-# # i=0
-# # for song in unique_songs:
-# #     i+=1
-# # print(i,'-',song[0],song[1],song[3])
-# choice = Translations.make_a_choice(unique_songs)
-# # print('\n\n\n','The final choice is:\n', choice[0],choice[1],choice[3])
-# return jsonify({"choices": choice})
+    create_new_playlist(songs, playlist_title)
+    return "200"
 
 
 if __name__ == "__main__":

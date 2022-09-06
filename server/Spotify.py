@@ -210,22 +210,30 @@ def delete_duplicates(song_titles, song_artists):
 
 
 def get_recommendations(
-    seed_artists: List[dict], seed_genres: List[str], limit: int = 100, **kwargs
+    seed_artists: List[dict],
+    seed_tracks: List[str],
+    seed_genres: List[str],
+    limit: int = 100,
+    **kwargs
 ) -> dict:
     """Returns Spotify's recommendations based on 2 seeds of 5 Artists and 5 Genres
 
     Args:
         seed_artists (List[dict]): Artists seed
         seed_genres (List[str]): Genres seed
+        seed_tracks (List[str]): Tracks seed
         limit (int, optional): Maximum amount of songs to get. Defaults to 100.
 
     Returns:
         dict: The tracks in the response
     """
-    seed_artists = [artist["id"] for artist in seed_artists]
     sp = req_handler()
     recommendations = sp.recommendations(
-        seed_artists=seed_artists, seed_genres=seed_genres, limit=limit, kwargs=kwargs
+        seed_artists=seed_artists,
+        seed_tracks=seed_tracks,
+        seed_genres=seed_genres,
+        limit=limit,
+        kwargs=kwargs,
     )
 
     items = recommendations["tracks"]
@@ -249,18 +257,20 @@ def get_recommendation_by_objects(objects):
     return songs
 
 
-# def create_new_playlist(playlist_title: str, tracks: List[dict]):
-#     sp = req_handler()
-#     # Get User id
-#     user = sp.current_user()
-#     # Create playlist
-#     sp.user_playlist_create(
-#         user, playlist_title, public=True, collaborative=False, description=""
-#     )
-#     # Read playlists to find ID of the just created one
-#     sp.user_playlists(user, limit=50, offset=0)
-#     # Add the tracks
-#     sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
+def create_new_playlist(playlist_title: str, tracks: List[dict]):
+    sp = req_handler()
+    # Get User id
+    user = sp.current_user()
+    # Create playlist
+    sp.user_playlist_create(
+        user, playlist_title, public=True, collaborative=False, description=""
+    )
+    # Read playlists to find ID of the just created one
+    res = sp.user_playlists(user, limit=50, offset=0)
+    # get the interesting id TODO
+    # Add the tracks
+    sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
+
 
 if __name__ == "__main__":
     result = get_recommendation_by_objects(["profondo rosso"])

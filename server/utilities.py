@@ -16,14 +16,14 @@ import operator
 import random
 from colorthief import ColorThief
 import webcolors
-from PIL import Image, ImageStat
+from PIL import Image
 from sorcery import dict_of
-
-# import wordnet
-# from senti_classifier import senti_classifier
-# word= "sad"
-# def emotions2spotify(word):
-#     return
+from collections import Counter
+from sklearn.cluster import KMeans
+from matplotlib import colors
+import matplotlib.pyplot as plt
+import numpy as np
+import cv2
 
 
 """
@@ -170,6 +170,7 @@ def get_mood_from_LLF(image_path):
         "orange": "happy",  # ffa500
     }
     color_name = dominant_color(image_path)
+    
     return names_mood[color_name]
 
 
@@ -299,3 +300,29 @@ def Get_Songs_from_mood(mood, obj_in_pic):
     score_list.sort(key=operator.itemgetter(3), reverse=True)
 
     return score_list
+
+
+def prep_image(raw_img):
+    modified_img = cv2.resize(raw_img, (900, 600), interpolation=cv2.INTER_AREA)
+    modified_img = modified_img.reshape(
+        modified_img.shape[0] * modified_img.shape[1], 3
+    )
+    return modified_img
+
+
+def color_analysis(img):
+    clf = KMeans(n_clusters=5)
+    color_labels = clf.fit_predict(img)
+    center_colors = clf.cluster_centers_
+    counts = Counter(color_labels)
+    ordered_colors = [center_colors[i] for i in counts.keys()]
+    rgb_colors = [ordered_colors[i] for i in counts.keys()]
+    return rgb_colors
+
+
+def dominant_colors(path):
+    image = cv2.imread(path)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    colors = color_analysis(image)
+    colors_name = [get_colour_name(color_code) for color_code in colors]
+    return colors_name, colors

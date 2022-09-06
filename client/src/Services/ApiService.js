@@ -34,3 +34,16 @@ export async function getTracks() {
     })
     return response.data;
 }
+
+export async function getRecommendedSongs(imageStepResults) {
+    const formData = new FormData();
+    formData.append('mood', imageStepResults.mood)
+    formData.append('moodLLF', imageStepResults.moodLLF)
+    formData.append('objects', imageStepResults.objects)
+    formData.append('genresSeed', imageStepResults.genresSeed)
+    formData.append('artistsSeed', imageStepResults.artistsSeed)
+    formData.append('tracksSeed', imageStepResults.tracksSeed)
+
+    const response = await axios.post("/getSongs", formData)
+    return response.data
+}

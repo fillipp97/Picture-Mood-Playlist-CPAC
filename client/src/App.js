@@ -1,7 +1,7 @@
 // import React from 'react'
 // import ReactDOM from 'react-dom'
 import './App.css';
-import { isLoggedIn, logIn, getTracks } from './Services/ApiService';
+import { isLoggedIn, logIn, getTracks, getRecommendedSongs } from './Services/ApiService';
 import { Component } from 'react';
 
 import axios from "axios"
@@ -85,6 +85,7 @@ class App extends Component {
         this.setState({ applicationError: error.response })
       })
   }
+
 
 
   render() {
