@@ -22,6 +22,7 @@ class LoggedIn extends Component {
       handleLogout: props.handleLogout,
       imageStepResults: null,
       imageStepController: 1,
+      firstFilteringCallback: null,
       songsStepResults: null,
       songsStepController: 0,
     }
@@ -88,14 +89,14 @@ class LoggedIn extends Component {
 
 
   handleGetRecommended = () => {
-    getRecommendedSongs(this.state.imageStepResults)
+    getRecommendedSongs(this.state.firstFilteringCallback)
       .then((response) => {
         if (response.result === 'ok') {
           this.setState({
             recommendedSongs: response.recommendations,
             recommendedLyrics: response.lyrics
           })
-          console.log(response)
+          console.log('/getSongs response', response)
         }
       });
   }
@@ -136,7 +137,7 @@ class LoggedIn extends Component {
     }
 
     const firstFilteringCallback = (value) => {
-      console.warn('firstFilteringCallback', value)
+      this.setState({ firstFilteringCallback: value })
     }
 
 
