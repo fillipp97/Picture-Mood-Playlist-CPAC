@@ -11,7 +11,7 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
     console.log('objects', objects)
     console.log('artists', artists)
     console.log('genres', genres)
-    console.log('genres', tracks)
+    console.log('tracks', tracks)
 
     return (
         <>

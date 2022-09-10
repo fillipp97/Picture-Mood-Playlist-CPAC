@@ -134,12 +134,16 @@ def Step1():
         objects = None
     else:
         objects = list(set(objects))
+        split_objects = []
         for obj in objects:
+            print(len(objects))
             print("\n\nObjects Iter : ", obj)
             if "Human" in obj:
-                parts = obj.split(" ")
-                for part in parts:
-                    objects.append(part)
+                no_human = obj.split(" ")[-1]
+                split_objects.append(no_human)
+                objects.remove(obj)
+            split_objects.append("Human")
+        objects.extend(split_objects)
         objects = list(set(objects))
     print("\nThe emotion_result is: ", mood)
     print("\nThe object_result is: ", objects)
@@ -206,6 +210,8 @@ def Step1():
 
 @app.route("/getSongs", methods=["GET", "POST"])
 def Step2():
+    print(request.args.get('mood'))
+    return "200"
     mood = request.args["mood"]
     objects = request.args["objects"]
     moodLLF = request.args["moodLLF"]

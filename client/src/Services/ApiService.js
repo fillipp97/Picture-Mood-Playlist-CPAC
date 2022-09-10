@@ -36,14 +36,16 @@ export async function getTracks() {
 }
 
 export async function getRecommendedSongs(imageStepResults) {
-    const formData = new FormData();
-    formData.append('mood', imageStepResults.mood)
-    formData.append('moodLLF', imageStepResults.moodLLF)
-    formData.append('objects', imageStepResults.objects)
-    formData.append('genresSeed', imageStepResults.genresSeed)
-    formData.append('artistsSeed', imageStepResults.artistsSeed)
-    formData.append('tracksSeed', imageStepResults.tracksSeed)
 
-    const response = await axios.post("/getSongs", formData)
+    let data = {
+        'mood': imageStepResults.mood,
+        'moodLLF': imageStepResults.moodLLF,
+        'objects': imageStepResults.objects,
+        'genresSeed': imageStepResults.genresSeed,
+        'artistsSeed': imageStepResults.artistsSeed,
+        'tracksSeed': imageStepResults.tracksSeed,
+    }
+    console.log(data)
+    const response = await axios.post("/getSongs", JSON.stringify(data))
     return response.data
 }
