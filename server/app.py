@@ -138,8 +138,8 @@ def Step1():
     #     objects = remove_human(objects)
     # print("\nThe emotion_result is: ", mood)
     # print("\nThe object_result is: ", objects)
-    mood = None
-    objects = ["Chair", "Human hair", "Airplane", "Sedia"]
+    mood = "happy"
+    objects = ["Chair", "Hair", "Airplane", "Duck"]
     # Get possible seeds for the user to chose
 
     # Get most listened tracks mixed with other tracks to insert variation
@@ -299,12 +299,13 @@ def Step2():
 
         # Ensure there are no duplicates
         # mix = ensure_no_duplicates(recommendations_by_objects)
-        scored_lyrics_songs = get_scored_list(recommendations_by_objects, objects)
+        scored_songs, lyrics = get_scored_list(recommendations_by_objects, objects)
 
         # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
         return {
             "result": "ok",
-            "recommendations": scored_lyrics_songs,
+            "recommendations": scored_songs,
+            "lyrics": lyrics,
         }  # recommendations.score and recommendation.lyrics
 
 

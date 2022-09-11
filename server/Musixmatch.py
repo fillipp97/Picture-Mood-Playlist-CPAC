@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import translators as ts
 import sys
@@ -46,6 +45,7 @@ def count_occurrences(obj, lyrics):
 
 def get_scored_list(songs, objects):
     scored_songs = []
+    lyrics_list = []
     for song in songs:
         title = song.get("name")
         artist = song.get("artists")[0].get("name")
@@ -58,13 +58,13 @@ def get_scored_list(songs, objects):
                 score = score + count_occurrences(obj, lyrics)
 
             song["score"] = score
-            song["lyrics"] = lyrics
+            lyrics_list.append(lyrics)
             scored_songs.append(song)
         else:
             song["score"] = 0
-            song["lyrics"] = ""
+            lyrics_list.append("")
             scored_songs.append(song)
-    return scored_songs
+    return scored_songs, lyrics_list
 
 
 if __name__ == "__main__":
