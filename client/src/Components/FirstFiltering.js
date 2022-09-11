@@ -13,7 +13,7 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
     const [selectedGenres, updateSelectedGenres] = useState([]);
     const [selectedTrack, updateSelectedTrack] = useState([]);
 
-    useEffect(() => {
+    const sendPreferences = () => {
         callback({
             mood: firstFilteringInput.mood,
             moodLLF: firstFilteringInput.moodLLF,
@@ -22,7 +22,7 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
             genresSeed: selectedGenres,
             tracksSeed: selectedTrack
         });
-    }, [selectedObjects, selectedArtists, selectedGenres, selectedTrack]);
+    };
 
     const checkObject = (item, checked) => {
         const index = selectedObjects.indexOf(item);
@@ -97,6 +97,7 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
                     </label>
                 ))}
             </div>
+            <button className="Button" onClick={sendPreferences}>Send Song Request</button>
         </>
     )
 }

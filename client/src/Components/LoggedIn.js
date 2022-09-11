@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import FirstFiltering from "./FirstFiltering";
 import { getRecommendedSongs } from '../Services/ApiService';
+import GeneratePlayList from "./GeneratePlayList";
 
 class LoggedIn extends Component {
   constructor(props) {
@@ -23,6 +24,9 @@ class LoggedIn extends Component {
       imageStepResults: null,
       imageStepController: 1,
       firstFilteringCallback: null,
+      firstFilteringResults: null,
+      playListGenerationCallback: null,
+      playListGenerationResults: null,
       songsStepResults: null,
       songsStepController: 0,
     }
@@ -88,21 +92,6 @@ class LoggedIn extends Component {
   }
 
 
-  handleGetRecommended = () => {
-    getRecommendedSongs(this.state.firstFilteringCallback)
-      .then((response) => {
-        if (response.result === 'ok') {
-          console.log(response)
-          this.setState({
-            recommendedSongs: response.recommendations,
-            recommendedLyrics: response.lyrics
-          })
-          console.log('/getSongs response', response)
-        }
-      });
-  }
-
-
   render() {
     const { useWebcam } = this.state;
     let input;
@@ -138,8 +127,25 @@ class LoggedIn extends Component {
     }
 
     const firstFilteringCallback = (value) => {
-      console.log(value)
-      this.setState({ firstFilteringCallback: value })
+      this.setState({ firstFilteringCallback: value }, handleGetRecommended)
+    }
+
+    const generatePlayListCallback = (value) => {
+      this.setState({ generatePlayListCallback: value }, console.warn('SEND REQUEST TO GENERATE_PLAYLIST HERE', this.state.generatePlayListCallback))
+    }
+
+    const handleGetRecommended = () => {
+      getRecommendedSongs(this.state.firstFilteringCallback)
+        .then((response) => {
+          if (response.result === 'ok') {
+            console.log(response)
+            this.setState({
+              recommendedSongs: response.recommendations,
+              recommendedLyrics: response.lyrics
+            })
+            this.setState({ firstFilteringResults: response });
+          }
+        });
     }
 
 
@@ -176,8 +182,12 @@ class LoggedIn extends Component {
             <div className="logged-container">
 
               <div className="foreground">
+                {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
                 <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
-                <button className="Button" onClick={this.handleGetRecommended}>Send Song Request</button>
+                }
+                {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
+                <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={generatePlayListCallback} />
+                }
               </div>
               <div className="vignette"></div>
               <div className="cover-container">
