@@ -4,18 +4,19 @@ import sys
 
 sys.path.append(str(Path(__file__).parent))
 import spotipy
+import numpy as np
 from flask import Flask, session, request, redirect
 import os
 from dotenv import load_dotenv
 
-from .object_detection import (
-    get_object,
-    detect_img,
-    download_and_resize_image,
-    hub,
-    detector,
-    run_detector,
-)
+# from .object_detection import (
+#     get_object,
+#     detect_img,
+#     download_and_resize_image,
+#     hub,
+#     detector,
+#     run_detector,
+# )
 from .utilities import (
     get_par_from_mood,
     get_mood_from_LLF,
@@ -117,36 +118,28 @@ def get_tracks():
 def Step1():
     # Download Image
     image = request.files["Image"].read()
-    image_path = download_and_resize_image(image, 640, 480)
+    # image_path = download_and_resize_image(image, 640, 480)
 
-    detect_img(image_path)
-    # Try to detect face
-    try:
-        emotion_detect(image_path)
-        mood = get_mood()
-    except:
-        print("No Face Found")
-        mood = None
-    # Recognize Objects
-    objects, number = get_object()
-    if number == 0:
-        print("No objects identified")
-        objects = None
-    else:
-        objects = list(set(objects))
-        split_objects = []
-        for obj in objects:
-            print(len(objects))
-            print("\n\nObjects Iter : ", obj)
-            if "Human" in obj:
-                no_human = obj.split(" ")[-1]
-                split_objects.append(no_human)
-                objects.remove(obj)
-            split_objects.append("Human")
-        objects.extend(split_objects)
-        objects = list(set(objects))
-    print("\nThe emotion_result is: ", mood)
-    print("\nThe object_result is: ", objects)
+    # detect_img(image_path)
+    # # Try to detect face
+    # try:
+    #     emotion_detect(image_path)
+    #     mood = get_mood()
+    # except:
+    #     print("No Face Found")
+    #     mood = None
+    # # Recognize Objects
+    # objects, number = get_object()
+    # if number == 0:
+    #     print("No objects identified")
+    #     objects = None
+    # else:
+    #     objects = list(set(objects))
+    #     objects = remove_human(objects)
+    # print("\nThe emotion_result is: ", mood)
+    # print("\nThe object_result is: ", objects)
+    mood = "happy"
+    objects = ["Chair", "Human hair", "Airplane"]
     # Get possible seeds for the user to chose
 
     # Get most listened tracks mixed with other tracks to insert variation
@@ -194,7 +187,7 @@ def Step1():
 
     mixed_genres = artists_genres[:10]
     if mood is None:
-        moodLLF = get_mood_from_LLF(image_path=image_path)
+        moodLLF = "sad"  # get_mood_from_LLF(image_path=image_path)
     else:
         moodLLF = None
     return {
@@ -208,34 +201,74 @@ def Step1():
     }
 
 
-@app.route("/getSongs", methods=["GET", "POST"])
+def remove_human(objects):
+    new_obj = []
+    for el in objects:
+        print(el)
+        if "Human" in el:
+            obj = el.split(" ")[-1]
+            new_obj.append(obj[0].upper() + obj[1:])
+        else:
+            new_obj.append(el)
+    new_obj.append("Human")
+    return list(set(new_obj))
+
+
+@app.route("/getSongs", methods=["POST"])
 def Step2():
-    print(request.args.get('mood'))
-    return "200"
-    mood = request.args["mood"]
-    objects = request.args["objects"]
-    moodLLF = request.args["moodLLF"]
+    data = request.get_json()
+    print(data.get("mood"))
+
+    mood = data.get("mood")
+    objects = data.get("objects")
+    moodLLF = data.get("moodLLF")
     # List[strings] of genres
-    genres_seed = request.args["genresSeed"]
+    genres_seed = data.get("genresSeed")
     # List[strings] of artists' names
-    artists_seed = request.args["artistsSeed"]
+    artists_seed = data.get("artistsSeed")
     # List[strings] of tracks ID
-    tracks_seed = request.args["tracksSeed"]
+    tracks_seed = data.get("tracksSeed")
+
+    tracks_ids = [el.get("id") for el in tracks_seed][:5]
+
+    artists_ids = [el.get("id") for el in artists_seed][:5]
+    available_genres = valid_genres_for_seed()
+    splits = []
+    for g in genres_seed:
+        el_split = g.split(" ")
+        for el in el_split:
+            splits.append(el)
+    genres_seed.extend(splits)
+    genres_seed = list(set(genres_seed))
+
+    genres_sel = [gen for gen in genres_seed if gen in available_genres]
+
+    # print(genres_sel)
+    # print(available_genres)
+    # genres = [el.get("id") for el in genres_seed]
 
     if mood is not None:
         # Proceed with the branch with face
         # Get parameters from mood
+
         parameters = get_par_from_mood(mood=mood)
         # Get recommendations according to parameters
+        while len(artists_ids) + len(genres_sel) + len(tracks_ids) > 5:
+            n = np.random.randint(0, 3)
+            lists = [artists_ids, genres_sel, tracks_ids]
+            if len(lists[n]) > 1:
+                i = np.random.randint(0, len(lists[n]))
+                lists[n].remove(lists[n][i])
+
         recommendations = get_recommendations(
-            seed_artists=artists_seed,
-            seed_genres=genres_seed,
-            seed_tracks=tracks_seed,
+            seed_artists=artists_ids,
+            seed_genres=genres_sel,
+            seed_tracks=tracks_ids,
             limit=20,
-            kwargs=parameters,
+            **parameters,
         )
         # optional text filtering
-        return recommendations
+        return {"result": "ok", "recommendations": recommendations}
     else:
         # Get 5 recommendations from each object in the image
         recommendations_by_objects = get_recommendation_by_objects(objects)
@@ -243,11 +276,11 @@ def Step2():
         parameters_LLF = get_par_from_mood(moodLLF)
         # Get recommendations
         recommendations_moodLLF = get_recommendations(
-            seed_artists=artists_seed,
-            seed_genres=genres_seed,
-            seed_tracks=tracks_seed,
+            seed_artists=artists_ids,
+            seed_genres=genres_sel,
+            seed_tracks=tracks_ids,
             limit=10,
-            kwargs=parameters_LLF,
+            **parameters_LLF,
         )
         # Mix all the results and get the first 20 OR CREATE A SCORING FUNCTION THAT USES THE TEXT TODO
         mix = recommendations_by_objects.extend(recommendations_moodLLF)

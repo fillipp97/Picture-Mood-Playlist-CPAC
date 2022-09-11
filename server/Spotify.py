@@ -214,7 +214,7 @@ def get_recommendations(
     seed_tracks: List[str],
     seed_genres: List[str],
     limit: int = 100,
-    **kwargs
+    **kwargs,
 ) -> dict:
     """Returns Spotify's recommendations based on 2 seeds of 5 Artists and 5 Genres
 
@@ -228,17 +228,21 @@ def get_recommendations(
         dict: The tracks in the response
     """
     sp = req_handler()
+    print(f"ARTISTS: {seed_artists}")
+    print(f"Genres: {seed_genres}")
+    print(f"Tracks: {seed_tracks}")
+
     recommendations = sp.recommendations(
         seed_artists=seed_artists,
         seed_tracks=seed_tracks,
         seed_genres=seed_genres,
         limit=limit,
-        kwargs=kwargs,
+        # kwargs=kwargs,
     )
 
     items = recommendations["tracks"]
     print("\n\nITEMS\n", items)
-    return items
+    return recommendations
 
 
 def get_recommendation_by_objects(objects):
@@ -272,13 +276,16 @@ def create_new_playlist(playlist_title: str, tracks: List[dict]):
     sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
 
 
-if __name__ == "__main__":
-    result = get_recommendation_by_objects(["profondo rosso"])
-    spotify = spotipy.Spotify(
-        auth_manager=SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET)
-    )
-    song = spotify.search(q="horror", limit=5, type="track")
+# if __name__ == "__main__":
+# result = get_recommendation_by_objects(["profondo rosso"])
+# spotify = spotipy.Spotify(
+#     auth_manager=SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET)
+# )
+# song = spotify.search(q="horror", limit=5, type="track")
 
-    res = spotify.audio_features(song["tracks"]["items"][0]["id"])
-    print(song["tracks"]["items"][0]["name"], " : ", res)
-    # print([(name["name"], name["id"]) for name in result])
+# res = spotify.audio_features(song["tracks"]["items"][0]["id"])
+# print(song["tracks"]["items"][0]["name"], " : ", res)
+# # print([(name["name"], name["id"]) for name in result])
+
+# sp = req_handler()
+# resp = sp.recommendations()

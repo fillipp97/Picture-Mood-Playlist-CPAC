@@ -38,14 +38,19 @@ export async function getTracks() {
 export async function getRecommendedSongs(imageStepResults) {
 
     let data = {
+
         'mood': imageStepResults.mood,
         'moodLLF': imageStepResults.moodLLF,
         'objects': imageStepResults.objects,
         'genresSeed': imageStepResults.genresSeed,
         'artistsSeed': imageStepResults.artistsSeed,
         'tracksSeed': imageStepResults.tracksSeed,
+
+
     }
     console.log(data)
-    const response = await axios.post("/getSongs", JSON.stringify(data))
+    const response = await axios.post("/getSongs", JSON.stringify(data), {
+        'headers': { 'Content-Type': "application/json" }
+    })
     return response.data
 }

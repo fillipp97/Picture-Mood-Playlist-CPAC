@@ -91,6 +91,7 @@ class LoggedIn extends Component {
     getRecommendedSongs(this.state.imageStepResults)
       .then((response) => {
         if (response.result === 'ok') {
+          console.log(response)
           this.setState({
             recommendedSongs: response.recommendations,
             recommendedLyrics: response.lyrics
@@ -158,7 +159,7 @@ class LoggedIn extends Component {
               <div className="vignette"></div>
               <div className="cover-container">
 
-                <RenderCovers songs={this.props.songs}></RenderCovers>
+                {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
               </div>
             </div>
           </>
@@ -179,7 +180,7 @@ class LoggedIn extends Component {
               <div className="vignette"></div>
               <div className="cover-container">
 
-                <RenderCovers songs={this.props.songs}></RenderCovers>
+                {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
               </div>
             </div>
           </>
