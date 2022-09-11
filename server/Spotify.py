@@ -237,7 +237,7 @@ def get_recommendations(
         seed_tracks=seed_tracks,
         seed_genres=seed_genres,
         limit=limit,
-        # kwargs=kwargs,
+        **kwargs,
     )
 
     # items = recommendations["tracks"]

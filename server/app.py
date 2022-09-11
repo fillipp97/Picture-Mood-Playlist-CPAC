@@ -139,7 +139,7 @@ def Step1():
     # print("\nThe emotion_result is: ", mood)
     # print("\nThe object_result is: ", objects)
     mood = None
-    objects = ["Chair", "Human hair", "Airplane"]
+    objects = ["Chair", "Human hair", "Airplane", "Sedia"]
     # Get possible seeds for the user to chose
 
     # Get most listened tracks mixed with other tracks to insert variation
