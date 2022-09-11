@@ -265,15 +265,18 @@ def create_new_playlist(playlist_title: str, tracks: List[dict]):
     sp = req_handler()
     # Get User id
     user = sp.current_user()
+    user_id = user.get("id")
     # Create playlist
     sp.user_playlist_create(
-        user, playlist_title, public=True, collaborative=False, description=""
+        user_id, playlist_title, public=True, collaborative=False, description=""
     )
     # Read playlists to find ID of the just created one
     res = sp.user_playlists(user, limit=50, offset=0)
+    print(res)
+    print(res.get("items")[0].get("name"))
     # get the interesting id TODO
     # Add the tracks
-    sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
+    # sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
 
 
 # if __name__ == "__main__":

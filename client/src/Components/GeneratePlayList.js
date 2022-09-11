@@ -29,7 +29,7 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
                 <h1>Generate Playlist</h1>
                 <p>SONG LIST</p>
                 <ul>
-                    {recommendations && recommendations.map((item) => (
+                    {recommendations && recommendations.tracks.map((item) => (
                         <li key={item.id}>{item.name}</li>
                     ))}
                 </ul>

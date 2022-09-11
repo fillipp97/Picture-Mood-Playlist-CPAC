@@ -171,6 +171,7 @@ def Step1():
     # get some random genres mixed with genres in tune with the previous selected artists
     genres = valid_genres_for_seed()  # They are 126
     genres.remove("sad")
+    genres.remove("movies")
     # artists_genres = []
     # for artist in artists:
     #     for genre in artist["genres"]:
@@ -243,13 +244,15 @@ def Step2():
 
     genres_sel = [gen for gen in genres_seed if gen in available_genres]
 
-    while len(artists_ids) + len(genres_sel) + len(tracks_ids) > 5:
+    while len(artists_ids) + len(genres_sel) + len(tracks_ids) > 3:
         n = np.random.randint(0, 3)
         lists = [artists_ids, genres_sel, tracks_ids]
         if len(lists[n]) > 1:
             i = np.random.randint(0, len(lists[n]))
             lists[n].remove(lists[n][i])
-
+    if len(objects) >= 3:
+        shuffle(objects)
+        objects = objects[:3]
     if mood is not None:
         # Proceed with the branch with face
         # Get parameters from mood
@@ -320,7 +323,8 @@ def Step2():
 def Step3():
     data = request.get_json()
     # List[Spotify_data] the song IDs
-    songs = data.get("songs")
+    songs = data.get("songs").get("tracks")
+    ids = [s.get("id") for s in songs]
     # str , a title for the playlist
     playlist_title = data.get("playlist_title")
 
