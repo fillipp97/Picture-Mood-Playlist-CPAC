@@ -266,16 +266,16 @@ def Step2():
             limit=20,
             **parameters,
         )
-        # optional text filtering
+        scored_songs, lyrics = get_scored_list(recommendations.get('tracks'), objects)
 
-        lyrics = [
-            get_lyrics(
-                el.get("name"),
-                el.get("artists")[0].get("name"),
-            )
-            for el in recommendations.get("tracks")
-            if uniform(0, 1) <= 0.5
-        ]
+        # lyrics = [
+        #     get_lyrics(
+        #         el.get("name"),
+        #         el.get("artists")[0].get("name"),
+        #     )
+        #     for el in recommendations.get("tracks")
+        #     if uniform(0, 1) <= 0.5
+        # ]
         return {"result": "ok", "recommendations": recommendations, "lyrics": lyrics}
     else:
         # Get 5 recommendations from each object in the image
