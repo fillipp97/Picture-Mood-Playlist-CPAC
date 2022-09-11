@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 
 export default function FirstFiltering({ firstFilteringInput, callback }) {
     const mood = firstFilteringInput.mood
@@ -8,39 +8,94 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
     const genres = firstFilteringInput.genresSeed
     const tracks = firstFilteringInput.tracksSeed
 
-    console.log('objects', objects)
-    console.log('artists', artists)
-    console.log('genres', genres)
-    console.log('tracks', tracks)
+    const [selectedObjects, updateSelectedObjects] = useState([]);
+    const [selectedArtists, updateSelectedArtists] = useState([]);
+    const [selectedGenres, updateSelectedGenres] = useState([]);
+    const [selectedTrack, updateSelectedTrack] = useState([]);
+
+    useEffect(() => {
+        callback({
+            mood: firstFilteringInput.mood,
+            moodLLF: firstFilteringInput.moodLLF,
+            objects: selectedObjects,
+            artistsSeed: selectedArtists,
+            genresSeed: selectedGenres,
+            tracksSeed: selectedTrack
+        });
+    }, [selectedObjects, selectedArtists, selectedGenres, selectedTrack]);
+
+    const checkObject = (item, checked) => {
+        const index = selectedObjects.indexOf(item);
+        if (checked && index < 0) {
+            updateSelectedObjects([...selectedObjects, item]);
+        } else {
+            selectedObjects.splice(index, 1)
+            updateSelectedObjects([...selectedObjects]);
+        }
+    }
+
+    const checkArtist = (item, checked) => {
+        const index = selectedArtists.indexOf(item);
+        if (checked && index < 0) {
+            updateSelectedArtists([...selectedArtists, item]);
+        } else {
+            selectedArtists.splice(index, 1)
+            updateSelectedArtists([...selectedArtists]);
+        }
+    }
+
+    const checkGenre = (item, checked) => {
+        const index = selectedGenres.indexOf(item);
+        if (checked && index < 0) {
+            updateSelectedGenres([...selectedGenres, item]);
+        } else {
+            selectedGenres.splice(index, 1)
+            updateSelectedGenres([...selectedGenres]);
+        }
+    }
+
+    const checkTrack = (item, checked) => {
+        const index = selectedTrack.indexOf(item);
+        if (checked && index < 0) {
+            updateSelectedTrack([...selectedTrack, item]);
+        } else {
+            selectedTrack.splice(index, 1)
+            updateSelectedTrack([...selectedTrack]);
+        }
+    }
 
     return (
         <>
             <div style={{ background: "gray" }}>
                 <p>Your mood is {mood} or {moodLLF}</p>
                 <p>Objects we found in your picture:</p>
-                <ul>
-                    {objects.map((item) => (
-                        <li key={item}>{item}</li>
-                    ))}
-                </ul>
+                {objects.map((item) => (
+                    <label key={item}>
+                        <input type="checkbox" key={item} value={item} onChange={(e) => checkObject(item, e.target.checked)} />
+                        {item}
+                    </label>
+                ))}
                 <p>Some artists you might like:</p>
-                <ul>
-                    {artists.map((item) => (
-                        <li key={item}>{item.name}</li>
-                    ))}
-                </ul>
+                {artists.map((item) => (
+                    <label key={item.id}>
+                        <input type="checkbox" key={item.id} value={item} onChange={(e) => checkArtist(item, e.target.checked)} />
+                        {item.name}
+                    </label>
+                ))}
                 <p>Some genres you might like:</p>
-                <ul>
-                    {genres.map((item) => (
-                        <li key={item}>{item}</li>
-                    ))}
-                </ul>
+                {genres.map((item) => (
+                    <label key={item}>
+                        <input type="checkbox" key={item} value={item} onChange={(e) => checkGenre(item, e.target.checked)} />
+                        {item}
+                    </label>
+                ))}
                 <p>Some tracks you might like:</p>
-                <ul>
-                    {tracks.map((item) => (
-                        <li key={item}>{item.name}</li>
-                    ))}
-                </ul>
+                {tracks.map((item) => (
+                    <label key={item.id}>
+                        <input type="checkbox" key={item.id} value={item.id} onChange={(e) => checkTrack(item, e.target.checked)} />
+                        {item.name}
+                    </label>
+                ))}
             </div>
         </>
     )
