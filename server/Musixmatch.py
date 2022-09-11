@@ -1,4 +1,6 @@
+from itertools import count
 from pathlib import Path
+from re import I
 import sys
 
 sys.path.append(str(Path(__file__).parent))
@@ -24,6 +26,33 @@ def get_lyrics(title, artist):
     lyrics = lyrics_res["message"]["body"]["lyrics"]["lyrics_body"]
     lyrics = lyrics.split("******* This Lyrics is NOT for Commercial use *******")[0]
     return lyrics
+
+
+def count_occurrences(obj, lyrics):
+    words = lyrics.split(" ").split("\n")
+    i = 0
+    for word in words:
+        if obj == word:
+            i += 1
+    return i
+
+
+def get_scored_list(songs, objects):
+    scored_songs = []
+    for song in songs:
+        title = song.get("name")
+        artist = song.get("artists")[0].get("name")
+        lyrics = get_lyrics(title=title, artist=artist)
+        score = 0
+        for obj in objects:
+            if obj in title:
+                score += 3
+            score = score + count_occurrences(obj, lyrics)
+
+        song["score"] = score
+        song["lyrics"] = lyrics
+        scored_songs.append(song)
+    return scored_songs
 
 
 if __name__ == "__main__":

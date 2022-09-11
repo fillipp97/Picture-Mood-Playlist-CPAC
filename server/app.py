@@ -1,5 +1,5 @@
 from pathlib import Path
-from random import randint, random, shuffle, choice
+from random import randint, random, shuffle, choice, uniform
 import sys
 
 sys.path.append(str(Path(__file__).parent))
@@ -25,7 +25,7 @@ from .utilities import (
 )
 from .Azure_api import get_mood, emotion_detect
 from .token_handlers import get_token, create_spotify_oauth, remove_token
-from .Musixmatch import get_lyrics
+from .Musixmatch import get_lyrics, get_scored_list
 from .Spotify import (
     get_recommendation_by_objects,
     valid_genres_for_seed,
@@ -114,7 +114,7 @@ def get_tracks():
 #     return {"result": "ok", "links": link}
 
 
-@app.route("/uploadFile", methods=["GET", "POST"])
+@app.route("/uploadFile", methods=["POST"])
 def Step1():
     # Download Image
     image = request.files["Image"].read()
@@ -138,7 +138,7 @@ def Step1():
     #     objects = remove_human(objects)
     # print("\nThe emotion_result is: ", mood)
     # print("\nThe object_result is: ", objects)
-    mood = "happy"
+    mood = None
     objects = ["Chair", "Human hair", "Airplane"]
     # Get possible seeds for the user to chose
 
@@ -217,7 +217,6 @@ def remove_human(objects):
 @app.route("/getSongs", methods=["POST"])
 def Step2():
     data = request.get_json()
-    print(data.get("mood"))
 
     mood = data.get("mood")
     objects = data.get("objects")
@@ -229,9 +228,9 @@ def Step2():
     # List[strings] of tracks ID
     tracks_seed = data.get("tracksSeed")
 
-    tracks_ids = [el.get("id") for el in tracks_seed][:5]
+    tracks_ids = [el.get("id") for el in tracks_seed]
 
-    artists_ids = [el.get("id") for el in artists_seed][:5]
+    artists_ids = [el.get("id") for el in artists_seed]
     available_genres = valid_genres_for_seed()
     splits = []
     for g in genres_seed:
@@ -246,6 +245,12 @@ def Step2():
     # print(genres_sel)
     # print(available_genres)
     # genres = [el.get("id") for el in genres_seed]
+    while len(artists_ids) + len(genres_sel) + len(tracks_ids) > 5:
+        n = np.random.randint(0, 3)
+        lists = [artists_ids, genres_sel, tracks_ids]
+        if len(lists[n]) > 1:
+            i = np.random.randint(0, len(lists[n]))
+            lists[n].remove(lists[n][i])
 
     if mood is not None:
         # Proceed with the branch with face
@@ -253,12 +258,6 @@ def Step2():
 
         parameters = get_par_from_mood(mood=mood)
         # Get recommendations according to parameters
-        while len(artists_ids) + len(genres_sel) + len(tracks_ids) > 5:
-            n = np.random.randint(0, 3)
-            lists = [artists_ids, genres_sel, tracks_ids]
-            if len(lists[n]) > 1:
-                i = np.random.randint(0, len(lists[n]))
-                lists[n].remove(lists[n][i])
 
         recommendations = get_recommendations(
             seed_artists=artists_ids,
@@ -268,10 +267,20 @@ def Step2():
             **parameters,
         )
         # optional text filtering
-        return {"result": "ok", "recommendations": recommendations}
+
+        lyrics = [
+            get_lyrics(
+                el.get("name"),
+                el.get("artists")[0].get("name"),
+            )
+            for el in recommendations.get("tracks")
+            if uniform(0, 1) <= 0.5
+        ]
+        return {"result": "ok", "recommendations": recommendations, "lyrics": lyrics}
     else:
         # Get 5 recommendations from each object in the image
         recommendations_by_objects = get_recommendation_by_objects(objects)
+        # print("Rec by Objects ", recommendations_by_objects)
         # Get also parameters from a mood extracted by colors in the picture
         parameters_LLF = get_par_from_mood(moodLLF)
         # Get recommendations
@@ -282,16 +291,32 @@ def Step2():
             limit=10,
             **parameters_LLF,
         )
+        # print("Rec by Mood ", recommendations_moodLLF.get('tracks'))
         # Mix all the results and get the first 20 OR CREATE A SCORING FUNCTION THAT USES THE TEXT TODO
-        mix = recommendations_by_objects.extend(recommendations_moodLLF)
+        # print("BY OBJECTS ", recommendations_by_objects)
+        # print("BY LLF ", recommendations_moodLLF.get("tracks"))
+        recommendations_by_objects.extend(recommendations_moodLLF.get("tracks"))
+
         # Ensure there are no duplicates
-        mix = list(set(mix))
-        shuffle(mix)
+        mix = ensure_no_duplicates(recommendations_by_objects)
+        scored_lyrics_songs = get_scored_list(mix)
+
         # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
-        return {"result": "ok", "recommendations": mix[:20], "lyrics": 0}
+        return {
+            "result": "ok",
+            "recommendations": scored_lyrics_songs,
+        }  # recommendations.score and recommendation.lyrics
 
 
-@app.route("/savePlaylist", methods=["GET", "POST"])
+def ensure_no_duplicates(songs):
+    out = []
+    for v in songs:
+        if v not in out:
+            out.append(v)
+        return out
+
+
+@app.route("/savePlaylist", methods=["POST"])
 def Step3():
     # List[strings] the song IDs
     songs = request.args["songs"]

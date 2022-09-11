@@ -240,8 +240,8 @@ def get_recommendations(
         # kwargs=kwargs,
     )
 
-    items = recommendations["tracks"]
-    print("\n\nITEMS\n", items)
+    # items = recommendations["tracks"]
+    # print("\n\nITEMS\n", items)
     return recommendations
 
 

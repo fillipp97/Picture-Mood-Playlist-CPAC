@@ -138,6 +138,7 @@ class LoggedIn extends Component {
     }
 
     const firstFilteringCallback = (value) => {
+      console.log(value)
       this.setState({ firstFilteringCallback: value })
     }
 
