@@ -1,3 +1,4 @@
+from distutils import archive_util
 from itertools import count
 from pathlib import Path
 from re import I
@@ -16,7 +17,9 @@ musixmatch = Musixmatch(MUSIXMATCH_API_KEY)
 
 
 def get_lyrics(title, artist):
+    print(title, artist)
     song_res = musixmatch.matcher_track_get(q_track=title, q_artist=artist)
+    print(song_res)
     if song_res["message"]["header"]["status_code"] == 404:
         return None
     id = song_res["message"]["body"]["track"]["track_id"]
@@ -29,7 +32,7 @@ def get_lyrics(title, artist):
 
 
 def count_occurrences(obj, lyrics):
-    words = lyrics.split(" ").split("\n")
+    words = lyrics.split(" |\n")
     i = 0
     for word in words:
         if obj == word:
@@ -39,6 +42,7 @@ def count_occurrences(obj, lyrics):
 
 def get_scored_list(songs, objects):
     scored_songs = []
+    print(len(songs))
     for song in songs:
         title = song.get("name")
         artist = song.get("artists")[0].get("name")

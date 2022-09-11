@@ -298,8 +298,8 @@ def Step2():
         recommendations_by_objects.extend(recommendations_moodLLF.get("tracks"))
 
         # Ensure there are no duplicates
-        mix = ensure_no_duplicates(recommendations_by_objects)
-        scored_lyrics_songs = get_scored_list(mix)
+        # mix = ensure_no_duplicates(recommendations_by_objects)
+        scored_lyrics_songs = get_scored_list(recommendations_by_objects, objects)
 
         # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
         return {
