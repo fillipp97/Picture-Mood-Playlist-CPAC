@@ -11,7 +11,7 @@ import {
 } from 'react-transition-group';
 import axios from "axios";
 import FirstFiltering from "./FirstFiltering";
-import { getRecommendedSongs } from '../Services/ApiService';
+import { getRecommendedSongs, savePlaylist } from '../Services/ApiService';
 import GeneratePlayList from "./GeneratePlayList";
 
 class LoggedIn extends Component {
@@ -131,7 +131,7 @@ class LoggedIn extends Component {
     }
 
     const generatePlayListCallback = (value) => {
-      this.setState({ generatePlayListCallback: value }, console.warn('SEND REQUEST TO GENERATE_PLAYLIST HERE', this.state.generatePlayListCallback))
+      this.setState({ playListGenerationCallback: value }, handleSavePlaylist)
     }
 
     const handleGetRecommended = () => {
@@ -144,6 +144,15 @@ class LoggedIn extends Component {
               recommendedLyrics: response.lyrics
             })
             this.setState({ firstFilteringResults: response });
+          }
+        });
+    }
+
+    const handleSavePlaylist = () => {
+      savePlaylist(this.state.playListGenerationCallback)
+        .then((response) => {
+          if (response.result === 'ok') {
+            this.setState({ playListGenerationResults: response });
           }
         });
     }
@@ -180,14 +189,14 @@ class LoggedIn extends Component {
           this.state.imageStepController === 2 &&
           <>
             <div className="logged-container">
-
               <div className="foreground">
                 {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
-                <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
+                  <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
                 }
                 {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
-                <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={generatePlayListCallback} />
+                  <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={generatePlayListCallback} />
                 }
+                {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
               </div>
               <div className="vignette"></div>
               <div className="cover-container">

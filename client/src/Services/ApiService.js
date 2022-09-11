@@ -54,3 +54,10 @@ export async function getRecommendedSongs(imageStepResults) {
     })
     return response.data
 }
+
+export async function savePlaylist(data) {
+    const response = await axios.post("/savePlaylist", JSON.stringify(data), {
+        'headers': { 'Content-Type': "application/json" }
+    })
+    return response.data
+}
