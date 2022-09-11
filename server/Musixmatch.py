@@ -1,7 +1,6 @@
-from distutils import archive_util
-from itertools import count
+
 from pathlib import Path
-from re import I
+import translators as ts
 import sys
 
 sys.path.append(str(Path(__file__).parent))
@@ -31,11 +30,17 @@ def get_lyrics(title, artist):
 
 
 def count_occurrences(obj, lyrics):
+    tr_obj = list(
+        set([obj, ts.google(obj, "auto", "it"), ts.google(obj, "auto", "zh-CN")])
+    )
+
     words = lyrics.split(" |\n")
+
     i = 0
-    for word in words:
-        if obj == word:
-            i += 1
+    for obj in tr_obj:
+        for word in words:
+            if obj == word:
+                i += 1
     return i
 
 
