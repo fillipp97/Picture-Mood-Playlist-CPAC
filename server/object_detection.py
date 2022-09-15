@@ -164,9 +164,10 @@ def draw_boxes(image, boxes, class_names, scores, max_boxes=10, min_score=0.1):
 # @param ["https://tfhub.dev/google/openimages_v4/ssd/mobilenet_v2/1", "https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1"]
 
 
-module_handle = "https://tfhub.dev/google/openimages_v4/ssd/mobilenet_v2/1"
+module_handle = "./detection_module"
+# print("=============module_handle:",module_handle)
 detector = hub.load(module_handle).signatures["default"]
-
+# print("=============detector:",detector)
 
 def load_img(path):
     img = tf.io.read_file(path)
