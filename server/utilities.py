@@ -7,7 +7,7 @@ from turtle import color
 sys.path.append(str(Path(__file__).parent))
 
 from ast import operator
-from . import Spotify
+import Spotify
 
 # import lyrics
 from langdetect import detect

@@ -9,32 +9,13 @@ from flask import Flask, session, request, redirect
 import os
 from dotenv import load_dotenv
 
-from .object_detection import (
-    get_object,
-    detect_img,
-    download_and_resize_image,
-    hub,
-    detector,
-    run_detector,
-)
-from .utilities import (
-    get_par_from_mood,
-    get_mood_from_LLF,
-    image_is_plain,
-    dominant_color,
-)
-from .Azure_api import get_mood, emotion_detect
-from .token_handlers import get_token, create_spotify_oauth, remove_token
-from .Musixmatch import get_lyrics, get_scored_list
-from .Spotify import (
-    get_recommendation_by_objects,
-    valid_genres_for_seed,
-    get_most_listened_artists,
-    get_recommendations,
-    get_recommendation_by_objects,
-    get_most_listened_tracks,
-    create_new_playlist,
-)
+from object_detection import get_object,detect_img,download_and_resize_image,hub,detector,run_detector
+
+from utilities import get_par_from_mood,get_mood_from_LLF,image_is_plain,dominant_color
+from Azure_api import get_mood, emotion_detect
+from token_handlers import get_token, create_spotify_oauth, remove_token
+from Musixmatch import get_lyrics, get_scored_list
+from Spotify import get_recommendation_by_objects,valid_genres_for_seed,get_most_listened_artists,get_recommendations,get_recommendation_by_objects,get_most_listened_tracks,create_new_playlist
 
 
 # from Components.Spotify import Spoty
@@ -48,7 +29,6 @@ app = Flask(__name__)
 
 app.secret_key = "4njigv9nipvls"
 app.config["SESSION_COOKIE_NAME"] = "spotify-login-session"
-
 
 @app.route("/checkLogState")
 def checkLogState():
@@ -331,6 +311,9 @@ def Step3():
     create_new_playlist(songs, playlist_title)
     return "200"
 
+# coc
+# @app.route('/', methods=["POST"])
+# @app.route('/')
 
 if __name__ == "__main__":
     app.run(debug=True)
