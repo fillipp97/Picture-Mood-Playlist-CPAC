@@ -5,7 +5,7 @@ import sys
 sys.path.append(str(Path(__file__).parent))
 import spotipy
 import numpy as np
-from flask import Flask, session, request, redirect
+from flask import Flask, session, request, redirect, render_template
 import os
 from dotenv import load_dotenv
 
@@ -20,15 +20,20 @@ from Spotify import get_recommendation_by_objects,valid_genres_for_seed,get_most
 
 # from Components.Spotify import Spoty
 env_path = Path(__file__).parent / ".env"
+# print("========env_path:",env_path)
 load_dotenv(str(env_path))
 CLIENT_ID = os.getenv("CLIENT_ID")
+# print("=========CLIENT_ID:",CLIENT_ID)
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+# print("=========CLIENT_SECRET:",CLIENT_SECRET)
+
 
 # App config
 app = Flask(__name__)
 
 app.secret_key = "4njigv9nipvls"
 app.config["SESSION_COOKIE_NAME"] = "spotify-login-session"
+
 
 @app.route("/checkLogState")
 def checkLogState():

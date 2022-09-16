@@ -87,7 +87,7 @@ class App extends Component {
   }
 
 
-
+//generate <NotLoggedIn>js or <LoggedIn>js and create action to next page
   render() {
     return this.state.applicationError ? (<h1>Application error: {this.state.applicationError.statusText}</h1>) : (
       <div className='root'>

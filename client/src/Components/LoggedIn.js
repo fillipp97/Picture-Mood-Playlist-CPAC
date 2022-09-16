@@ -121,11 +121,11 @@ class LoggedIn extends Component {
     if (useWebcam === 2) {
       input = (<>
         <UploadImage onUpload={this.pictureUploaded}></UploadImage>
-        <button className='Button camera' onClick={this.handleBack}>Back</button>
+        <button className='Button' onClick={this.handleBack}>Back</button>
       </>
       )
     }
-
+// 124 removed camera by Jiayan 
     const firstFilteringCallback = (value) => {
       this.setState({ firstFilteringCallback: value }, handleGetRecommended)
     }
