@@ -23,6 +23,7 @@ from utilities import (
     get_mood_from_LLF,
     image_is_plain,
     dominant_color,
+    str2nestedlist,
 )
 
 # from Azure_api import get_mood, emotion_detect
@@ -227,6 +228,8 @@ def remove_unwanted(genres):
     genres.remove("j-idol")
     genres.remove("latin")
     genres.remove("brazil")
+    genres.remove("world-music")
+    genres.remove("children")
 
     return genres
 
@@ -307,12 +310,15 @@ def Step2():
                 el.get("artists")[0].get("name"),
             )
             for el in recommendations.get("tracks")
-            if uniform(0, 1) <= 0.5
+            if uniform(0, 1) <= 0.3
         ]
+
+        lyrics_as_list_of_words = [str2nestedlist(lyr) for lyr in lyrics]
+
         return {
             "result": "ok",
             "recommendations": recommendations,
-            "lyrics": lyrics,
+            "lyrics": lyrics_as_list_of_words,
         }
     else:
         # Get 2 recommendations from each object in the image
@@ -333,12 +339,12 @@ def Step2():
         recommendations_by_objects.extend(recommendations_moodLLF.get("tracks"))
 
         scored_songs, lyrics = get_scored_list(recommendations_by_objects, objects)
-
+        lyrics_as_list_of_words = [str2nestedlist(lyr) for lyr in lyrics]
         # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
         return {
             "result": "ok",
             "recommendations": {"tracks": scored_songs},
-            "lyrics": lyrics,
+            "lyrics": lyrics_as_list_of_words,
         }
 
 
@@ -351,8 +357,8 @@ def Step3():
     # str , a title for the playlist
     playlist_title = data.get("playlist_title")
 
-    create_new_playlist(ids, playlist_title)
-    return "200"
+    create_new_playlist(tracks=ids, playlist_title=playlist_title)
+    return {"result": "ok"}, 200
 
 
 if __name__ == "__main__":

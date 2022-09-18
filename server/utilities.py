@@ -3,6 +3,7 @@ from math import isclose
 from pathlib import Path
 import sys
 from turtle import color
+from typing import List
 
 sys.path.append(str(Path(__file__).parent))
 
@@ -73,7 +74,7 @@ def get_par_from_mood(mood, genres):
         or mood == "anxious"
     ):
         related_genres = ["black-metal", "death-metal", "grindcore"]
-        max_energy = 0.5
+        min_energy = 0.5
         max_valence = 0.5
         max_speechiness = 0.6
         parameters = dict_of(max_energy, max_valence, max_speechiness)
@@ -104,7 +105,6 @@ def get_par_from_mood(mood, genres):
             "ambient",
             "blues",
             "bossanova",
-            "cantopop",
             "detroit-techno",
             "jazz",
         ]
@@ -125,7 +125,7 @@ def get_par_from_mood(mood, genres):
         )
         genres.append(random.choice(related_genres))
     elif mood == "sad":
-        related_genres = ["cantopop", "country", "emo"]
+        related_genres = ["country", "emo"]
         max_energy = 0.3
         max_valence = 0.4
         parameters = dict_of(max_energy, max_valence)
@@ -282,32 +282,32 @@ def score_func(songs_and_texts, words):
     return songs_and_texts
 
 
-def retrieve_lyrics(unique_songs, horror=0):
-    if horror == 1:  # just format
-        # print(unique_songs)
-        songs = []
-        for song in unique_songs:
-            # print('This is the structure of a song: \n\n\n\n')
-            # print(song['track']['name'], song['track']['artists'][0]['name'])
-            songs.append(
-                [song["track"]["name"], song["track"]["artists"][0]["name"], "", 0]
-            )
-        return songs
-    texts = []
-    if horror == 2:
-        for song in unique_songs:
-            texts.append([song[0], song[1], "", 0])
-        return texts
+# def retrieve_lyrics(unique_songs, horror=0):
+#     if horror == 1:  # just format
+#         # print(unique_songs)
+#         songs = []
+#         for song in unique_songs:
+#             # print('This is the structure of a song: \n\n\n\n')
+#             # print(song['track']['name'], song['track']['artists'][0]['name'])
+#             songs.append(
+#                 [song["track"]["name"], song["track"]["artists"][0]["name"], "", 0]
+#             )
+#         return songs
+#     texts = []
+#     if horror == 2:
+#         for song in unique_songs:
+#             texts.append([song[0], song[1], "", 0])
+#         return texts
 
-    for song in unique_songs:
-        text = lyrics.get_lyrics(song[0], song[1])  # problem
-        texts.append([song[0], song[1], text, 0])
+#     for song in unique_songs:
+#         text = lyrics.get_lyrics(song[0], song[1])  # problem
+#         texts.append([song[0], song[1], text, 0])
 
-    # print("=================  We are retrieve_lyrics:  ========================", )
-    # for i in range(3):
-    #     print(texts[i][3])
-    # print("=================  Over here  ========================", )
-    return texts
+#     # print("=================  We are retrieve_lyrics:  ========================", )
+#     # for i in range(3):
+#     #     print(texts[i][3])
+#     # print("=================  Over here  ========================", )
+#     return texts
 
 
 def make_a_choice(song_list):
@@ -317,54 +317,54 @@ def make_a_choice(song_list):
     return song_list[0]
 
 
-def Get_Songs_from_mood(mood, obj_in_pic):
-    # parameters
-    parameters = get_par_from_mood(mood)
+# def Get_Songs_from_mood(mood, obj_in_pic):
+#     # parameters
+#     parameters = get_par_from_mood(mood)
 
-    print(parameters)
+#     print(parameters)
 
-    # Get a pool of songs from the recommended ones
-    Songs = []
-    # each time means 100 songs
-    Songs.extend(Spotify.get_recommendations())
-    Songs.extend(Spotify.get_recommendations())
-    if not Songs:
-        print("No songs identified ... \nRetrying")
-        # Songs.extend(Spotify.get_recommendations(parameters))
+#     # Get a pool of songs from the recommended ones
+#     Songs = []
+#     # each time means 100 songs
+#     Songs.extend(Spotify.get_recommendations())
+#     Songs.extend(Spotify.get_recommendations())
+#     if not Songs:
+#         print("No songs identified ... \nRetrying")
+#         # Songs.extend(Spotify.get_recommendations(parameters))
 
-    # extract titles and artists
-    song_titles = [Songs[i]["name"] for i in range(len(Songs))]
-    song_artists = [Songs[i]["artists"][0]["name"] for i in range(len(Songs))]
-    # Remove duplicates
-    unique_songs = Spotify.delete_duplicates(song_titles, song_artists)
-    print(
-        "FROM {} SONGS {} SONGS HAVE BEEN DELETED".format(
-            len(Songs), len(Songs) - len(unique_songs)
-        )
-    )
-    return unique_songs
-    if parameters["mood"] == "noface":
-        songs_and_texts = retrieve_lyrics(
-            unique_songs
-        )  # contains [song title, song artist, lyrics,score initialized to 0] for each song
-        score_list = score_func(songs_and_texts, obj_in_pic)
-        score_list.sort(key=operator.itemgetter(3), reverse=True)
-        return score_list
-    elif parameters["mood"] == "Sample_Horror":
-        # SAMPLE FROM HORROR PLAYLIST
-        Songs = Spotify.get_playlist()
-        songs_and_texts = retrieve_lyrics(Songs, horror=1)
-        return songs_and_texts
+#     # extract titles and artists
+#     song_titles = [Songs[i]["name"] for i in range(len(Songs))]
+#     song_artists = [Songs[i]["artists"][0]["name"] for i in range(len(Songs))]
+#     # Remove duplicates
+#     unique_songs = Spotify.delete_duplicates(song_titles, song_artists)
+#     print(
+#         "FROM {} SONGS {} SONGS HAVE BEEN DELETED".format(
+#             len(Songs), len(Songs) - len(unique_songs)
+#         )
+#     )
+#     return unique_songs
+#     if parameters["mood"] == "noface":
+#         songs_and_texts = retrieve_lyrics(
+#             unique_songs
+#         )  # contains [song title, song artist, lyrics,score initialized to 0] for each song
+#         score_list = score_func(songs_and_texts, obj_in_pic)
+#         score_list.sort(key=operator.itemgetter(3), reverse=True)
+#         return score_list
+#     elif parameters["mood"] == "Sample_Horror":
+#         # SAMPLE FROM HORROR PLAYLIST
+#         Songs = Spotify.get_playlist()
+#         songs_and_texts = retrieve_lyrics(Songs, horror=1)
+#         return songs_and_texts
 
-    songs_and_texts = retrieve_lyrics(
-        unique_songs, horror=2
-    )  # contains [song title, song artist, lyrics,score initialized to 0] for each song
-    score_list = score_func(
-        songs_and_texts, obj_in_pic
-    )  # FOR EVERY MOOD CHOSE WETHER TO CONSIDER THE TEXT OR JUST OUTPUT A RANDOM SONG
-    score_list.sort(key=operator.itemgetter(3), reverse=True)
+#     songs_and_texts = retrieve_lyrics(
+#         unique_songs, horror=2
+#     )  # contains [song title, song artist, lyrics,score initialized to 0] for each song
+#     score_list = score_func(
+#         songs_and_texts, obj_in_pic
+#     )  # FOR EVERY MOOD CHOSE WETHER TO CONSIDER THE TEXT OR JUST OUTPUT A RANDOM SONG
+#     score_list.sort(key=operator.itemgetter(3), reverse=True)
 
-    return score_list
+#     return score_list
 
 
 def prep_image(raw_img):
@@ -391,3 +391,10 @@ def dominant_colors(path):
     colors = color_analysis(image)
     colors_name = [get_colour_name(color_code) for color_code in colors]
     return colors_name, colors
+
+
+def str2nestedlist(song_lyrics: str) -> List[str]:
+    list_verses = song_lyrics.split("\n")
+    verses_split_words = map(lambda x: x.split(" "), list_verses)
+    out = [el for el in verses_split_words if el != [""]]
+    return list(out)
