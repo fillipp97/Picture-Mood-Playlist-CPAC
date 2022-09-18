@@ -52,7 +52,7 @@ target_mode=1
 
 def get_par_from_mood(mood, genres):
 
-    if mood == "angry":
+    if mood == "angry" or mood == "nervous":
         related_genres = [
             "alt-rock",
             "black-metal",
@@ -62,16 +62,16 @@ def get_par_from_mood(mood, genres):
             "metal",
         ]
         min_energy = 0.8
-        max_energy = 1
-        min_loudness = 0.6
         min_speechiness = 0.5
-        parameters = dict_of(min_energy, max_energy, min_loudness, min_speechiness)
+        max_valence = 0.3
+        parameters = dict_of(min_energy, max_valence, min_speechiness)
         genres.append(random.choice(related_genres))
     elif (
         mood == "fearful"
         or mood == "disgusted"
         or mood == "contempt"
         or mood == "anxious"
+        or mood == "terror"
     ):
         related_genres = ["black-metal", "death-metal", "grindcore"]
         min_energy = 0.5
@@ -107,6 +107,7 @@ def get_par_from_mood(mood, genres):
             "bossanova",
             "detroit-techno",
             "jazz",
+            "guitar",
         ]
         min_energy = 0.2
         max_energy = 0.6
@@ -130,7 +131,7 @@ def get_par_from_mood(mood, genres):
         max_valence = 0.4
         parameters = dict_of(max_energy, max_valence)
         genres.append(random.choice(related_genres))
-    elif mood == "calm" or mood == "peaceful":
+    elif mood == "calm" or mood == "peaceful" or mood == "pleasure":
         related_genres = [
             "alternative",
             "ambient",
@@ -160,6 +161,7 @@ def get_par_from_mood(mood, genres):
             "country",
             "dance",
             "gospel",
+            "kids",
         ]
         min_energy = 0.4
         min_valence = 0.6
@@ -167,10 +169,10 @@ def get_par_from_mood(mood, genres):
         parameters = dict_of(min_energy, max_energy, min_valence, max_valence)
         genres.append(random.choice(related_genres))
     elif mood == "darkness":
-        related_genres = ["alt-rock", "idm"]
+        related_genres = ["alt-rock", "idm", "metal"]
         max_energy = 0.4
-        max_valence = 0.4
-        parameters = dict_of(min_energy, max_valence)
+        max_valence = 0.3
+        parameters = dict_of(max_energy, max_valence)
         genres.append(random.choice(related_genres))
 
     return parameters, genres

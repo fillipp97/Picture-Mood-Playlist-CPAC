@@ -9,14 +9,14 @@ from flask import Flask, session, request, redirect
 import os
 from dotenv import load_dotenv
 
-# from object_detection import (
-#     get_object,
-#     detect_img,
-#     download_and_resize_image,
-#     hub,
-#     detector,
-#     run_detector,
-# )
+from object_detection import (
+    get_object,
+    detect_img,
+    download_and_resize_image,
+    hub,
+    detector,
+    run_detector,
+)
 
 from utilities import (
     get_par_from_mood,
@@ -26,7 +26,7 @@ from utilities import (
     str2nestedlist,
 )
 
-# from Azure_api import get_mood, emotion_detect
+from Azure_api import get_mood, emotion_detect
 from token_handlers import get_token, create_spotify_oauth, remove_token
 from Musixmatch import get_lyrics, get_scored_list
 from Spotify import (
@@ -101,7 +101,6 @@ def get_tracks():
         # return {"result": "bad"}
     sp = spotipy.Spotify(auth=session.get("token_info").get("access_token"))
     currGroup = sp.current_user_saved_tracks(limit=50, offset=0)["items"]
-    print(currGroup[0]["track"]["album"]["images"])
     return {"result": "ok", "songs": currGroup}
 
 
@@ -125,28 +124,28 @@ def get_tracks():
 def Step1():
     # Download Image
     image = request.files["Image"].read()
-    # image_path = download_and_resize_image(image, 640, 480)
+    image_path = download_and_resize_image(image, 640, 480)
 
-    # detect_img(image_path)
-    # # Try to detect face
-    # try:
-    #     emotion_detect(image_path)
-    #     mood = get_mood()
-    # except:
-    #     print("No Face Found")
-    #     mood = None
-    # # Recognize Objects
-    # objects, number = get_object()
-    # if number == 0:
-    #     print("No objects identified")
-    #     objects = None
-    # else:
-    #     objects = list(set(objects))
-    #     objects = remove_human(objects)
-    # print("\nThe emotion_result is: ", mood)
-    # print("\nThe object_result is: ", objects)
+    detect_img(image_path)
+    # Try to detect face
+    try:
+        emotion_detect(image_path)
+        mood = get_mood()
+    except:
+        print("No Face Found")
+        mood = None
+    # Recognize Objects
+    objects, number = get_object()
+    if number == 0:
+        print("No objects identified")
+        objects = None
+    else:
+        objects = list(set(objects))
+        objects = remove_human(objects)
+    print("\nThe emotion_result is: ", mood)
+    print("\nThe object_result is: ", objects)
     mood = None
-    objects = ["Chair", "Hair", "Airplane", "Duck"]
+    objects = ["Sun", "leg", "sea", "car"]
     # Get possible seeds for the user to chose
 
     # Get most listened tracks mixed with other tracks to insert variation
@@ -195,7 +194,7 @@ def Step1():
     shuffle(genres)
     mixed_genres = genres[:10]
     if mood is None:
-        moodLLF = "sad"  # get_mood_from_LLF(image_path=image_path)
+        moodLLF = get_mood_from_LLF(image_path=image_path)
     else:
         moodLLF = None
     return {
@@ -230,6 +229,9 @@ def remove_unwanted(genres):
     genres.remove("brazil")
     genres.remove("world-music")
     genres.remove("children")
+    genres.remove("kids")
+    genres.remove("pop-film")
+    # genres.remove("study")
 
     return genres
 
@@ -322,7 +324,7 @@ def Step2():
         }
     else:
         # Get 2 recommendations from each object in the image
-        recommendations_by_objects = get_recommendation_by_objects(objects)
+        recommendations_by_objects = get_recommendation_by_objects(objects, moodLLF)
         # Get also parameters from a mood extracted by colors in the picture
         print("Mood LLF: ", moodLLF)
         parameters_LLF, genres_sel = get_par_from_mood(moodLLF, genres=genres_sel)

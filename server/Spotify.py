@@ -4,6 +4,8 @@ from cgitb import reset
 from pathlib import Path
 import sys
 
+from server.utilities import get_par_from_mood
+
 sys.path.append(str(Path(__file__).parent))
 
 from flask import session, redirect
@@ -18,6 +20,7 @@ import spotipy
 from dotenv import load_dotenv
 from token_handlers import get_token
 from typing import List
+import numpy as np
 
 # WE NEED A FUNCTION THAT TRANSLATES THE VALUES OF VALENCE-AROUSAL INTO THIS MULTIPLE PARAMETERS, AND TO SOME GENRES, THE FUNCTION TAKES AS INPUT THE OUTPUT OF AI
 
@@ -69,7 +72,11 @@ def req_handler() -> spotipy.Spotify:
     session["token_info"], authorized = get_token()
     session.modified = True
 
-    sp = spotipy.Spotify(auth=session.get("token_info").get("access_token"))
+    sp = spotipy.Spotify(
+        auth=session.get("token_info").get("access_token"),
+        requests_timeout=10,
+        retries=10,
+    )
     if not authorized:
         session.clear()
         print("Not Logged in")
@@ -210,7 +217,7 @@ def get_recommendations(
     return recommendations
 
 
-def get_recommendation_by_objects(objects):
+def get_recommendation_by_objects(objects, mood):
     # query by objects
     songs = []
     spotify = spotipy.Spotify(
@@ -218,12 +225,62 @@ def get_recommendation_by_objects(objects):
     )
 
     for obj in objects:
-        res = spotify.search(q=obj, limit=2, type="track")
+        res = spotify.search(q=obj, limit=20, type="track")
         res = res["tracks"]["items"]
         for song in res:
-            if obj in song["name"]:
+            if obj in song["name"] and "hair dryer" not in song["name"].lower():
                 songs.append(song)
-    return songs
+        # Select only the results which are closer to the mood
+    ids = [el["id"] for el in songs]
+    tracks_features = spotify.audio_features(tracks=ids)
+    scores = [get_score_from_params(song_el, mood) for song_el in tracks_features]
+
+    songs_ids_sorted = [x for _, x in sorted(zip(scores, ids))]
+
+    songs_sorted_by_score = []
+    for sp_id in ids:
+        for song in songs:
+            if sp_id == song["id"]:
+                songs_sorted_by_score.append(song)
+
+    out = songs_sorted_by_score[:3]
+
+    if not songs_sorted_by_score:
+        out = songs[0]
+
+    print(len(out), "Before songs were ", len(songs))
+    return out
+
+
+def get_score_from_params(song, mood):
+    standard_pars = {
+        "min_danceability": 0,
+        "max_danceability": 1,
+        "min_energy": 0,
+        "max_energy": 1,
+        "min_speechiness": 0,
+        "max_speechiness": 1,
+        "min_acousticness": 0,
+        "max_acousticness": 1,
+        "min_instrumentalness": 0,
+        "max_instrumentalness": 1,
+        "min_liveness": 0,
+        "max_liveness": 1,
+        "min_valence": 0,
+        "max_valence": 1,
+    }
+    print(mood)
+    mood_pars, _ = get_par_from_mood(mood=mood, genres=["any"])
+
+    standard_pars.update(mood_pars)
+
+    par_names = list(set(map(lambda x: x.split("_")[-1], list(standard_pars.keys()))))
+    score = 0
+    for par in par_names:
+
+        if standard_pars[f"min_{par}"] < song[par] < standard_pars[f"max_{par}"]:
+            score += 1
+    return score
 
 
 def create_new_playlist(

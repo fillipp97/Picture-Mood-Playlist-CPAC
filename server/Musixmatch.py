@@ -17,8 +17,12 @@ musixmatch = Musixmatch(MUSIXMATCH_API_KEY)
 def get_lyrics(title, artist):
     print(title, artist)
     song_res = musixmatch.matcher_track_get(q_track=title, q_artist=artist)
+    if not song_res["message"]["body"]:
+        print("Probably ended our free daily 2k musixmatch calls")
+        return ""
     if song_res["message"]["header"]["status_code"] == 404:
         return None
+    print("Lyrics Response is:\n" + str(song_res))
     id = song_res["message"]["body"]["track"]["track_id"]
     lyrics_res = musixmatch.track_lyrics_get(id)
     if lyrics_res["message"]["header"]["status_code"] == 404:

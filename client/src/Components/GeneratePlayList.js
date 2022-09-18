@@ -41,7 +41,7 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
                 </ul>
                 <input type="text" value={playListName} onChange={handlePlayListNameChange} />
                 <p>playlist name to submit</p>
-                <button className="Button" onClick={sendPlayList}>Send Song Request</button>
+                <button className="Button" onClick={sendPlayList}>Generate Playlist</button>
             </div>
         </>
     )
