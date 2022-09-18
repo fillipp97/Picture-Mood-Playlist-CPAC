@@ -4,7 +4,6 @@ from cgitb import reset
 from pathlib import Path
 import sys
 
-from server.utilities import get_par_from_mood
 
 sys.path.append(str(Path(__file__).parent))
 
@@ -304,3 +303,130 @@ def create_new_playlist(
     )
     playlist_id = playlist.get("id")
     sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
+
+def get_par_from_mood(mood, genres):
+
+    if mood == "angry" or mood == "nervous":
+        related_genres = [
+            "alt-rock",
+            "black-metal",
+            "death-metal",
+            "grindcore",
+            "hardcore",
+            "metal",
+        ]
+        min_energy = 0.8
+        min_speechiness = 0.5
+        max_valence = 0.3
+        parameters = dict_of(min_energy, max_valence, min_speechiness)
+        genres.append(random.choice(related_genres))
+    elif (
+        mood == "fearful"
+        or mood == "disgusted"
+        or mood == "contempt"
+        or mood == "anxious"
+        or mood == "terror"
+    ):
+        related_genres = ["black-metal", "death-metal", "grindcore"]
+        min_energy = 0.5
+        max_valence = 0.5
+        max_speechiness = 0.6
+        parameters = dict_of(max_energy, max_valence, max_speechiness)
+        genres.append(random.choice(related_genres))
+
+    elif mood == "happy":
+        related_genres = [
+            "alternative",
+            "bluegrass",
+            "brazil",
+            "club",
+            "country",
+            "dance",
+            "disco",
+            "funk",
+            "gospel",
+            "happy",
+            "holidays",
+        ]
+        min_energy = 0.5
+        max_energy = 0.9
+        min_valence = 0.7
+        max_valence = 1
+        parameters = dict_of(min_energy, max_energy, min_valence, max_valence)
+        genres.append(random.choice(related_genres))
+    elif mood == "neutral":
+        related_genres = [
+            "ambient",
+            "blues",
+            "bossanova",
+            "detroit-techno",
+            "jazz",
+            "guitar",
+        ]
+        min_energy = 0.2
+        max_energy = 0.6
+        min_instrumentalness = 0.5
+        max_instrumentalness = 1
+        min_valence = 0.2
+        max_valence = 0.6
+
+        parameters = dict_of(
+            min_energy,
+            max_energy,
+            min_instrumentalness,
+            max_instrumentalness,
+            min_valence,
+            max_valence,
+        )
+        genres.append(random.choice(related_genres))
+    elif mood == "sad":
+        related_genres = ["country", "emo"]
+        max_energy = 0.3
+        max_valence = 0.4
+        parameters = dict_of(max_energy, max_valence)
+        genres.append(random.choice(related_genres))
+    elif mood == "calm" or mood == "peaceful" or mood == "pleasure":
+        related_genres = [
+            "alternative",
+            "ambient",
+            "bossanova",
+            "chill",
+            "club",
+            "electro",
+            "emo",
+            "gospel",
+            "groove",
+            "guitar",
+            "holidays",
+            "idm",
+            "jazz",
+        ]
+        min_valence = 0.6
+        max_energy = 0.5
+        parameters = dict_of(min_valence, max_energy)
+        genres.append(random.choice(related_genres))
+    elif mood == "surprised":
+        related_genres = [
+            "alternative",
+            "bluegrass",
+            "brazil",
+            "breakbeat",
+            "children",
+            "country",
+            "dance",
+            "gospel",
+            "kids",
+        ]
+        min_energy = 0.4
+        min_valence = 0.6
+        max_valence = 0.8
+        parameters = dict_of(min_energy, max_energy, min_valence, max_valence)
+        genres.append(random.choice(related_genres))
+    elif mood == "darkness":
+        related_genres = ["alt-rock", "idm", "metal"]
+        max_energy = 0.4
+        max_valence = 0.3
+        parameters = dict_of(max_energy, max_valence)
+        genres.append(random.choice(related_genres))
+
+    return parameters, genres

@@ -45,9 +45,9 @@ env_path = Path(__file__).parent / ".env"
 # print("========env_path:",env_path)
 load_dotenv(str(env_path))
 CLIENT_ID = os.getenv("CLIENT_ID")
-# print("=========CLIENT_ID:",CLIENT_ID)
+print("=========CLIENT_ID:",CLIENT_ID)
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-# print("=========CLIENT_SECRET:",CLIENT_SECRET)
+print("=========CLIENT_SECRET:",CLIENT_SECRET)
 
 
 # App config
