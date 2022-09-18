@@ -13,6 +13,7 @@ import axios from "axios";
 import FirstFiltering from "./FirstFiltering";
 import { getRecommendedSongs, savePlaylist } from '../Services/ApiService';
 import GeneratePlayList from "./GeneratePlayList";
+import Stepper from "./Stepper";
 
 class LoggedIn extends Component {
   constructor(props) {
@@ -29,6 +30,26 @@ class LoggedIn extends Component {
       playListGenerationResults: null,
       songsStepResults: null,
       songsStepController: 0,
+    }
+  }
+  getStepperSteps = (state) => {
+    return [
+      { name: 'Picture', enabled: true },
+      { name: 'Make choices', enabled: true },
+      { name: 'Create playlist', enabled: !!state.firstFilteringCallback },
+      { name: 'Enjoy', enabled: !!state.playListGenerationCallback }
+    ]
+  }
+
+  handleStepperCallback = (step) => {
+    if (step.name === 'Create playlist') {
+      this.setState({ playListGenerationCallback: null })
+      this.setState({ playListGenerationResults: null })
+    }
+
+    if (step.name === 'Create playlist' || step.name === 'Make choices') {
+      this.setState({ firstFilteringCallback: null })
+      this.setState({ firstFilteringResults: null })
     }
   }
 
@@ -125,7 +146,7 @@ class LoggedIn extends Component {
       </>
       )
     }
-// 124 removed camera by Jiayan 
+    // 124 removed camera by Jiayan 
     const firstFilteringCallback = (value) => {
       this.setState({ firstFilteringCallback: value }, handleGetRecommended)
     }
@@ -190,6 +211,7 @@ class LoggedIn extends Component {
           <>
             <div className="logged-container">
               <div className="foreground">
+                <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} />
                 {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
                   <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
                 }
