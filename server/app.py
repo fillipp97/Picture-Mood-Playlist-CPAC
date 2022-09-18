@@ -144,8 +144,8 @@ def Step1():
         objects = remove_human(objects)
     print("\nThe emotion_result is: ", mood)
     print("\nThe object_result is: ", objects)
-    mood = None
-    objects = ["Sun", "leg", "sea", "car"]
+    # mood = None
+    # objects = ["Sun", "leg", "sea", "car"]
     # Get possible seeds for the user to chose
 
     # Get most listened tracks mixed with other tracks to insert variation
