@@ -227,7 +227,9 @@ def get_recommendation_by_objects(objects):
 
 
 def create_new_playlist(
-    playlist_title: str, tracks: List[dict], description: str = "blabla"
+    playlist_title: str,
+    tracks: List[dict],
+    description: str = "This playlist has been created by Picture-Mood-Playlist",
 ):
     sp = req_handler()
     # Get User id
@@ -235,6 +237,7 @@ def create_new_playlist(
     # print(user.get("id"))
     user_id = user.get("id")
     # # Create playlist
+    print(user_id, playlist_title)
     playlist = sp.user_playlist_create(
         user=user_id,
         name=playlist_title,
@@ -242,15 +245,5 @@ def create_new_playlist(
         collaborative=False,
         description=description,
     )
-    print(playlist)
-    # data = {
-    #         "name": name,
-    #         "public": public,
-    #         "collaborative": collaborative,
-    #         "description": description
-    #     }
-    # print(res.get("items")[0].get("playlist_title"))
-
-    # get the interesting id TODO
-    # Add the tracks
-    # sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
+    playlist_id = playlist.get("id")
+    sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
