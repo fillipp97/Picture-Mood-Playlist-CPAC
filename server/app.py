@@ -9,35 +9,14 @@ from flask import Flask, session, request, redirect
 import os
 from dotenv import load_dotenv
 
-from object_detection import (
-    get_object,
-    detect_img,
-    download_and_resize_image,
-    hub,
-    detector,
-    run_detector,
-)
+from object_detection import get_object,detect_img,download_and_resize_image,hub,detector,run_detector
 
-from utilities import (
-    get_par_from_mood,
-    get_mood_from_LLF,
-    image_is_plain,
-    dominant_color,
-    str2nestedlist,
-)
+from utilities import get_par_from_mood,get_mood_from_LLF,image_is_plain,dominant_color,str2nestedlist
 
 from Azure_api import get_mood, emotion_detect
 from token_handlers import get_token, create_spotify_oauth, remove_token
 from Musixmatch import get_lyrics, get_scored_list
-from Spotify import (
-    get_recommendation_by_objects,
-    valid_genres_for_seed,
-    get_most_listened_artists,
-    get_recommendations,
-    get_recommendation_by_objects,
-    get_most_listened_tracks,
-    create_new_playlist,
-)
+from Spotify import get_recommendation_by_objects,valid_genres_for_seed,get_most_listened_artists,get_recommendations,get_recommendation_by_objects,get_most_listened_tracks,create_new_playlist
 
 
 # from Components.Spotify import Spoty
@@ -45,10 +24,7 @@ env_path = Path(__file__).parent / ".env"
 # print("========env_path:",env_path)
 load_dotenv(str(env_path))
 CLIENT_ID = os.getenv("CLIENT_ID")
-print("=========CLIENT_ID:",CLIENT_ID)
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-print("=========CLIENT_SECRET:",CLIENT_SECRET)
-
 
 # App config
 app = Flask(__name__)
