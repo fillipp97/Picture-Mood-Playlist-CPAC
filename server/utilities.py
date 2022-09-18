@@ -49,30 +49,65 @@ target_mode=1
 # from asyncio.windows_events import NULL
 
 
-def get_par_from_mood(mood):
+def get_par_from_mood(mood, genres):
 
     if mood == "angry":
+        related_genres = [
+            "alt-rock",
+            "black-metal",
+            "death-metal",
+            "grindcore",
+            "hardcore",
+            "metal",
+        ]
         min_energy = 0.8
         max_energy = 1
         min_loudness = 0.6
         min_speechiness = 0.5
         parameters = dict_of(min_energy, max_energy, min_loudness, min_speechiness)
+        genres.append(random.choice(related_genres))
     elif (
         mood == "fearful"
         or mood == "disgusted"
         or mood == "contempt"
         or mood == "anxious"
     ):
-        # sample from playlist
-        horror = True
-        parameters = dict_of(horror)
+        related_genres = ["black-metal", "death-metal", "grindcore"]
+        max_energy = 0.5
+        max_valence = 0.5
+        max_speechiness = 0.6
+        parameters = dict_of(max_energy, max_valence, max_speechiness)
+        genres.append(random.choice(related_genres))
+
     elif mood == "happy":
+        related_genres = [
+            "alternative",
+            "bluegrass",
+            "brazil",
+            "club",
+            "country",
+            "dance",
+            "disco",
+            "funk",
+            "gospel",
+            "happy",
+            "holidays",
+        ]
         min_energy = 0.5
         max_energy = 0.9
         min_valence = 0.7
         max_valence = 1
         parameters = dict_of(min_energy, max_energy, min_valence, max_valence)
+        genres.append(random.choice(related_genres))
     elif mood == "neutral":
+        related_genres = [
+            "ambient",
+            "blues",
+            "bossanova",
+            "cantopop",
+            "detroit-techno",
+            "jazz",
+        ]
         min_energy = 0.2
         max_energy = 0.6
         min_instrumentalness = 0.5
@@ -88,27 +123,57 @@ def get_par_from_mood(mood):
             min_valence,
             max_valence,
         )
+        genres.append(random.choice(related_genres))
     elif mood == "sad":
+        related_genres = ["cantopop", "country", "emo"]
         max_energy = 0.3
         max_valence = 0.4
         parameters = dict_of(max_energy, max_valence)
+        genres.append(random.choice(related_genres))
     elif mood == "calm" or mood == "peaceful":
+        related_genres = [
+            "alternative",
+            "ambient",
+            "bossanova",
+            "chill",
+            "club",
+            "electro",
+            "emo",
+            "gospel",
+            "groove",
+            "guitar",
+            "holidays",
+            "idm",
+            "jazz",
+        ]
         min_valence = 0.6
         max_energy = 0.5
         parameters = dict_of(min_valence, max_energy)
+        genres.append(random.choice(related_genres))
     elif mood == "surprised":
+        related_genres = [
+            "alternative",
+            "bluegrass",
+            "brazil",
+            "breakbeat",
+            "children",
+            "country",
+            "dance",
+            "gospel",
+        ]
         min_energy = 0.4
-        max_energy = 0.5
         min_valence = 0.6
         max_valence = 0.8
         parameters = dict_of(min_energy, max_energy, min_valence, max_valence)
-        # search for wow words in lyrics
+        genres.append(random.choice(related_genres))
     elif mood == "darkness":
-        min_energy = 0.6
+        related_genres = ["alt-rock", "idm"]
+        max_energy = 0.4
         max_valence = 0.4
         parameters = dict_of(min_energy, max_valence)
+        genres.append(random.choice(related_genres))
 
-    return parameters
+    return parameters, genres
 
 
 def image_is_plain(path):
@@ -170,7 +235,7 @@ def get_mood_from_LLF(image_path):
         "orange": "happy",  # ffa500
     }
     color_name = dominant_color(image_path)
-    
+
     return names_mood[color_name]
 
 

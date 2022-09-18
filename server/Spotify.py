@@ -168,45 +168,10 @@ def select_artists(available):
     return selected
 
 
-# def get_seeds():
-#     # searches for the favourite artists into the liked songs,
-#     # the 5 favourite songs and the 5 favourite artists are selected to be part of the seed for the recommendation,
-#     # moreover it uses "Get Available Genre Seeds" in order to get the genres seeds
-#     seeds = []
-#     available_genres = get_available_genres()
-#     Genres_seed = select_genres(available_genres)
-#     liked_songs = get_liked_songs()
-#     Songs_seed = select_songs(
-#         [liked_songs[i]["track"]["id"] for i in range(len(liked_songs))]
-#     )
-#     Artist_seed = select_artists(
-#         [liked_songs[i]["track"]["artists"][0]["id"] for i in range(len(liked_songs))]
-#     )
-#     seeds.append(Genres_seed)
-#     seeds.append(Songs_seed)
-#     seeds.append(Artist_seed)
-#     return seeds
-
-
 def delete_duplicates(song_titles, song_artists):
     complete_list = list(zip(song_titles, song_artists))
     unique_songs = list(dict.fromkeys(complete_list))
     return unique_songs
-
-
-# def get_playlist():
-#     #chose randomly one playlist between
-#     playlists=['11AzGmTlQ1eYpiuymva2Ks', '2Jh1uEl2C4wW92K4EprRjv']
-#     chosen=random.sample(playlists,1)[0]
-#     #print(chosen)
-#     params={'playlist_id': chosen }
-#     search_url="https://api.spotify.com/v1/playlists/" + chosen + '/tracks'
-#     req=requests.get(url=search_url, params=params,headers=header)
-#     assert req.status_code==200, req.content
-#     answer=req.json()
-#     songs_in_playlist=answer['items']
-
-#     return songs_in_playlist
 
 
 def get_recommendations(
@@ -253,7 +218,7 @@ def get_recommendation_by_objects(objects):
     )
 
     for obj in objects:
-        res = spotify.search(q=obj, limit=5, type="track")
+        res = spotify.search(q=obj, limit=2, type="track")
         res = res["tracks"]["items"]
         for song in res:
             if obj in song["name"]:
@@ -261,34 +226,31 @@ def get_recommendation_by_objects(objects):
     return songs
 
 
-def create_new_playlist(playlist_title: str, tracks: List[dict]):
+def create_new_playlist(
+    playlist_title: str, tracks: List[dict], description: str = "blabla"
+):
     sp = req_handler()
     # Get User id
     user = sp.current_user()
+    # print(user.get("id"))
     user_id = user.get("id")
-    # Create playlist
-    sp.user_playlist_create(
-        user_id, playlist_title, public=True, collaborative=False, description=""
+    # # Create playlist
+    playlist = sp.user_playlist_create(
+        user=user_id,
+        name=playlist_title,
+        public=True,
+        collaborative=False,
+        description=description,
     )
-    # Read playlists to find ID of the just created one
-    res = sp.user_playlists(user, limit=50, offset=0)
-    print(res)
-    print(res.get("items")[0].get("name"))
+    print(playlist)
+    # data = {
+    #         "name": name,
+    #         "public": public,
+    #         "collaborative": collaborative,
+    #         "description": description
+    #     }
+    # print(res.get("items")[0].get("playlist_title"))
+
     # get the interesting id TODO
     # Add the tracks
     # sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
-
-
-# if __name__ == "__main__":
-# result = get_recommendation_by_objects(["profondo rosso"])
-# spotify = spotipy.Spotify(
-#     auth_manager=SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET)
-# )
-# song = spotify.search(q="horror", limit=5, type="track")
-
-# res = spotify.audio_features(song["tracks"]["items"][0]["id"])
-# print(song["tracks"]["items"][0]["name"], " : ", res)
-# # print([(name["name"], name["id"]) for name in result])
-
-# sp = req_handler()
-# resp = sp.recommendations()

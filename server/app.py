@@ -5,17 +5,38 @@ import sys
 sys.path.append(str(Path(__file__).parent))
 import spotipy
 import numpy as np
-from flask import Flask, session, request, redirect, render_template
+from flask import Flask, session, request, redirect
 import os
 from dotenv import load_dotenv
 
-from object_detection import get_object,detect_img,download_and_resize_image,hub,detector,run_detector
+# from object_detection import (
+#     get_object,
+#     detect_img,
+#     download_and_resize_image,
+#     hub,
+#     detector,
+#     run_detector,
+# )
 
-from utilities import get_par_from_mood,get_mood_from_LLF,image_is_plain,dominant_color
-from Azure_api import get_mood, emotion_detect
+from utilities import (
+    get_par_from_mood,
+    get_mood_from_LLF,
+    image_is_plain,
+    dominant_color,
+)
+
+# from Azure_api import get_mood, emotion_detect
 from token_handlers import get_token, create_spotify_oauth, remove_token
 from Musixmatch import get_lyrics, get_scored_list
-from Spotify import get_recommendation_by_objects,valid_genres_for_seed,get_most_listened_artists,get_recommendations,get_recommendation_by_objects,get_most_listened_tracks,create_new_playlist
+from Spotify import (
+    get_recommendation_by_objects,
+    valid_genres_for_seed,
+    get_most_listened_artists,
+    get_recommendations,
+    get_recommendation_by_objects,
+    get_most_listened_tracks,
+    create_new_playlist,
+)
 
 
 # from Components.Spotify import Spoty
@@ -103,33 +124,33 @@ def get_tracks():
 def Step1():
     # Download Image
     image = request.files["Image"].read()
-    image_path = download_and_resize_image(image, 640, 480)
+    # image_path = download_and_resize_image(image, 640, 480)
 
-    detect_img(image_path)
-    # Try to detect face
-    try:
-        emotion_detect(image_path)
-        mood = get_mood()
-    except:
-        print("No Face Found")
-        mood = None
-    # Recognize Objects
-    objects, number = get_object()
-    if number == 0:
-        print("No objects identified")
-        objects = None
-    else:
-        objects = list(set(objects))
-        objects = remove_human(objects)
-    print("\nThe emotion_result is: ", mood)
-    print("\nThe object_result is: ", objects)
-    # mood = None
-    # objects = ["Chair", "Hair", "Airplane", "Duck"]
+    # detect_img(image_path)
+    # # Try to detect face
+    # try:
+    #     emotion_detect(image_path)
+    #     mood = get_mood()
+    # except:
+    #     print("No Face Found")
+    #     mood = None
+    # # Recognize Objects
+    # objects, number = get_object()
+    # if number == 0:
+    #     print("No objects identified")
+    #     objects = None
+    # else:
+    #     objects = list(set(objects))
+    #     objects = remove_human(objects)
+    # print("\nThe emotion_result is: ", mood)
+    # print("\nThe object_result is: ", objects)
+    mood = None
+    objects = ["Chair", "Hair", "Airplane", "Duck"]
     # Get possible seeds for the user to chose
 
     # Get most listened tracks mixed with other tracks to insert variation
     most_listened_tracks = get_most_listened_tracks(
-        limit=10, offset=0, time_range="long_term"
+        limit=10, offset=0, time_range="medium_term"
     )
     tracks_secondary = get_most_listened_tracks(
         limit=10, offset=randint(1, 2), time_range="long_term"
@@ -155,8 +176,7 @@ def Step1():
     mixed_artists = artists[:10]
     # get some random genres mixed with genres in tune with the previous selected artists
     genres = valid_genres_for_seed()  # They are 126
-    genres.remove("sad")
-    genres.remove("movies")
+    genres = remove_unwanted(genres)
     # artists_genres = []
     # for artist in artists:
     #     for genre in artist["genres"]:
@@ -174,7 +194,7 @@ def Step1():
     shuffle(genres)
     mixed_genres = genres[:10]
     if mood is None:
-        moodLLF = get_mood_from_LLF(image_path=image_path)
+        moodLLF = "sad"  # get_mood_from_LLF(image_path=image_path)
     else:
         moodLLF = None
     return {
@@ -186,6 +206,29 @@ def Step1():
         "genresSeed": mixed_genres,  # Keep for later
         "artistsSeed": mixed_artists,
     }
+
+
+def remove_unwanted(genres):
+    """Removes some genres that polarize the result to a particular culture"""
+    genres.remove("sad")
+    genres.remove("movies")
+    genres.remove("swedish")
+    genres.remove("comedy")
+    genres.remove("forro")
+    genres.remove("french")
+    genres.remove("german")
+    genres.remove("iranian")
+    genres.remove("malay")
+    genres.remove("philippines-opm")
+    genres.remove("sertanejo")
+    genres.remove("spanish")
+    genres.remove("turkish")
+    genres.remove("tango")
+    genres.remove("j-idol")
+    genres.remove("latin")
+    genres.remove("brazil")
+
+    return genres
 
 
 def remove_human(objects):
@@ -218,16 +261,20 @@ def Step2():
     tracks_ids = [el.get("id") for el in tracks_seed]
 
     artists_ids = [el.get("id") for el in artists_seed]
-    available_genres = valid_genres_for_seed()
-    splits = []
-    for g in genres_seed:
-        el_split = g.split(" ")
-        for el in el_split:
-            splits.append(el)
-    genres_seed.extend(splits)
-    genres_seed = list(set(genres_seed))
 
-    genres_sel = [gen for gen in genres_seed if gen in available_genres]
+    # available_genres = valid_genres_for_seed()
+    # splits = []
+    # for g in genres_seed:
+    #     el_split = g.split(" ")
+    #     for el in el_split:
+    #         splits.append(el)
+    # genres_seed.extend(splits)
+    # genres_seed = list(set(genres_seed))
+
+    # genres_sel = [gen for gen in genres_seed if gen in available_genres]
+
+    shuffle(genres_seed)
+    genres_sel = genres_seed[:5]
 
     while len(artists_ids) + len(genres_sel) + len(tracks_ids) > 3:
         n = np.random.randint(0, 3)
@@ -242,14 +289,14 @@ def Step2():
         # Proceed with the branch with face
         # Get parameters from mood
 
-        parameters = get_par_from_mood(mood=mood)
+        parameters, genres_sel = get_par_from_mood(mood=mood, genres=genres_sel)
         # Get recommendations according to parameters
 
         recommendations = get_recommendations(
             seed_artists=artists_ids,
             seed_genres=genres_sel,
             seed_tracks=tracks_ids,
-            limit=20,
+            limit=30,
             **parameters,
         )
         # scored_songs, lyrics = get_scored_list(recommendations.get("tracks"), objects)
@@ -268,22 +315,21 @@ def Step2():
             "lyrics": lyrics,
         }
     else:
-        # Get 5 recommendations from each object in the image
+        # Get 2 recommendations from each object in the image
         recommendations_by_objects = get_recommendation_by_objects(objects)
         # Get also parameters from a mood extracted by colors in the picture
         print("Mood LLF: ", moodLLF)
-        parameters_LLF = get_par_from_mood(moodLLF)
+        parameters_LLF, genres_sel = get_par_from_mood(moodLLF, genres=genres_sel)
         # Get recommendations
         recommendations_moodLLF = get_recommendations(
             seed_artists=artists_ids,
             seed_genres=genres_sel,
             seed_tracks=tracks_ids,
-            limit=10,
+            limit=20,
             **parameters_LLF,
         )
-        # print("Rec by Mood ", recommendations_moodLLF.get('tracks'))
-        # Mix all the results and get the first 20 OR CREATE A SCORING FUNCTION THAT USES THE TEXT TODO
-        print("Recommendations by object: ", len(recommendations_by_objects))
+
+        # Mix all the results and get the first 20 OR CREATE A SCORING FUNCTION THAT USES THE TEXT
         recommendations_by_objects.extend(recommendations_moodLLF.get("tracks"))
 
         scored_songs, lyrics = get_scored_list(recommendations_by_objects, objects)
@@ -293,15 +339,7 @@ def Step2():
             "result": "ok",
             "recommendations": {"tracks": scored_songs},
             "lyrics": lyrics,
-        }  # recommendations.score and recommendation.lyrics
-
-
-# def ensure_no_duplicates(songs):
-#     out = []
-#     for v in songs:
-#         if v not in out:
-#             out.append(v)
-#         return out
+        }
 
 
 @app.route("/savePlaylist", methods=["POST"])
@@ -313,12 +351,9 @@ def Step3():
     # str , a title for the playlist
     playlist_title = data.get("playlist_title")
 
-    create_new_playlist(songs, playlist_title)
+    create_new_playlist(ids, playlist_title)
     return "200"
 
-# coc
-# @app.route('/', methods=["POST"])
-# @app.route('/')
 
 if __name__ == "__main__":
     app.run(debug=True)

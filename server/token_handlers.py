@@ -44,7 +44,7 @@ def create_spotify_oauth():
         client_id=CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri=url_for("authorize", _external=True),
-        scope="user-library-read,user-top-read,user-read-private",
+        scope="user-library-read,user-top-read,user-read-private, playlist-read-collaborative, playlist-modify-public, playlist-read-private, playlist-modify-private",
     )
 
 
