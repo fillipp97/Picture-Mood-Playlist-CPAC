@@ -18,7 +18,7 @@ import os
 
 ## =========================== import image & api ===========================
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-matplotlib.rcParams["interactive"] == True
+# matplotlib.rcParams["interactive"] == True
 imageSource = "LOCAL"
 
 # print("This is the path of the folder: ", THIS_FOLDER)
