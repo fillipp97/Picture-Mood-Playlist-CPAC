@@ -59,6 +59,10 @@ img {
      display: inline-block;
      color: black;
 	 vertical-align: middle;
+	 border-left: 2px double dimgray;
+	 border-top: 2px double dimgray;
+	 border-right: 2px double black;
+	 border-bottom: 2px double black;
    }
  input#file + label:hover{
 	 color: white;
