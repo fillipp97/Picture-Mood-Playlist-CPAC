@@ -80,9 +80,12 @@
     position: absolute;
     transform: translate(-50%);
     left: calc(100vw/2);
-    width: fit-content;
+    /* width: fit-content; */
+	/* width: 57vh; */
     z-index: 2;
     animation-name: run;
     animation-duration: 2s;
     animation: linear infinite alternate;
+	/* height: 40rem; */
+	width: 30rem;
 }

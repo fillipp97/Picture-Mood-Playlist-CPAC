@@ -91,10 +91,11 @@
   /* background: linear-gradient(90deg, #0162c8, #55e7fc); */
   background: linear-gradient(10deg, rgb(149, 228, 149), #55e7fc);
   box-shadow: 0 4px 10px 0 rgba(49, 196, 190, 0.75);
-  height: 5vh;
-  width: 20vw;
+  height: 2.4rem;
+  width: 9rem;
   min-width: 110px;
-  margin: 4.6vw;
+  /* origin margin = 4.6 */
+  margin: 1.5rem;
 }
 
 .Button:hover {
@@ -158,5 +159,7 @@ h1{
 }
 
 .logged-container{
-  margin-top: 3%;
+  /* margin-top: 3%; */
+  height: 100vh;
+  width: 100vw;
 }
