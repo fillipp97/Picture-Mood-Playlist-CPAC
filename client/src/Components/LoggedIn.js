@@ -14,6 +14,7 @@ import FirstFiltering from "./FirstFiltering";
 import { getRecommendedSongs, savePlaylist } from '../Services/ApiService';
 import GeneratePlayList from "./GeneratePlayList";
 import Stepper from "./Stepper";
+import DropDownBox from "./DropDownBox";
 
 class LoggedIn extends Component {
   constructor(props) {
@@ -194,7 +195,9 @@ class LoggedIn extends Component {
                 <h1 >Upload Your Image!</h1>
                 {input}
               </div>
-              <div className="vignette"></div>
+              <div className="vignette">
+                <DropDownBox></DropDownBox>
+              </div>
               <div className="cover-container">
 
                 {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
