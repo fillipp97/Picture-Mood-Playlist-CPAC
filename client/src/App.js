@@ -7,7 +7,7 @@ import { Component } from 'react';
 import axios from "axios"
 import NotLoggedIn from './Components/NotLoggedIn';
 import LoggedIn from './Components/LoggedIn';
-
+import { GlobalStyle } from './Styled/GlobalStyles.styled';
 
 class App extends Component {
   constructor(props) {
@@ -87,10 +87,11 @@ class App extends Component {
   }
 
 
-//generate <NotLoggedIn>js or <LoggedIn>js and create action to next page
+  //generate <NotLoggedIn>js or <LoggedIn>js and create action to next page
   render() {
-    return this.state.applicationError ? (<h1>Application error: {this.state.applicationError.statusText}</h1>) : (
+    return (this.state.applicationError ? (<h1>Application error <GlobalStyle />: {this.state.applicationError.statusText}</h1>) : (
       <div className='root'>
+        <GlobalStyle />
         <div className="App">
           <header className="App-header">
             <div className='mainContainer'>
@@ -113,7 +114,7 @@ class App extends Component {
           </header>
         </div>
       </div>
-    );
+    ));
   }
 }
 

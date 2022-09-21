@@ -15,7 +15,7 @@ import { getRecommendedSongs, savePlaylist } from '../Services/ApiService';
 import GeneratePlayList from "./GeneratePlayList";
 import Stepper from "./Stepper";
 import DropDownBox from "./DropDownBox";
-
+import Balls from "./Balls";
 class LoggedIn extends Component {
   constructor(props) {
     super(props);
@@ -124,7 +124,7 @@ class LoggedIn extends Component {
 
             <button className='Button' onClick={this.handleInputPicture}>Upload Picture</button>
             <button className='Button' onClick={this.handleInputCamera}>Take a Picture</button>
-			<button className='Button' onClick={this.props.logout}>Logout</button>
+            <button className='Button' onClick={this.props.logout}>Logout</button>
           </div>
         </>
       )
@@ -145,7 +145,7 @@ class LoggedIn extends Component {
       </>
       )
     }
-	
+
     const firstFilteringCallback = (value) => {
       this.setState({ firstFilteringCallback: value }, handleGetRecommended)
     }
@@ -197,7 +197,7 @@ class LoggedIn extends Component {
                 <DropDownBox></DropDownBox>
               </div>
               <div className="cover-container">
-
+                <Balls />
                 {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
               </div>
             </div>
