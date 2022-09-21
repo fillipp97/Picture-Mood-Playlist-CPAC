@@ -21,14 +21,20 @@ def get_lyrics(title, artist):
         print("Probably ended our free daily 2k musixmatch calls")
         return ""
     if song_res["message"]["header"]["status_code"] == 404:
-        return None
+        print("Song {song_res['message]['body']['track]['track_name]} not found")
+        return ""
     print("Lyrics Response is:\n" + str(song_res))
     id = song_res["message"]["body"]["track"]["track_id"]
-    lyrics_res = musixmatch.track_lyrics_get(id)
-    if lyrics_res["message"]["header"]["status_code"] == 404:
-        return None
-    lyrics = lyrics_res["message"]["body"]["lyrics"]["lyrics_body"]
-    lyrics = lyrics.split("******* This Lyrics is NOT for Commercial use *******")[0]
+    if song_res["message"]["body"]["track"]["has_lyrics"] == 0:
+        return ""
+    else:
+        lyrics_res = musixmatch.track_lyrics_get(id)
+        if lyrics_res["message"]["header"]["status_code"] == 404:
+            return ""
+        lyrics = lyrics_res["message"]["body"]["lyrics"]["lyrics_body"]
+        lyrics = lyrics.split("******* This Lyrics is NOT for Commercial use *******")[
+            0
+        ]
     return lyrics
 
 
