@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import './FirstFiltering.css';
 export default function FirstFiltering({ firstFilteringInput, callback }) {
     const mood = firstFilteringInput.mood
     const moodLLF = firstFilteringInput.moodLLF
@@ -67,7 +67,7 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
 
     return (
         <>
-            <div style={{ background: "gray" }}>
+            <div className="Informations">
                 <p>Your mood is {mood} or {moodLLF}</p>
                 <p>Objects we found in your picture:</p>
                 {objects.map((item) => (
