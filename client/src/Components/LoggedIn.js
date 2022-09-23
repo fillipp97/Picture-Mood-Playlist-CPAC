@@ -194,7 +194,7 @@ class LoggedIn extends Component {
                 {input}
               </div>
               <div className="vignette">
-                <DropDownBox></DropDownBox>
+				<DropDownBox></DropDownBox>
               </div>
               <div className="cover-container">
 

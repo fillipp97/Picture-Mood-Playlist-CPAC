@@ -78,7 +78,7 @@
 
 .foreground{
     position: absolute;
-    transform: translate(-50%, 20%);
+    transform: translate(-50%);
     left: calc(100vw/2);
     /* width: fit-content; */
 	/* width: 57vh; */
