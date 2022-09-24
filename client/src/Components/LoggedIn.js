@@ -6,7 +6,8 @@ import Entertainment from "./Entertainment";
 import RenderCovers from "./RenderCovers";
 
 import FirstFiltering from "./FirstFiltering";
-import { getRecommendedSongs, savePlaylist } from '../Services/ApiService';
+import ImageStep from "./ImageStep";
+import { uploadFile, getRecommendedSongs, savePlaylist } from '../Services/ApiService';
 import GeneratePlayList from "./GeneratePlayList";
 import Stepper from "./Stepper";
 import DropDownBox from "./DropDownBox";
@@ -16,11 +17,9 @@ class LoggedIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      useWebcam: 0,
-      ImageUploaded: false,
       handleLogout: props.handleLogout,
+      imageStepCallback: null,
       imageStepResults: null,
-      imageStepController: 1,
       firstFilteringCallback: null,
       firstFilteringResults: null,
       playListGenerationCallback: null,
@@ -32,33 +31,53 @@ class LoggedIn extends Component {
   getStepperSteps = (state) => {
     return [
       { name: 'Picture', enabled: true },
-      { name: 'Make choices', enabled: true },
+      { name: 'Make choices', enabled: !!state.imageStepResults },
       { name: 'Create playlist', enabled: !!state.firstFilteringCallback },
       { name: 'Enjoy', enabled: !!state.playListGenerationCallback }
     ]
   }
 
   handleStepperCallback = (step) => {
-    if (step.name === 'Create playlist') {
-      this.setState({ playListGenerationCallback: null })
-      this.setState({ playListGenerationResults: null })
+    switch (step.name) {
+      case 'Picture':
+        this.resetImageStep();
+      case 'Make choices':
+        this.resetFirstFiltering();
+      case 'Create playlist':
+        this.resetPlayListGeneration();
     }
+  }
 
-    if (step.name === 'Create playlist' || step.name === 'Make choices') {
-      this.setState({ firstFilteringCallback: null })
-      this.setState({ firstFilteringResults: null })
-    }
+  resetImageStep = () => {
+    this.setState({ imageStepCallback: null })
+    this.setState({ imageStepResults: null })
+  }
+
+  resetFirstFiltering = () => {
+    this.setState({ firstFilteringCallback: null })
+    this.setState({ firstFilteringResults: null })
+  }
+
+  resetPlayListGeneration = () => {
+    this.setState({ playListGenerationCallback: null })
+    this.setState({ playListGenerationResults: null })
+  }
+
+  isLoading = () => {
+    return (this.state.imageStepCallback && !this.state.imageStepResults) ||
+      (this.state.playListGenerationCallback && !this.state.playListGenerationResults) ||
+      (this.state.firstFilteringCallback && !this.state.firstFilteringResults)
   }
 
   componentDidMount() {
     this.props.handleGetSongs()
   }
 
-  pictureUploaded = (results) => {
+  pictureUploaded = (results) => { //got back results from picture uploadFile API call
+    console.warn('pictureUploaded', true)
     this.setState({ ImageUploaded: true })
     this.setState({
-      imageStepResults: results,
-      imageStepController: 2
+      imageStepResults: results
     });
   }
 
@@ -99,82 +118,54 @@ class LoggedIn extends Component {
   //   }
   // }
 
+  //       </div>
+  //     )))
+  //     this.setState(covers)
+  //   }
+  // }
 
-  handleInputPicture = () => {
-    this.setState({ useWebcam: 2 })
-  }
-  handleInputCamera = () => {
-    this.setState({ useWebcam: 1 })
-  }
-  handleBack = () => {
-    this.setState({ useWebcam: 0 })
+  imageStepCallback = (file) => {
+    this.setState({ imageStepCallback: true }, this.handleUpload(file))
+  };
+  handleUpload = (file) => {
+    uploadFile(file.image)
+      .then(response => {
+        this.setState({
+          imageStepResults: response
+        });
+      })
   }
 
+  firstFilteringCallback = (value) => {
+    this.setState({ firstFilteringCallback: value }, this.handleGetRecommended)
+  }
+  handleGetRecommended = () => {
+    getRecommendedSongs(this.state.firstFilteringCallback)
+      .then((response) => {
+        if (response.result === 'ok') {
+          console.log(response)
+          this.setState({
+            recommendedSongs: response.recommendations,
+            recommendedLyrics: response.lyrics
+          })
+          this.setState({ firstFilteringResults: response });
+        }
+      });
+  }
+
+  generatePlayListCallback = (value) => {
+    this.setState({ playListGenerationCallback: value }, this.handleSavePlaylist)
+  }
+  handleSavePlaylist = () => {
+    savePlaylist(this.state.playListGenerationCallback)
+      .then((response) => {
+        if (response.result === 'ok') {
+          this.setState({ playListGenerationResults: response });
+        }
+      });
+  }
 
   render() {
-    const { useWebcam } = this.state;
-    let input;
-    if (useWebcam === 0) {
-      input = (
-        <>
-          <div className="uploadChoiceContainer">
-
-            <button className='Button' onClick={this.handleInputPicture}>Upload Picture</button>
-            <button className='Button' onClick={this.handleInputCamera}>Take a Picture</button>
-            <button className='Button' onClick={this.props.logout}>Logout</button>
-          </div>
-        </>
-      )
-    }
-    if (useWebcam === 1) {
-      input = (
-        <>
-          <WebcamCapture onUpload={this.pictureUploaded} />
-          <button className='Button camera' onClick={this.handleBack}>Back</button>
-        </>
-      )
-
-    }
-    if (useWebcam === 2) {
-      input = (<>
-        <UploadImage onUpload={this.pictureUploaded}></UploadImage>
-        <button className='Button camera' onClick={this.handleBack}>Back</button>
-      </>
-      )
-    }
-
-    const firstFilteringCallback = (value) => {
-      this.setState({ firstFilteringCallback: value }, handleGetRecommended)
-    }
-
-    const generatePlayListCallback = (value) => {
-      this.setState({ playListGenerationCallback: value }, handleSavePlaylist)
-    }
-
-    const handleGetRecommended = () => {
-      getRecommendedSongs(this.state.firstFilteringCallback)
-        .then((response) => {
-          if (response.result === 'ok') {
-            // console.log(response)
-            this.setState({
-              recommendedSongs: response.recommendations,
-              recommendedLyrics: response.lyrics
-            })
-            this.setState({ firstFilteringResults: response });
-          }
-        });
-    }
-
-    const handleSavePlaylist = () => {
-      savePlaylist(this.state.playListGenerationCallback)
-        .then((response) => {
-          if (response.result === 'ok') {
-            this.setState({ playListGenerationResults: response });
-          }
-        });
-    }
-
-
     return (
       <>
         {/* Three states are needed for each of the upcoming components:
@@ -183,42 +174,25 @@ class LoggedIn extends Component {
             2 - the other part of code is active 
             Doing so it is possible to "mute" imageStepResults while showing recommendedSongsResults*/}
         {
-          this.state.imageStepController === 1 && <>
-            <div className="logged-container">
-
-              <div className="foreground">
-                <h1 >Upload Your Image!</h1>
-                {input}
-              </div>
-              <div className="vignette">
-                <DropDownBox></DropDownBox>
-              </div>
-              <div className="cover-container">
-                {this.props.songs && <Balls songs={this.props.songs} />}
-                {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
-              </div>
-            </div>
-          </>
-
-
-
-        }
-
-        {
-          this.state.imageStepController === 2 &&
           <>
             <div className="logged-container">
               <div className="foreground">
                 <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} />
+                {this.isLoading() && <span>LOADING...</span>}
+                {!this.state.imageStepCallback &&
+                  <ImageStep callback={this.imageStepCallback} />
+                }
                 {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
-                  <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
+                  <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={this.firstFilteringCallback} />
                 }
                 {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
-                  <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={generatePlayListCallback} />
+                  <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={this.generatePlayListCallback} />
                 }
                 {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
               </div>
-              <div className="vignette"></div>
+              <div className="vignette">
+                <DropDownBox></DropDownBox>
+              </div>
               <div className="cover-container">
                 <Balls images={this.props.songs} />
                 {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
@@ -226,30 +200,6 @@ class LoggedIn extends Component {
             </div>
           </>
         }
-
-        {
-          this.state.songsStepController === 1 &&
-          <>
-
-            <div>songsStepController is {this.state.songsStepController}</div>
-
-          </>
-        }
-
-
-        {
-          this.state.songsStepController === 2 &&
-          <>
-
-            <div>songsStepController is {this.state.songsStepController}</div>
-
-          </>
-        }
-
-
-
-
-
       </>
     )
   }
