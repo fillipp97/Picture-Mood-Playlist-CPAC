@@ -1,5 +1,3 @@
-
-
 /*.logged-container{
     height: 100%;
     width: 100%;
@@ -7,7 +5,7 @@
 
 }*/
 
-.vignette{
+.vignette {
     background: radial-gradient(#000000, #585858);
     position: absolute;
     top: 0;
@@ -16,6 +14,7 @@
     z-index: 1;
     opacity: 75%;
 }
+
 .cover-container{
     height: 100%;
     width: 100%;
@@ -27,65 +26,85 @@
     top: 0;
     z-index: 0;
 }
-.cover-container-internal0{
-    
+
+
+
+.cover-container-internal0 {
+
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
     object-fit: fill;
     position: relative;
     animation-name: even;
     animation-duration: 30s;
     animation-iteration-count: infinite;
     animation-fill-mode: both;
-    animation-timing-function: cubic-bezier(0.5,0.8,0.5,0.2);
+    animation-timing-function: cubic-bezier(0.5, 0.8, 0.5, 0.2);
 }
 
 
 
 
 @keyframes even {
-    0% {left: -100px;}
-    50% {left: 0px;}
-    100% {left: -100px;}
-    
+    0% {
+        left: -100px;
+    }
+
+    50% {
+        left: 0px;
+    }
+
+    100% {
+        left: -100px;
+    }
+
 }
 
 
-.cover-container-internal1{
-    
+.cover-container-internal1 {
+
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
     object-fit: fill;
     position: relative;
     animation-name: odd;
     animation-duration: 30s;
     animation-iteration-count: infinite;
-    animation-timing-function: cubic-bezier(0.5,0.8,0.5,0.2);
+    animation-timing-function: cubic-bezier(0.5, 0.8, 0.5, 0.2);
 }
+
 @keyframes odd {
-    0% {left: 0px;}
-    50% {left: -100px;}
-    100% {left: 0px}
-    
+    0% {
+        left: 0px;
+    }
+
+    50% {
+        left: -100px;
+    }
+
+    100% {
+        left: 0px
+    }
+
 }
 
 
-.cover-container img{
+.cover-container img {
     height: 100px;
     width: auto;
-    
+
 }
 
-.foreground{
+.foreground {
     position: absolute;
     transform: translate(-50%);
     left: calc(100vw/2);
     /* width: fit-content; */
-	/* width: 57vh; */
+    /* width: 57vh; */
     z-index: 2;
     animation-name: run;
     animation-duration: 2s;
     animation: linear infinite alternate;
-	/* height: 40rem; */
-	width: 30rem;
+    /* height: 40rem; */
+    width: 30rem;
 }

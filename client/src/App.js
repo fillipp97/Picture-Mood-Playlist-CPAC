@@ -67,7 +67,7 @@ class App extends Component {
   }
 
   handleGetSongs = () => {
-    console.log(this.state.loggedIn)
+    // console.log(this.state.loggedIn)
 
     getTracks()
       .then((response) => {
@@ -76,9 +76,9 @@ class App extends Component {
         }
         if (response.result = 'ok') {
           this.setState({ songs: response.songs })
-          console.log(response.songs.map((songobj) =>
-            songobj.track.name
-          ))
+          // console.log(response.songs.map((songobj) =>
+          //   songobj.track.name
+          // ))
           return response.songs
         }
       }).catch(error => {

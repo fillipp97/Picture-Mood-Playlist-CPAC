@@ -4,18 +4,14 @@ import { WebcamCapture } from './Webcam'
 import './LoggedIn.css'
 import Entertainment from "./Entertainment";
 import RenderCovers from "./RenderCovers";
-import {
-  CSSTransition,
-  Transition,
-  TransitionGroup,
-} from 'react-transition-group';
-import axios from "axios";
+
 import FirstFiltering from "./FirstFiltering";
 import { getRecommendedSongs, savePlaylist } from '../Services/ApiService';
 import GeneratePlayList from "./GeneratePlayList";
 import Stepper from "./Stepper";
 import DropDownBox from "./DropDownBox";
 import Balls from "./Balls";
+// import { Balls } from "./Balls";
 class LoggedIn extends Component {
   constructor(props) {
     super(props);
@@ -66,41 +62,42 @@ class LoggedIn extends Component {
     });
   }
 
-  splitVector = (urls) => {
-    const chunkSize = 20;
-    const vertSize = 10;
-    const Matrix = Array();
-    for (let i = 0; i < vertSize * chunkSize; i += chunkSize) {
-      const chunk = Array()
-      for (let j = 0; j < chunkSize; j++) {
-        let index = (i + j + Math.floor(Math.random() * urls.length)) % urls.length
-        chunk.push(urls[index])
-      }
-      Matrix.push(chunk)
-    }
-    return Matrix
-  }
+  // splitVector = (urls) => {
+  //   const chunkSize = 20;
+  //   const vertSize = 10;
+  //   const Matrix = Array();
+  //   for (let i = 0; i < vertSize * chunkSize; i += chunkSize) {
+  //     const chunk = Array()
+  //     for (let j = 0; j < chunkSize; j++) {
+  //       let index = (i + j + Math.floor(Math.random() * urls.length)) % urls.length
+  //       chunk.push(urls[index])
+  //     }
+  //     Matrix.push(chunk)
+  //   }
+  //   return Matrix
+  // }
 
-  renderCovers = () => {
-    const { songs } = this.props;
-    let urls = songs.map((item) =>
-      item.track.album.images[2].url //1 is the most resoluted 2 is the least
-    )
+  // renderCovers = () => {
+  //   const { songs } = this.props;
+  //   let urls = songs.map((item) =>
+  //     item.track.album.images[2].url //1 is the most resoluted 2 is the least
+  //   )
 
-    if (typeof (urls) !== 'undefined' && urls != null) {
-      let vectors = this.splitVector(urls)
-      console.log(vectors)
+  //   if (typeof (urls) !== 'undefined' && urls != null) {
+  //     let vectors = this.splitVector(urls)
 
-      let covers = (vectors.map((url_vector, id) => (
-        <div key={id} className={"cover-container-internal" + (id % 2)} style={{ animationDelay: Math.random() * 3 + 's' }}>
-          {url_vector.map((url, id) => (
-            <img key={id} src={url} ></img>))}
+  //     console.log(vectors)
 
-        </div>
-      )))
-      this.setState(covers)
-    }
-  }
+  //     let covers = (vectors.map((url_vector, id) => (
+  //       <div key={id} className={"cover-container-internal" + (id % 2)} style={{ animationDelay: Math.random() * 3 + 's' }}>
+  //         {url_vector.map((url, id) => (
+  //           <img key={id} src={url} ></img>))}
+
+  //       </div>
+  //     )))
+  //     this.setState(covers)
+  //   }
+  // }
 
 
   handleInputPicture = () => {
@@ -158,7 +155,7 @@ class LoggedIn extends Component {
       getRecommendedSongs(this.state.firstFilteringCallback)
         .then((response) => {
           if (response.result === 'ok') {
-            console.log(response)
+            // console.log(response)
             this.setState({
               recommendedSongs: response.recommendations,
               recommendedLyrics: response.lyrics
@@ -197,7 +194,7 @@ class LoggedIn extends Component {
                 <DropDownBox></DropDownBox>
               </div>
               <div className="cover-container">
-                <Balls />
+                {this.props.songs && <Balls songs={this.props.songs} />}
                 {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
               </div>
             </div>
@@ -223,7 +220,7 @@ class LoggedIn extends Component {
               </div>
               <div className="vignette"></div>
               <div className="cover-container">
-
+                <Balls images={this.props.songs} />
                 {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
               </div>
             </div>
