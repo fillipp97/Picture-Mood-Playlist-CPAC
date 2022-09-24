@@ -11,7 +11,8 @@ import {
 } from 'react-transition-group';
 import axios from "axios";
 import FirstFiltering from "./FirstFiltering";
-import { getRecommendedSongs, savePlaylist } from '../Services/ApiService';
+import ImageStep from "./ImageStep";
+import { uploadFile, getRecommendedSongs, savePlaylist } from '../Services/ApiService';
 import GeneratePlayList from "./GeneratePlayList";
 import Stepper from "./Stepper";
 import DropDownBox from "./DropDownBox";
@@ -23,6 +24,7 @@ class LoggedIn extends Component {
       useWebcam: 0,
       ImageUploaded: false,
       handleLogout: props.handleLogout,
+      imageStepCallback: null,
       imageStepResults: null,
       firstFilteringCallback: null,
       firstFilteringResults: null,
@@ -53,7 +55,7 @@ class LoggedIn extends Component {
   }
 
   resetImageStep = () => {
-    this.setState({ ImageUploaded: false })
+    this.setState({ imageStepCallback: null })
     this.setState({ imageStepResults: null })
   }
 
@@ -68,8 +70,9 @@ class LoggedIn extends Component {
   }
 
   isLoading = () => {
-    return (this.state.playListGenerationCallback && !this.state.playListGenerationResults) ||
-    (this.state.firstFilteringCallback && ! this.state.firstFilteringResults)
+    return (this.state.imageStepCallback && !this.state.imageStepResults) ||
+      (this.state.playListGenerationCallback && !this.state.playListGenerationResults) ||
+      (this.state.firstFilteringCallback && !this.state.firstFilteringResults)
   }
 
   componentDidMount() {
@@ -120,7 +123,6 @@ class LoggedIn extends Component {
     }
   }
 
-
   handleInputPicture = () => {
     this.setState({ useWebcam: 2 }, console.warn('useWebcam', 2)) //show CHOOSE FILE button
   }
@@ -133,36 +135,9 @@ class LoggedIn extends Component {
 
 
   render() {
-    const { useWebcam } = this.state;
-    let imageStep;
-    if (useWebcam === 0) {
-      imageStep = (
-        <>
-          <div className="uploadChoiceContainer">
-
-            <button className='Button' onClick={this.handleInputPicture}>Upload Picture</button>
-            <button className='Button' onClick={this.handleInputCamera}>Take a Picture</button>
-            <button className='Button' onClick={this.props.logout}>Logout</button>
-          </div>
-        </>
-      )
-    }
-    if (useWebcam === 1) {
-      imageStep = (
-        <>
-          <WebcamCapture onUpload={this.pictureUploaded} />
-          <button className='Button camera' onClick={this.handleBack}>Back</button>
-        </>
-      )
-
-    }
-    if (useWebcam === 2) {
-      imageStep = (<>
-        <UploadImage onUpload={this.pictureUploaded}></UploadImage>
-        <button className='Button camera' onClick={this.handleBack}>Back</button>
-      </>
-      )
-    }
+    const imageStepCallback = (file) => {
+      this.setState({ imageStepCallback: true }, handleUpload(file))
+    };
 
     const firstFilteringCallback = (value) => {
       this.setState({ firstFilteringCallback: value }, handleGetRecommended)
@@ -170,6 +145,16 @@ class LoggedIn extends Component {
 
     const generatePlayListCallback = (value) => {
       this.setState({ playListGenerationCallback: value }, handleSavePlaylist)
+    }
+
+
+    const handleUpload = (file) => {
+      uploadFile(file.image)
+        .then(response => {
+          this.setState({
+            imageStepResults: response
+          });
+        })
     }
 
     const handleGetRecommended = () => {
@@ -204,12 +189,21 @@ class LoggedIn extends Component {
             2 - the other part of code is active 
             Doing so it is possible to "mute" imageStepResults while showing recommendedSongsResults*/}
         {
-          !this.state.imageStepResults && <>
+          <>
             <div className="logged-container">
-
               <div className="foreground">
-                <h1 >Upload Your Image!</h1>
-                {imageStep}
+                <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} />
+                {this.isLoading() && <span>LOADING...</span>}
+                {!this.state.imageStepCallback &&
+                  <ImageStep callback={imageStepCallback} />
+                }
+                {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
+                  <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
+                }
+                {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
+                  <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={generatePlayListCallback} />
+                }
+                {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
               </div>
               <div className="vignette">
                 <DropDownBox></DropDownBox>
@@ -220,58 +214,7 @@ class LoggedIn extends Component {
               </div>
             </div>
           </>
-
-
-
         }
-
-        {
-          this.state.imageStepResults &&
-          <>
-            <div className="logged-container">
-              <div className="foreground">
-                <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} />
-                {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
-                  <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
-                }
-                {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
-                  <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={generatePlayListCallback} />
-                }
-                {this.isLoading && <span>LOADING...</span>}
-                {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
-              </div>
-              <div className="vignette"></div>
-              <div className="cover-container">
-
-                {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
-              </div>
-            </div>
-          </>
-        }
-
-        {
-          this.state.songsStepController === 1 &&
-          <>
-
-            <div>songsStepController is {this.state.songsStepController}</div>
-
-          </>
-        }
-
-
-        {
-          this.state.songsStepController === 2 &&
-          <>
-
-            <div>songsStepController is {this.state.songsStepController}</div>
-
-          </>
-        }
-
-
-
-
-
       </>
     )
   }

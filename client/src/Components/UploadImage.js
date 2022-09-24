@@ -1,9 +1,17 @@
-
 import { Component } from "react";
-import UploadButton from "./UploadButton";
 import './UploadImage.css'
 
 class UploadImage extends Component{
+  sendPicture;
+
+  constructor(props){
+    super(props);
+    this.sendPicture = () => {
+      props.callback({
+          image: this.state.selectedFile
+      });
+  };
+  }
 
     state = {
  
@@ -11,12 +19,14 @@ class UploadImage extends Component{
         selectedFile: null,
         active: ''
       };
+
+      
       
       // On file select (from the pop up)
       onFileChange = event => {
       
         // Update the state
-        this.setState({ selectedFile: event.target.files[0], active: 'A' });
+        event.target.files[0] && this.setState({ selectedFile: event.target.files[0], active: 'A' });
       
       };
       
@@ -41,7 +51,7 @@ class UploadImage extends Component{
                   <input type="file" name="file" id="file" accept="image/png , image/gif , image/jpeg"   className='custom-file-input' onChange={this.onFileChange} />
                   <label htmlFor="file" className="Button">Choose File</label>
 
-                  <UploadButton file={this.state.selectedFile} onUpload={this.props.onUpload}></UploadButton>
+                  <button disabled={!this.state.selectedFile} onClick={this.sendPicture} className="Button upload">Upload</button>
               </div>
           </div>
         );

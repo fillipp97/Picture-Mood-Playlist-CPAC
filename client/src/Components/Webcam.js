@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Webcam from "react-webcam";
-import UploadButton from './UploadButton';
 import {  useEffect } from 'react';
 
 function getWindowDimensions() {
@@ -19,11 +18,17 @@ const videoConstraints = {
     facingMode: "user"
 };
 
-export const WebcamCapture = ({onUpload}) => {
+export const WebcamCapture = ({callback}) => {
 
     const [image,setImage]=useState('');
     const webcamRef = React.useRef(null);
     const {height,width}=useWindowDimensions();
+
+    const sendPicture = () => {
+        callback({
+            image: b64toBlob(image)
+        });
+    };
     
     const capture = React.useCallback(
         () => {
@@ -82,7 +87,7 @@ export const WebcamCapture = ({onUpload}) => {
                     }}
                         className="Button camera">
                         Retake Image</button>
-                        <UploadButton file={b64toBlob(image)} onUpload={onUpload}></UploadButton>
+                        <button onClick={sendPicture} className="Button upload">Upload</button>
                         </>
                         )
                          :
