@@ -21,8 +21,6 @@ class LoggedIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      useWebcam: 0,
-      ImageUploaded: false,
       handleLogout: props.handleLogout,
       imageStepCallback: null,
       imageStepResults: null,
@@ -123,64 +121,49 @@ class LoggedIn extends Component {
     }
   }
 
-  handleInputPicture = () => {
-    this.setState({ useWebcam: 2 }, console.warn('useWebcam', 2)) //show CHOOSE FILE button
-  }
-  handleInputCamera = () => {
-    this.setState({ useWebcam: 1 }, console.warn('useWebcam', 1)) //show CAMERA input
-  }
-  handleBack = () => {
-    this.setState({ useWebcam: 0 }, console.warn('useWebcam', 0)) //show selection between file/camera
+
+  imageStepCallback = (file) => {
+    this.setState({ imageStepCallback: true }, this.handleUpload(file))
+  };
+  handleUpload = (file) => {
+    uploadFile(file.image)
+      .then(response => {
+        this.setState({
+          imageStepResults: response
+        });
+      })
   }
 
+  firstFilteringCallback = (value) => {
+    this.setState({ firstFilteringCallback: value }, this.handleGetRecommended)
+  }
+  handleGetRecommended = () => {
+    getRecommendedSongs(this.state.firstFilteringCallback)
+      .then((response) => {
+        if (response.result === 'ok') {
+          console.log(response)
+          this.setState({
+            recommendedSongs: response.recommendations,
+            recommendedLyrics: response.lyrics
+          })
+          this.setState({ firstFilteringResults: response });
+        }
+      });
+  }
+
+  generatePlayListCallback = (value) => {
+    this.setState({ playListGenerationCallback: value }, this.handleSavePlaylist)
+  }
+  handleSavePlaylist = () => {
+    savePlaylist(this.state.playListGenerationCallback)
+      .then((response) => {
+        if (response.result === 'ok') {
+          this.setState({ playListGenerationResults: response });
+        }
+      });
+  }
 
   render() {
-    const imageStepCallback = (file) => {
-      this.setState({ imageStepCallback: true }, handleUpload(file))
-    };
-
-    const firstFilteringCallback = (value) => {
-      this.setState({ firstFilteringCallback: value }, handleGetRecommended)
-    }
-
-    const generatePlayListCallback = (value) => {
-      this.setState({ playListGenerationCallback: value }, handleSavePlaylist)
-    }
-
-
-    const handleUpload = (file) => {
-      uploadFile(file.image)
-        .then(response => {
-          this.setState({
-            imageStepResults: response
-          });
-        })
-    }
-
-    const handleGetRecommended = () => {
-      getRecommendedSongs(this.state.firstFilteringCallback)
-        .then((response) => {
-          if (response.result === 'ok') {
-            console.log(response)
-            this.setState({
-              recommendedSongs: response.recommendations,
-              recommendedLyrics: response.lyrics
-            })
-            this.setState({ firstFilteringResults: response });
-          }
-        });
-    }
-
-    const handleSavePlaylist = () => {
-      savePlaylist(this.state.playListGenerationCallback)
-        .then((response) => {
-          if (response.result === 'ok') {
-            this.setState({ playListGenerationResults: response });
-          }
-        });
-    }
-
-
     return (
       <>
         {/* Three states are needed for each of the upcoming components:
@@ -195,13 +178,13 @@ class LoggedIn extends Component {
                 <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} />
                 {this.isLoading() && <span>LOADING...</span>}
                 {!this.state.imageStepCallback &&
-                  <ImageStep callback={imageStepCallback} />
+                  <ImageStep callback={this.imageStepCallback} />
                 }
                 {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
-                  <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={firstFilteringCallback} />
+                  <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={this.firstFilteringCallback} />
                 }
                 {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
-                  <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={generatePlayListCallback} />
+                  <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={this.generatePlayListCallback} />
                 }
                 {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
               </div>
