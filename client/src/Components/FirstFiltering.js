@@ -70,35 +70,43 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
             <div className="Informations">
                 <p>Your mood is {mood} or {moodLLF}</p>
                 <p>Objects we found in your picture:</p>
+				<div className="Information">
                 {objects.map((item) => (
                     <label key={item}>
                         <input type="checkbox" key={item} value={item} onChange={(e) => checkObject(item, e.target.checked)} />
                         {item}
                     </label>
                 ))}
+				</div>
                 <p>Some artists you might like:</p>
+				<div className="Information">
                 {artists.map((item) => (
                     <label key={item.id}>
                         <input type="checkbox" key={item.id} value={item} onChange={(e) => checkArtist(item, e.target.checked)} />
                         {item.name}
                     </label>
                 ))}
+				</div>
                 <p>Some genres you might like:</p>
+				<div className="Information">
                 {genres.map((item) => (
                     <label key={item}>
                         <input type="checkbox" key={item} value={item} onChange={(e) => checkGenre(item, e.target.checked)} />
                         {item}
                     </label>
                 ))}
+				</div>
                 <p>Some tracks you might like:</p>
+				<div className="Information">
                 {tracks.map((item) => (
                     <label key={item.id}>
                         <input type="checkbox" key={item.id} value={item.id} onChange={(e) => checkTrack(item, e.target.checked)} />
                         {item.name}
                     </label>
                 ))}
+				</div>
             </div>
-            <button className="Button" onClick={sendPreferences}>Send Song Request</button>
+            <button className="Button" onClick={sendPreferences}>Send Request</button>
         </>
     )
 }
