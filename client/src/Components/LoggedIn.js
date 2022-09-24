@@ -24,7 +24,6 @@ class LoggedIn extends Component {
       ImageUploaded: false,
       handleLogout: props.handleLogout,
       imageStepResults: null,
-      imageStepController: 1,
       firstFilteringCallback: null,
       firstFilteringResults: null,
       playListGenerationCallback: null,
@@ -36,33 +35,52 @@ class LoggedIn extends Component {
   getStepperSteps = (state) => {
     return [
       { name: 'Picture', enabled: true },
-      { name: 'Make choices', enabled: true },
+      { name: 'Make choices', enabled: !!state.imageStepResults },
       { name: 'Create playlist', enabled: !!state.firstFilteringCallback },
       { name: 'Enjoy', enabled: !!state.playListGenerationCallback }
     ]
   }
 
   handleStepperCallback = (step) => {
-    if (step.name === 'Create playlist') {
-      this.setState({ playListGenerationCallback: null })
-      this.setState({ playListGenerationResults: null })
+    switch (step.name) {
+      case 'Picture':
+        this.resetImageStep();
+      case 'Make choices':
+        this.resetFirstFiltering();
+      case 'Create playlist':
+        this.resetPlayListGeneration();
     }
+  }
 
-    if (step.name === 'Create playlist' || step.name === 'Make choices') {
-      this.setState({ firstFilteringCallback: null })
-      this.setState({ firstFilteringResults: null })
-    }
+  resetImageStep = () => {
+    this.setState({ ImageUploaded: false })
+    this.setState({ imageStepResults: null })
+  }
+
+  resetFirstFiltering = () => {
+    this.setState({ firstFilteringCallback: null })
+    this.setState({ firstFilteringResults: null })
+  }
+
+  resetPlayListGeneration = () => {
+    this.setState({ playListGenerationCallback: null })
+    this.setState({ playListGenerationResults: null })
+  }
+
+  isLoading = () => {
+    return (this.state.playListGenerationCallback && !this.state.playListGenerationResults) ||
+    (this.state.firstFilteringCallback && ! this.state.firstFilteringResults)
   }
 
   componentDidMount() {
     this.props.handleGetSongs()
   }
 
-  pictureUploaded = (results) => {
+  pictureUploaded = (results) => { //got back results from picture uploadFile API call
+    console.warn('pictureUploaded', true)
     this.setState({ ImageUploaded: true })
     this.setState({
-      imageStepResults: results,
-      imageStepController: 2
+      imageStepResults: results
     });
   }
 
@@ -104,21 +122,21 @@ class LoggedIn extends Component {
 
 
   handleInputPicture = () => {
-    this.setState({ useWebcam: 2 })
+    this.setState({ useWebcam: 2 }, console.warn('useWebcam', 2)) //show CHOOSE FILE button
   }
   handleInputCamera = () => {
-    this.setState({ useWebcam: 1 })
+    this.setState({ useWebcam: 1 }, console.warn('useWebcam', 1)) //show CAMERA input
   }
   handleBack = () => {
-    this.setState({ useWebcam: 0 })
+    this.setState({ useWebcam: 0 }, console.warn('useWebcam', 0)) //show selection between file/camera
   }
 
 
   render() {
     const { useWebcam } = this.state;
-    let input;
+    let imageStep;
     if (useWebcam === 0) {
-      input = (
+      imageStep = (
         <>
           <div className="uploadChoiceContainer">
 
@@ -130,7 +148,7 @@ class LoggedIn extends Component {
       )
     }
     if (useWebcam === 1) {
-      input = (
+      imageStep = (
         <>
           <WebcamCapture onUpload={this.pictureUploaded} />
           <button className='Button camera' onClick={this.handleBack}>Back</button>
@@ -139,7 +157,7 @@ class LoggedIn extends Component {
 
     }
     if (useWebcam === 2) {
-      input = (<>
+      imageStep = (<>
         <UploadImage onUpload={this.pictureUploaded}></UploadImage>
         <button className='Button camera' onClick={this.handleBack}>Back</button>
       </>
@@ -186,12 +204,12 @@ class LoggedIn extends Component {
             2 - the other part of code is active 
             Doing so it is possible to "mute" imageStepResults while showing recommendedSongsResults*/}
         {
-          this.state.imageStepController === 1 && <>
+          !this.state.imageStepResults && <>
             <div className="logged-container">
 
               <div className="foreground">
                 <h1 >Upload Your Image!</h1>
-                {input}
+                {imageStep}
               </div>
               <div className="vignette">
                 <DropDownBox></DropDownBox>
@@ -208,7 +226,7 @@ class LoggedIn extends Component {
         }
 
         {
-          this.state.imageStepController === 2 &&
+          this.state.imageStepResults &&
           <>
             <div className="logged-container">
               <div className="foreground">
@@ -219,6 +237,7 @@ class LoggedIn extends Component {
                 {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
                   <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={generatePlayListCallback} />
                 }
+                {this.isLoading && <span>LOADING...</span>}
                 {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
               </div>
               <div className="vignette"></div>
