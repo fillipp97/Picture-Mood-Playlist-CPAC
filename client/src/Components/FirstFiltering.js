@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import './FirstFiltering.css'
 export default function FirstFiltering({ firstFilteringInput, callback }) {
     const mood = firstFilteringInput.mood
     const moodLLF = firstFilteringInput.moodLLF
@@ -67,16 +67,18 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
 
     return (
         <>
-
-            <div className="firstFiltering">
+            <div className="Informations">
                 <p>Your mood is {mood} or {moodLLF}</p>
                 <p>Objects we found in your picture:</p>
+				<div className="Information">
                 {objects.map((item) => (
                     <label key={item}>
                         <input type="checkbox" key={item} value={item} onChange={(e) => checkObject(item, e.target.checked)} />
                         {item}
                     </label>
                 ))}
+				</div>
+				<div className="Information">
                 <p>Some artists you might like:</p>
                 {artists.map((item) => (
                     <label key={item.id}>
@@ -84,6 +86,8 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
                         {item.name}
                     </label>
                 ))}
+				</div>
+				<div className="Information">
                 <p>Some genres you might like:</p>
                 {genres.map((item) => (
                     <label key={item}>
@@ -91,6 +95,8 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
                         {item}
                     </label>
                 ))}
+				</div>
+				<div className="Information">
                 <p>Some tracks you might like:</p>
                 {tracks.map((item) => (
                     <label key={item.id}>
@@ -98,6 +104,7 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
                         {item.name}
                     </label>
                 ))}
+				</div>
                 <button className="Button" onClick={sendPreferences}>Send Song Request</button>
             </div>
 
