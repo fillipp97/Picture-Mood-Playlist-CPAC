@@ -1,9 +1,9 @@
 #%%
 # Import libraries
-from cgitb import reset
+
 from pathlib import Path
 import sys
-
+from sorcery import dict_of
 
 sys.path.append(str(Path(__file__).parent))
 
@@ -304,6 +304,7 @@ def create_new_playlist(
     playlist_id = playlist.get("id")
     sp.user_playlist_add_tracks(user, playlist_id, tracks, position=None)
 
+
 def get_par_from_mood(mood, genres):
 
     if mood == "angry" or mood == "nervous":
@@ -400,6 +401,7 @@ def get_par_from_mood(mood, genres):
             "holidays",
             "idm",
             "jazz",
+            "sleep",
         ]
         min_valence = 0.6
         max_energy = 0.5

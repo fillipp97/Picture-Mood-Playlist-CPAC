@@ -11,20 +11,19 @@ let gravity = -0.2;  //-0.3
 let damping = 0.9;  //0.8
 
 export default (props) => {
-    const [urls, setUrls] = useState(255);
     let images = []
     function windowResized(p5) {
+
         p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
     }
 
-    const preload = (p5) => {
-        if (props.songs !== undefined) {
-            console.log(props.songs[0].track.album.images[2].url)
-            for (let i = 0; i < numBalls; i++) {
-                // images[i] = p5.loadImage(props.songs[i].track.album.images[0].url)
-                console.log(props.songs[i].track.album.images[2].url)
-            }
+    const preload = async (p5) => {
+        for (let i = 0; i < numBalls; i++) {
+            let image = await p5.loadImage(props.songs[i].track.album.images[2].url)
+            console.log(image)
+            images.push(image)
         }
+
     }
 
     const mouseReleased = (p5) => {
@@ -55,7 +54,7 @@ export default (props) => {
                 p5.createVector(p5.random(-(p5.windowWidth / 2), (p5.windowWidth / 2)), p5.random(-(p5.windowHeight / 2), (p5.windowHeight / 2))),
                 p5.constructor.Vector.random2D().mult(p5.random(10)),
                 p5.random(50, 80),
-                urls[i],
+                images[i % images.length],
                 p5
             ));
 
@@ -78,6 +77,12 @@ export default (props) => {
 
             }
         }
+        // let ballArea = balls.map((ball) => { return 2 * 3.14 * ball.radius ^ 2 })
+        // let totalBalls = ballArea.reduce((partial, x) => partial + x, 0)
+
+        // if (p5.windowHeight * p5.windowWidth <= 10 * totalBalls) {
+        //     balls.pop()
+        // }
 
 
         for (let i = 0; i < balls.length; i++) {
@@ -90,7 +95,7 @@ export default (props) => {
 
     };
 
-    return <Sketch setup={setup} draw={draw} windowResized={windowResized} mouseReleased={mouseReleased} mousePressed={mousePressed} />;
+    return <Sketch preload={preload} setup={setup} draw={draw} windowResized={windowResized} mouseReleased={mouseReleased} mousePressed={mousePressed} />;
 };
 
 

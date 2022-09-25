@@ -1,6 +1,4 @@
-// import React from 'react'
-// import ReactDOM from 'react-dom'
-import './App.css';
+
 import { isLoggedIn, logIn, getTracks, getRecommendedSongs } from './Services/ApiService';
 import { Component } from 'react';
 
@@ -90,30 +88,26 @@ class App extends Component {
   //generate <NotLoggedIn>js or <LoggedIn>js and create action to next page
   render() {
     return (this.state.applicationError ? (<h1>Application error <GlobalStyle />: {this.state.applicationError.statusText}</h1>) : (
-      <div className='root'>
+      <>
         <GlobalStyle />
         <div className="App">
-          <header className="App-header">
-            <div className='mainContainer'>
 
-              {this.state.loggedIn === 1 && <NotLoggedIn
-                login={this.state.loggedIn}
-                onClick={this.handleOnClickLogin}
-              >
+          {this.state.loggedIn === 1 && <NotLoggedIn
+            login={this.state.loggedIn}
+            onClick={this.handleOnClickLogin}
+          >
 
-              </NotLoggedIn>}
+          </NotLoggedIn>}
 
-              {this.state.loggedIn === 2 && <LoggedIn
-                login={this.state.loggedIn}
-                handleGetSongs={this.handleGetSongs}
-                songs={this.state.songs}
-                logout={this.logout}>
-              </LoggedIn>}
+          {this.state.loggedIn === 2 && <LoggedIn
+            login={this.state.loggedIn}
+            handleGetSongs={this.handleGetSongs}
+            songs={this.state.songs}
+            logout={this.logout}>
+          </LoggedIn>}
 
-            </div>
-          </header>
         </div>
-      </div>
+      </>
     ));
   }
 }

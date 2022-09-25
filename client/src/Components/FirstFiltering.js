@@ -67,7 +67,8 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
 
     return (
         <>
-            <div style={{ background: "gray" }}>
+
+            <div className="firstFiltering">
                 <p>Your mood is {mood} or {moodLLF}</p>
                 <p>Objects we found in your picture:</p>
                 {objects.map((item) => (
@@ -97,8 +98,9 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
                         {item.name}
                     </label>
                 ))}
+                <button className="Button" onClick={sendPreferences}>Send Song Request</button>
             </div>
-            <button className="Button" onClick={sendPreferences}>Send Song Request</button>
+
         </>
     )
 }

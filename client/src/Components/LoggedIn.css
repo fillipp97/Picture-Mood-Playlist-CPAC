@@ -5,21 +5,21 @@
 
 }*/
 
-.vignette {
+/* .vignette {
     background: radial-gradient(#000000, #585858);
     position: absolute;
     top: 0;
-    height: 100%;
-    width: 100%;
+    /* height: 100%;
+    width: 100%; *'/
     z-index: 1;
     opacity: 75%;
 }
 
-.cover-container{
-    height: 100%;
-    width: 100%;
+.cover-container {
+    /* height: 100%;
+    width: 100%; *'/
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     margin-top: 0px;
     overflow: hidden;
     position: absolute;
@@ -100,11 +100,11 @@
     transform: translate(-50%);
     left: calc(100vw/2);
     /* width: fit-content; */
-    /* width: 57vh; */
+/* width: 57vh; *'/
     z-index: 2;
     animation-name: run;
     animation-duration: 2s;
     animation: linear infinite alternate;
-    /* height: 40rem; */
+    /* height: 40rem; *'/
     width: 30rem;
-}
+} */

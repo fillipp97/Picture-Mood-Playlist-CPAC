@@ -2,7 +2,10 @@ import { Component } from "react";
 import UploadImage from './UploadImage';
 import { WebcamCapture } from './Webcam'
 import './LoggedIn.css'
-import Entertainment from "./Entertainment";
+
+import { MdPhotoCamera, MdTitle } from 'react-icons/md'
+import { BiGame, BiLogOutCircle } from 'react-icons/bi'
+import { BsMusicNoteList } from 'react-icons/bs'
 import RenderCovers from "./RenderCovers";
 
 import FirstFiltering from "./FirstFiltering";
@@ -10,9 +13,8 @@ import ImageStep from "./ImageStep";
 import { uploadFile, getRecommendedSongs, savePlaylist } from '../Services/ApiService';
 import GeneratePlayList from "./GeneratePlayList";
 import Stepper from "./Stepper";
-import DropDownBox from "./DropDownBox";
+
 import Balls from "./Balls";
-// import { Balls } from "./Balls";
 class LoggedIn extends Component {
   constructor(props) {
     super(props);
@@ -30,10 +32,11 @@ class LoggedIn extends Component {
   }
   getStepperSteps = (state) => {
     return [
-      { name: 'Picture', enabled: true },
-      { name: 'Make choices', enabled: !!state.imageStepResults },
-      { name: 'Create playlist', enabled: !!state.firstFilteringCallback },
-      { name: 'Enjoy', enabled: !!state.playListGenerationCallback }
+      { name: 'Picture', icon: <MdPhotoCamera />, enabled: true },
+      { name: 'Make choices', icon: <BiGame />, enabled: !!state.imageStepResults },
+      { name: 'Create playlist', icon: <MdTitle />, enabled: !!state.firstFilteringCallback },
+      { name: 'Enjoy', icon: <BsMusicNoteList />, enabled: !!state.playListGenerationCallback },
+      { name: 'Logout', icon: <BiLogOutCircle />, enabled: true }
     ]
   }
 
@@ -45,6 +48,10 @@ class LoggedIn extends Component {
         this.resetFirstFiltering();
       case 'Create playlist':
         this.resetPlayListGeneration();
+      case 'Logout':
+        this.props.logout();
+
+
     }
   }
 
@@ -81,48 +88,6 @@ class LoggedIn extends Component {
     });
   }
 
-  // splitVector = (urls) => {
-  //   const chunkSize = 20;
-  //   const vertSize = 10;
-  //   const Matrix = Array();
-  //   for (let i = 0; i < vertSize * chunkSize; i += chunkSize) {
-  //     const chunk = Array()
-  //     for (let j = 0; j < chunkSize; j++) {
-  //       let index = (i + j + Math.floor(Math.random() * urls.length)) % urls.length
-  //       chunk.push(urls[index])
-  //     }
-  //     Matrix.push(chunk)
-  //   }
-  //   return Matrix
-  // }
-
-  // renderCovers = () => {
-  //   const { songs } = this.props;
-  //   let urls = songs.map((item) =>
-  //     item.track.album.images[2].url //1 is the most resoluted 2 is the least
-  //   )
-
-  //   if (typeof (urls) !== 'undefined' && urls != null) {
-  //     let vectors = this.splitVector(urls)
-
-  //     console.log(vectors)
-
-  //     let covers = (vectors.map((url_vector, id) => (
-  //       <div key={id} className={"cover-container-internal" + (id % 2)} style={{ animationDelay: Math.random() * 3 + 's' }}>
-  //         {url_vector.map((url, id) => (
-  //           <img key={id} src={url} ></img>))}
-
-  //       </div>
-  //     )))
-  //     this.setState(covers)
-  //   }
-  // }
-
-  //       </div>
-  //     )))
-  //     this.setState(covers)
-  //   }
-  // }
 
   imageStepCallback = (file) => {
     this.setState({ imageStepCallback: true }, this.handleUpload(file))
@@ -168,33 +133,34 @@ class LoggedIn extends Component {
   render() {
     return (
       <>
-        {/* Three states are needed for each of the upcoming components:
-            0 - all not showing
-            1 - one part of code is active
-            2 - the other part of code is active 
-            Doing so it is possible to "mute" imageStepResults while showing recommendedSongsResults*/}
+
         {
           <>
             <div className="logged-container">
+              <header id="App-header" className="App-header"> <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} /> </header>
+
+
               <div className="foreground">
-                <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} />
-                {this.isLoading() && <span>LOADING...</span>}
-                {!this.state.imageStepCallback &&
-                  <ImageStep callback={this.imageStepCallback} />
-                }
-                {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
-                  <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={this.firstFilteringCallback} />
-                }
-                {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
-                  <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={this.generatePlayListCallback} />
-                }
-                {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
-              </div>
-              <div className="vignette">
-                <DropDownBox></DropDownBox>
+                <div className="content">
+                  {this.isLoading() && <span>LOADING...</span>}
+
+                  {!this.state.imageStepCallback &&
+                    <ImageStep callback={this.imageStepCallback} />
+                  }
+                  {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
+                    <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={this.firstFilteringCallback} />
+                  }
+                  {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
+                    <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={this.generatePlayListCallback} />
+                  }
+                  {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
+                </div>
               </div>
               <div className="cover-container">
-                <Balls images={this.props.songs} />
+                {this.props.songs.length > 0 && <Balls songs={this.props.songs} />}
+
+
+
                 {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
               </div>
             </div>
