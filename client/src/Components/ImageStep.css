@@ -7,9 +7,12 @@
 	margin-bottom: 1rem;
 	height:auto;
 	/* height: 3rem; */
-	/* transition: height 2s; */
+	/* transition: height 0.8s; */
 	/* transition: height 1s ease; */
 	/* -webkit-transition: height 1s ease; */
+}
+.controlBar:hover{
+	/* height:10rem; */
 }
 .iniBar{
 	/* height:5rem; */
