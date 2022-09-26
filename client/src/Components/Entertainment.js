@@ -47,10 +47,10 @@ class Entertainment extends Component {
     }
 
     incrementStepper = () => {
-        this.setState({ step: this.state.step + 1 })
+        setTimeout(() => { this.setState({ step: this.state.step + 1 }) }, 4000)
     }
     incrementStepperQuotations = () => {
-        this.setState({ step: this.state.step + 2 })
+        setTimeout(() => { this.setState({ step: this.state.step + 2 }) }, 4000)
     }
     render() {
         let { mood, moodLLF, objects, artists, tracks } = this.props

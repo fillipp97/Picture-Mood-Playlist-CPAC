@@ -18,7 +18,7 @@ class EntQuotations extends Component {
     displayNextTimer = () => {
         setTimeout(() => {
             this.setState({ step: this.state.step + 1 })
-        }, 2000) // delay
+        }, 3000) // delay
     }
 
     render() {
@@ -31,7 +31,7 @@ class EntQuotations extends Component {
 
                 {this.state.step >= 0 && <FadeInLefth1 className="citation" text={sentences[mood][index][0]} timer={this.displayNextTimer} />}
                 {this.state.step >= 1 && <FadeInLefth1 className="author" text={sentences[mood][index][1]} timer={this.displayNextTimer} />}
-                {this.state.step >= 2 && <FadeInLefth1 className="author" text={sentences[mood + "_res"][indexRes]} />}
+                {this.state.step >= 2 && <FadeInLefth1 className="author" text={sentences[mood + "_res"][indexRes]} timer={this.props.incrementStepper} />}
 
             </div>
 
