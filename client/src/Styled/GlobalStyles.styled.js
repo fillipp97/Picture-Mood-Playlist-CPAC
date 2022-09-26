@@ -39,6 +39,7 @@ export const GlobalStyle = createGlobalStyle`
   width: 100%;
   overflow-y: scroll;
   text-align: center;
+
 }
 
 .content{
@@ -48,6 +49,8 @@ export const GlobalStyle = createGlobalStyle`
   /* text-align: justify; */
 
 }
+
+
 /*
 .App {
   text-align: center;

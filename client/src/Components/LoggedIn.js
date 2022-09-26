@@ -13,7 +13,7 @@ import ImageStep from "./ImageStep";
 import { uploadFile, getRecommendedSongs, savePlaylist } from '../Services/ApiService';
 import GeneratePlayList from "./GeneratePlayList";
 import Stepper from "./Stepper";
-
+import { BounceLoader } from 'react-spinners'
 import Balls from "./Balls";
 class LoggedIn extends Component {
   constructor(props) {
@@ -41,15 +41,16 @@ class LoggedIn extends Component {
   }
 
   handleStepperCallback = (step) => {
+    console.log(step.name)
     switch (step.name) {
       case 'Picture':
-        this.resetImageStep();
+        return this.resetImageStep();
       case 'Make choices':
-        this.resetFirstFiltering();
+        return this.resetFirstFiltering();
       case 'Create playlist':
-        this.resetPlayListGeneration();
+        return this.resetPlayListGeneration();
       case 'Logout':
-        this.props.logout();
+        return this.props.logout();
 
 
     }
@@ -142,7 +143,7 @@ class LoggedIn extends Component {
 
               <div className="foreground">
                 <div className="content">
-                  {this.isLoading() && <span>LOADING...</span>}
+                  <BounceLoader className="loader" loading={this.isLoading()} />
 
                   {!this.state.imageStepCallback &&
                     <ImageStep callback={this.imageStepCallback} />

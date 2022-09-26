@@ -5,9 +5,9 @@ import { BackgroundColor, PrimaryColor, SecondaryColor } from "../Styled/Colors.
 import { useEffect, useState } from "react";
 import "./Balls.css"
 
-let numBalls = 25;
+let numBalls = 60;
 let balls = [];
-let gravity = -0.2;  //-0.3
+let gravity = -0.001;  //-0.3
 let damping = 0.9;  //0.8
 
 export default (props) => {
@@ -19,10 +19,10 @@ export default (props) => {
 
     const preload = async (p5) => {
         for (let i = 0; i < numBalls; i++) {
-            let image = await p5.loadImage(props.songs[i].track.album.images[2].url)
-            console.log(image)
+            let image = await p5.loadImage(props.songs[i].track.album.images[1].url)
             images.push(image)
         }
+
 
     }
 
@@ -77,11 +77,21 @@ export default (props) => {
 
             }
         }
-        // let ballArea = balls.map((ball) => { return 2 * 3.14 * ball.radius ^ 2 })
-        // let totalBalls = ballArea.reduce((partial, x) => partial + x, 0)
+        let ballArea = balls.map((ball) => { return 2 * 3.14 * ball.radius ^ 2 })
+        let totalBalls = ballArea.reduce((partial, x) => partial + x, 0)
 
-        // if (p5.windowHeight * p5.windowWidth <= 10 * totalBalls) {
+        // if (p5.windowHeight * p5.windowWidth <= 50 * totalBalls) {
         //     balls.pop()
+        // } else if (p5.windowHeight * p5.windowWidth > 100 * totalBalls) {
+        //     if (balls.length < numBalls) {
+        //         balls.push(new Ball(
+        //             p5.createVector(p5.random(-(p5.windowWidth / 2), (p5.windowWidth / 2)), p5.random(-(p5.windowHeight / 2), (p5.windowHeight / 2))),
+        //             p5.constructor.Vector.random2D().mult(p5.random(10)),
+        //             p5.random(50, 80),
+        //             images[p5.random(balls.length)],
+        //             p5
+        //         ));
+        //     }
         // }
 
 
@@ -223,11 +233,11 @@ class Ball {
 
     }
     render() {
-        this.p5.fill(this.color);
+        // this.p5.fill(this.color);
         this.p5.ellipse(this.pos.x, this.pos.y, this.radius * 2);
         this.p5.stroke(255)
         this.p5.strokeWeight(5)
-        // this.p5.texture(this.image);
+        this.p5.texture(this.image);
 
 
     }

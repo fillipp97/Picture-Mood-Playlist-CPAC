@@ -50,7 +50,7 @@ target_mode=1
 # from asyncio.windows_events import NULL
 
 
-def get_par_from_mood(mood, genres):
+def get_par_from_mood(mood, genres, tracks):
 
     if mood == "angry" or mood == "nervous":
         related_genres = [
@@ -66,20 +66,23 @@ def get_par_from_mood(mood, genres):
         max_valence = 0.3
         parameters = dict_of(min_energy, max_valence, min_speechiness)
         genres.append(random.choice(related_genres))
-    elif (
-        mood == "fearful"
-        or mood == "disgusted"
-        or mood == "contempt"
-        or mood == "anxious"
-        or mood == "terror"
-    ):
-        related_genres = ["black-metal", "death-metal", "grindcore"]
+    elif mood == "fearful" or mood == "anxious" or mood == "terror":
+        # related_genres = ["black-metal", "death-metal", "grindcore", "pop-music"]
+        tracks.append(
+            random.choice(["5g8eyYQqxmudGG4lt6xOvF", "2L1OXzqVPpVxotHfLglUcB",'0v7IcP1aFArv5ZQCEeGhJy'])
+        )
+        max_energy = 0.5
+        max_valence = 0.4
+        max_speechiness = 0.5
+        parameters = dict_of(max_energy, max_valence, max_speechiness)
+        # genres.append(random.choice(related_genres))
+    elif mood == "disgusted":
+        related_genres = ["kids", "death-metal", "children", "philippines-opm"]
         min_energy = 0.5
         max_valence = 0.5
         max_speechiness = 0.6
-        parameters = dict_of(max_energy, max_valence, max_speechiness)
+        parameters = dict_of(min_energy, max_valence, max_speechiness)
         genres.append(random.choice(related_genres))
-
     elif mood == "happy":
         related_genres = [
             "alternative",
@@ -168,14 +171,14 @@ def get_par_from_mood(mood, genres):
         max_valence = 0.8
         parameters = dict_of(min_energy, max_energy, min_valence, max_valence)
         genres.append(random.choice(related_genres))
-    elif mood == "darkness":
+    elif mood == "darkness" or mood == "contempt":
         related_genres = ["alt-rock", "idm", "metal"]
         max_energy = 0.4
         max_valence = 0.3
         parameters = dict_of(max_energy, max_valence)
         genres.append(random.choice(related_genres))
 
-    return parameters, genres
+    return parameters, genres,tracks
 
 
 def image_is_plain(path):

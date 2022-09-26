@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import Entertainment from './Entertainment';
 export default function FirstFiltering({ firstFilteringInput, callback }) {
     const mood = firstFilteringInput.mood
     const moodLLF = firstFilteringInput.moodLLF
@@ -69,7 +70,8 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
         <>
 
             <div className="firstFiltering">
-                <p>Your mood is {mood} or {moodLLF}</p>
+                <Entertainment mood={mood} moodLLF={moodLLF} objects={objects} artists={artists} tracks={tracks}></Entertainment>
+                {/* <p>Your mood is {mood ? mood : moodLLF}</p>
                 <p>Objects we found in your picture:</p>
                 {objects.map((item) => (
                     <label key={item}>
@@ -97,8 +99,8 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
                         <input type="checkbox" key={item.id} value={item.id} onChange={(e) => checkTrack(item, e.target.checked)} />
                         {item.name}
                     </label>
-                ))}
-                <button className="Button" onClick={sendPreferences}>Send Song Request</button>
+                ))} */}
+                {/* <button className="Button" onClick={sendPreferences}>Send Song Request</button> */}
             </div>
 
         </>

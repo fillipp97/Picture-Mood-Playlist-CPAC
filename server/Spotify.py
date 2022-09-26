@@ -234,7 +234,7 @@ def get_recommendation_by_objects(objects, mood):
     tracks_features = spotify.audio_features(tracks=ids)
     scores = [get_score_from_params(song_el, mood) for song_el in tracks_features]
 
-    songs_ids_sorted = [x for _, x in sorted(zip(scores, ids))]
+    # songs_ids_sorted = [x for _, x in sorted(zip(scores, ids))]
 
     songs_sorted_by_score = []
     for sp_id in ids:

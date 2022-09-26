@@ -9,14 +9,35 @@ from flask import Flask, session, request, redirect
 import os
 from dotenv import load_dotenv
 
-from object_detection import get_object,detect_img,download_and_resize_image,hub,detector,run_detector
+from object_detection import (
+    get_object,
+    detect_img,
+    download_and_resize_image,
+    hub,
+    detector,
+    run_detector,
+)
 
-from utilities import get_par_from_mood,get_mood_from_LLF,image_is_plain,dominant_color,str2nestedlist
+from utilities import (
+    get_par_from_mood,
+    get_mood_from_LLF,
+    image_is_plain,
+    dominant_color,
+    str2nestedlist,
+)
 
 from Azure_api import get_mood, emotion_detect
 from token_handlers import get_token, create_spotify_oauth, remove_token
 from Musixmatch import get_lyrics, get_scored_list
-from Spotify import get_recommendation_by_objects,valid_genres_for_seed,get_most_listened_artists,get_recommendations,get_recommendation_by_objects,get_most_listened_tracks,create_new_playlist
+from Spotify import (
+    get_recommendation_by_objects,
+    valid_genres_for_seed,
+    get_most_listened_artists,
+    get_recommendations,
+    get_recommendation_by_objects,
+    get_most_listened_tracks,
+    create_new_playlist,
+)
 
 
 # from Components.Spotify import Spoty
@@ -270,7 +291,9 @@ def Step2():
         # Proceed with the branch with face
         # Get parameters from mood
 
-        parameters, genres_sel = get_par_from_mood(mood=mood, genres=genres_sel)
+        parameters, genres_sel, tracks_ids = get_par_from_mood(
+            mood=mood, genres=genres_sel, tracks=tracks_ids
+        )
         # Get recommendations according to parameters
 
         recommendations = get_recommendations(
@@ -303,7 +326,9 @@ def Step2():
         recommendations_by_objects = get_recommendation_by_objects(objects, moodLLF)
         # Get also parameters from a mood extracted by colors in the picture
         print("Mood LLF: ", moodLLF)
-        parameters_LLF, genres_sel = get_par_from_mood(moodLLF, genres=genres_sel)
+        parameters_LLF, genres_sel, tracks_ids = get_par_from_mood(
+            moodLLF, genres=genres_sel, tracks=tracks_ids
+        )
         # Get recommendations
         recommendations_moodLLF = get_recommendations(
             seed_artists=artists_ids,

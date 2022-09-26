@@ -5,7 +5,7 @@ export default function Stepper({ steps, callback }) {
     return (
         <Navbar>
             {steps.map((step) => (
-                <NavItem key={step.name} name={step.name} icon={step.icon} disabled={!step.enabled} onClick={() => callback(step)}>{step.name} </NavItem>
+                <NavItem key={step.name} name={step.name} icon={step.icon} disabled={!step.enabled} onClick={() => callback(step)}> </NavItem>
             ))}
 
         </Navbar>
