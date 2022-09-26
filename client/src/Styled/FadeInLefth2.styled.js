@@ -1,7 +1,7 @@
 import React from "react"
 import styled, { keyframes } from "styled-components"
 
-export default function FadeInLeftp(props) {
+export default function FadeInLefth2(props) {
     if (props.callbacks !== undefined) {
         if (props.callbacks.length > 0) {
             for (let i = 0; i < props.callbacks.length; i++) {
@@ -17,7 +17,7 @@ const animation = keyframes`
 `
 
 
-const Animation = styled.p`
+const Animation = styled.h2`
     opacity: 0;
     position: relative;
     animation-name: ${animation};

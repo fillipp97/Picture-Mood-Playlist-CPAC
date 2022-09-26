@@ -15,6 +15,8 @@ import GeneratePlayList from "./GeneratePlayList";
 import Stepper from "./Stepper";
 import { BounceLoader } from 'react-spinners'
 import Balls from "./Balls";
+import ForegroundChange from "../Styled/ForegroundChange.styled";
+
 class LoggedIn extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +46,9 @@ class LoggedIn extends Component {
     console.log(step.name)
     switch (step.name) {
       case 'Picture':
-        return this.resetImageStep();
+        this.resetImageStep();
+        ForegroundChange("foreground", 500, "brighten")
+        return
       case 'Make choices':
         return this.resetFirstFiltering();
       case 'Create playlist':
@@ -143,7 +147,8 @@ class LoggedIn extends Component {
 
               <div className="foreground">
                 <div className="Content">
-                  <BounceLoader className="loader" loading={this.isLoading()} />
+                  {this.isLoading() && <><BounceLoader className="loader" color="wheat" /> {ForegroundChange("foreground", 500, "darken")}</>}
+
 
                   {!this.state.imageStepCallback &&
                     <ImageStep callback={this.imageStepCallback} />

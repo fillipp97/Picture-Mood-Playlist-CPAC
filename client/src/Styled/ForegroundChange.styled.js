@@ -1,5 +1,5 @@
-export default function ForegroundChange(duration) {
-    let foreground = document.getElementsByClassName("foreground")[0]
+export default function ForegroundChange(nameClass, duration, type) {
+    let foreground = document.getElementsByClassName(nameClass)[0]
     let start = "rgba(0, 0, 0, 0)"
     let end = "rgba(0, 0, 0, 0.555)"
     let toggle = [{ backgroundColor: start }, { backgroundColor: end }]
@@ -7,13 +7,16 @@ export default function ForegroundChange(duration) {
     let options = { "duration": duration }
     let style = getComputedStyle(foreground)
     console.log(style.getPropertyValue("background-color"), start)
-    if (style.getPropertyValue("background-color") === start) {
-
-        foreground.animate(toggle, options)
-        foreground.style.backgroundColor = end
+    if (type === "darken") {
+        if (style.getPropertyValue("background-color") !== end) {
+            foreground.animate(toggle, options)
+            foreground.style.backgroundColor = end
+        }
     } else {
-        foreground.animate(disable, options)
-        foreground.style.backgroundColor = start
+        if (style.getPropertyValue("background-color") !== start) {
+            foreground.animate(disable, options)
+            foreground.style.backgroundColor = start
+        }
     }
 
 

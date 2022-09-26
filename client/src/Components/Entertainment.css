@@ -1,4 +1,15 @@
 .quotations h1 {
-    font-family: Garamond, serif;
+    font-family: 'Dancing Script', cursive;
+    color: wheat;
+}
+
+.quotations h2 {
+    font-family: 'Dancing Script', cursive;
+    color: wheat;
+}
+
+.quotations h3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 180%;
     color: wheat;
 }

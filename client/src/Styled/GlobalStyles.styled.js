@@ -39,18 +39,24 @@ export const GlobalStyle = createGlobalStyle`
   width: 100%;
   overflow-y: scroll;
   text-align: center;
+  
 
 }
 
-.content{
+.Content{
   width: 100%;
-  max-width: 1000px;
+  max-width: 1500px;
   display: inline-block;
+  margin-top: 30px;
   /* text-align: justify; */
 
 }
 
-
+.loader{
+  position: inherit;
+  top: 50%;
+  left:50%;
+}
 /*
 .App {
   text-align: center;

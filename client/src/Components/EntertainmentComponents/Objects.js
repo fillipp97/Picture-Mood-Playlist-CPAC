@@ -1,16 +1,16 @@
 import { Component } from "react";
 
-class EntArtists extends Component {
+class Objects extends Component {
     constructor(props) {
         super(props)
     }
 
     render() {
         return (
-            <p>Artists Not Implemented yet</p>
+            <p>Objects Not Implemented yet</p>
         )
     }
 
 }
 
-export default EntArtists
+export default Objects

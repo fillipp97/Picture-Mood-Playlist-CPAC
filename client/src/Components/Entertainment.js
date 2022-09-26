@@ -1,9 +1,11 @@
 import { Component } from "react";
-import EntObjects from "./EntObjects";
-import EntQuotations from "./EntQuotations";
-import EntArtists from "./EntArtists";
-import EntTracks from "./EntTracks";
+import Objects from "./EntertainmentComponents/Objects";
+import Quotations from "./EntertainmentComponents/Quotations";
+import Artists from "./EntertainmentComponents/Artists";
+import Tracks from "./EntertainmentComponents/Tracks";
 import "./Entertainment.css"
+import ForegroundChange from "../Styled/ForegroundChange.styled";
+import ButtonComp from "../Styled/Button.styled";
 class Entertainment extends Component {
     constructor(props) {
         super(props)
@@ -26,14 +28,17 @@ class Entertainment extends Component {
                     'sad': [["Our sweetest songs are those that tell of saddest thought.", "Percy Bysshe Shelley"], ["Music expresses that which cannot be put into words and that which cannot remain silent", "Victor Hugo"]],
                     'sad_res': ["I'll try to express your feelings"],
                     'surprised': [["The secret to humor is surprise.", "Aristotele"], ["Sometimes people surprise us. Sometimes AI does.", "Joyce Carol Oates"]],
-                    'surprised_res': ["Nothing is more surprising that our playlist!"],
+                    'surprised_res': ["Nothing is more surprising than our playlist!"],
                 },
             },
             questions: {
                 "objects": ['Sometimes I really feel like a ______', 'Three things really matter in life, they are Love, Beer and ______', "Sometimes I really feel like a ______", "It would be great to be killed by a ______", "Give me a ______ and I'll lift the world"],
-                "artists": [{ "q": "Do you feel more - or -?", "r": [] }, { "q": "How about dating -?", "r": ["Hell Yeah", "Absolutely not"] }, { "q": "Who will you save from a fire?", "r": [] }, { "q": "Who would you like to be your parent 1?", "r": [] }],
+                "artists": [{ "q": "How about dating -?", "r": ["Hell Yeah", "Absolutely not"] }],//[{ "q": "Do you feel more - or -?", "r": [] }, { "q": "How about dating -?", "r": ["Hell Yeah", "Absolutely not"] }, { "q": "Who will you save from a fire?", "r": [] }, { "q": "Who would you like to be your parent 1?", "r": [] }],
                 "tracks": ["You seem to like many songs... Tell me your favourite"]
-            }
+            },
+            selectedArtists: [],
+            selectedTracks: [],
+            selectedObjects: []
         }
     }
 
@@ -44,23 +49,27 @@ class Entertainment extends Component {
         } else {
             this.setState({ step: 1 }, () => { console.log(this.state.step) }) // Objects selection only when face is not present
         }
+        ForegroundChange("foreground", 500, "darken")
     }
 
-    incrementStepper = () => {
-        setTimeout(() => { this.setState({ step: this.state.step + 1 }) }, 4000)
+    incrementStepper = (delay) => {
+        setTimeout(() => { this.setState({ step: this.state.step + 1 }, () => { console.log("Entertainment step", this.state.step) }) }, delay)
     }
-    incrementStepperQuotations = () => {
-        setTimeout(() => { this.setState({ step: this.state.step + 2 }) }, 4000)
+    incrementStepperQuotations = (delay) => {
+        setTimeout(() => { this.setState({ step: this.state.step + 2 }, () => { console.log("Entertainment step", this.state.step) }) }, delay)
     }
+
+
     render() {
         let { mood, moodLLF, objects, artists, tracks } = this.props
         let { step } = this.state
         return (
             <div className="entertainment">
-                {step === 0 && <EntQuotations mood={mood} sentences={this.state.sentences.mood} incrementStepper={this.incrementStepperQuotations} />}
-                {step === 1 && <EntObjects objects={objects} sentences={this.state.questions.objects} incrementStepper={this.incrementStepper} />}
-                {step === 2 && <EntArtists artists={artists} sentences={this.state.questions.artists} incrementStepper={this.incrementStepper} />}
-                {step === 3 && <EntTracks tracks={tracks} sentences={this.state.questions.tracks} incrementStepper={this.incrementStepper} />}
+
+                {step === 0 && <Quotations mood={mood} sentences={this.state.sentences.mood} incrementStepper={this.incrementStepperQuotations} />}
+                {step === 1 && <Objects objects={objects} sentences={this.state.questions.objects} incrementStepper={this.incrementStepper} />}
+                {step === 2 && <Artists artists={artists} sentences={this.state.questions.artists} incrementStepper={this.incrementStepper} />}
+                {step === 3 && <Tracks tracks={tracks} sentences={this.state.questions.tracks} incrementStepper={this.incrementStepper} />}
 
             </div>
         )

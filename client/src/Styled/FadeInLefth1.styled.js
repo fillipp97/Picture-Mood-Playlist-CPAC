@@ -2,8 +2,12 @@ import React from "react"
 import styled, { keyframes } from "styled-components"
 
 export default function FadeInLefth1(props) {
-    if (props.timer) {
-        props.timer()
+    if (props.callbacks !== undefined) {
+        if (props.callbacks.length > 0) {
+            for (let i = 0; i < props.callbacks.length; i++) {
+                props.callbacks[i]()
+            }
+        }
     }
     return <Animation>{props.text}</Animation>
 }
