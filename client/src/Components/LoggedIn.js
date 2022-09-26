@@ -142,7 +142,7 @@ class LoggedIn extends Component {
 
 
               <div className="foreground">
-                <div className="content">
+                <div className="Content">
                   <BounceLoader className="loader" loading={this.isLoading()} />
 
                   {!this.state.imageStepCallback &&

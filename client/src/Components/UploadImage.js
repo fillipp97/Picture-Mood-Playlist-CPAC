@@ -19,9 +19,6 @@ class UploadImage extends Component{
         selectedFile: null,
         active: ''
       };
-
-      
-      
       // On file select (from the pop up)
       onFileChange = event => {
       
