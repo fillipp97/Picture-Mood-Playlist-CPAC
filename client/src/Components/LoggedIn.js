@@ -141,7 +141,7 @@ class LoggedIn extends Component {
 
 
               <div className="foreground">
-                <div className="content">
+                <div className="Content">
                   {this.isLoading() && <span>LOADING...</span>}
 
                   {!this.state.imageStepCallback &&
