@@ -9,16 +9,17 @@ let numBalls = 60;
 let balls = [];
 let gravity = 0;  //-0.3
 let damping = 0.9;  //0.8
+let Wdim = 1200
+let Hdim = 650
 
 
 export default (props) => {
     let textures = []
+    let songs = []
+    let callbackFunc = undefined
     function windowResized(p5) {
-        let foreground = document.getElementsByClassName("foreground")
-        let style = getComputedStyle(foreground)
-        let width = style.getPropertyValue("width")
-        let height = style.getPropertyValue("height")
-        p5.resizeCanvas(width, height);
+
+        p5.resizeCanvas(Wdim, Hdim);
     }
 
     const preload = async (p5) => {
@@ -38,7 +39,10 @@ export default (props) => {
                 _background.fill('wheat')
                 _background.text(props.songs[i].name.toUpperCase(), 30, 0, 110, 140);
                 textures.push(_background)
+                songs.push(props.songs[i])
+                callbackFunc = props.sendTrackToParent
             })
+
         }
 
 
@@ -51,19 +55,24 @@ export default (props) => {
     }
     const mousePressed = (_p5, event) => {
         if (event.button === 0) {
-
-            console.log("Chosen!!")
-        }
-        if (event.button === 2) {
-            event.preventDefault()
             for (let i = 0; i < props.songs.length; i++) {
-                balls[i].clicked(_p5.mouseX, _p5.mouseY);
+                balls[i].chosen(_p5.mouseX, _p5.mouseY);
             }
         }
+        // if (event.button === 2) {
+
+        //     for (let i = 0; i < props.songs.length; i++) {
+        //         balls[i].clicked(_p5.mouseX, _p5.mouseY);
+        //     }
+        // }
         if (event.button === 1) {
             event.preventDefault()
+            // for (let i = 0; i < props.songs.length; i++) {
+            //     balls[i].vel = _p5.constructor.Vector.random2D().mult(_p5.random(20, 90));
+            // }
+
             for (let i = 0; i < props.songs.length; i++) {
-                balls[i].vel = _p5.constructor.Vector.random2D().mult(_p5.random(20, 90));
+                balls[i].clicked(_p5.mouseX, _p5.mouseY);
             }
         }
     }
@@ -96,7 +105,8 @@ export default (props) => {
         // let style = getComputedStyle(foreground)
         // let width = style.getPropertyValue("width")
         // let height = style.getPropertyValue("height")
-        p5.createCanvas(p5.windowWidth, p5.windowHeight, p5.WEBGL).parent(canvasParentRef);
+        p5.createCanvas(Wdim, Hdim, p5.WEBGL).parent(canvasParentRef);
+
         let dimension = 130
         // console.log(urls)
         for (let i = 0; i < props.songs.length; i++) {
@@ -107,6 +117,8 @@ export default (props) => {
                 p5.constructor.Vector.random2D().mult(p5.random(10)),
                 80,
                 textures[i],
+                songs[i],
+                callbackFunc,
                 p5
             ));
 
@@ -119,8 +131,8 @@ export default (props) => {
 
 
     const draw = (p5) => {
-        p5.background("rgba(0, 0, 0, 0)");
 
+        p5.background("#00000081")
         for (let i = 0; i < balls.length; i++) {
             for (let j = 0; j < i; j++) {
                 balls[i].res_penetration(balls[j])
@@ -146,7 +158,7 @@ export default (props) => {
 
 
 class Ball {
-    constructor(pos, vel, radius, texture, p5) {
+    constructor(pos, vel, radius, texture, songEl, callbackFunc, p5) {
         this.dragging = false;
         this.pos = pos;
         this.vel = vel;
@@ -155,6 +167,8 @@ class Ball {
         this.color = [p5.random(255), p5.random(255), p5.random(255)];
         this.p5 = p5;
         this.texture = texture;
+        this.songEl = songEl;
+        this.callbackFunc = callbackFunc;
         this.asleep = false;
     }
     collide(other) {
@@ -199,8 +213,8 @@ class Ball {
     }
 
     clicked(x, y) {
-        let X = x - (this.p5.windowWidth / 2)
-        let Y = y - (this.p5.windowHeight / 2)
+        let X = x - (Wdim / 2)
+        let Y = y - (Hdim / 2)
         let d = this.p5.dist(X, Y, this.pos.x, this.pos.y)
         // console.log(d)
         if (d < this.radius) {
@@ -212,11 +226,24 @@ class Ball {
             this.dragging = false;
         }
     }
+    chosen(x, y) {
+        let X = x - (Wdim / 2)
+        let Y = y - (Hdim / 2)
+        let d = this.p5.dist(X, Y, this.pos.x, this.pos.y)
+        // console.log(d)
+        if (d < this.radius) {
+            console.log("You chose a Ball")
+            this.callbackFunc(this.songEl)
+
+        } else {
+            this.dragging = false;
+        }
+    }
 
     released(x, y) {
         if (this.dragging) {
-            let X = x - (this.p5.windowWidth / 2)
-            let Y = y - (this.p5.windowHeight / 2)
+            let X = x - (Wdim / 2)
+            let Y = y - (Hdim / 2)
 
             this.pos.x = X;
 
@@ -232,35 +259,35 @@ class Ball {
     move() {
         // this.vel.y += 0.1;
         if (this.dragging) {
-            this.pos.x = this.p5.mouseX - this.p5.windowWidth / 2;
-            this.pos.y = this.p5.mouseY - this.p5.windowHeight / 2;
+            this.pos.x = this.p5.mouseX - Wdim / 2;
+            this.pos.y = this.p5.mouseY - Hdim / 2;
             this.vel.x = (this.p5.mouseX - this.p5.pmouseX);
             this.vel.y = (this.p5.mouseY - this.p5.pmouseY);
         } else {
             this.vel.y -= gravity
             this.pos.add(this.vel);
         }
-        if (this.pos.x < -(this.p5.windowWidth / 2) + this.radius) {
+        if (this.pos.x < -(Wdim / 2) + this.radius) {
 
-            this.pos.x = -(this.p5.windowWidth / 2) + this.radius;
+            this.pos.x = -(Wdim / 2) + this.radius;
             this.vel.x = -this.vel.x * damping;
             this.dragging = false;
         }
-        if (this.pos.x > (this.p5.windowWidth / 2) - this.radius) {
+        if (this.pos.x > (Wdim / 2) - this.radius) {
 
-            this.pos.x = (this.p5.windowWidth / 2) - this.radius;
+            this.pos.x = (Wdim / 2) - this.radius;
             this.vel.x = -this.vel.x * damping;
             this.dragging = false;
         }
-        if (this.pos.y < -(this.p5.windowHeight / 2) + this.radius) {
+        if (this.pos.y < -(Hdim / 2) + this.radius) {
 
-            this.pos.y = -(this.p5.windowHeight / 2) + this.radius;
+            this.pos.y = -(Hdim / 2) + this.radius;
             this.vel.y = -this.vel.y * damping;
             this.dragging = false;
         }
-        if (this.pos.y > (this.p5.windowHeight / 2) - this.radius) {
+        if (this.pos.y > (Hdim / 2) - this.radius) {
 
-            this.pos.y = (this.p5.windowHeight / 2) - this.radius;
+            this.pos.y = (Hdim / 2) - this.radius;
             this.vel.y = -this.vel.y * damping;
             this.dragging = false;
 

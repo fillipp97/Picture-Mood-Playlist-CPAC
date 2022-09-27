@@ -5,11 +5,11 @@
     overflow: hidden;
 } */
 
-canvas#defaultCanvas0 {
+/* canvas#defaultCanvas0 {
     position: absolute;
     top: 0px;
     left: 0px;
-}
+} */
 
 .tracksChoice h1 {
     font-family: 'Source Sans Pro', sans-serif;
