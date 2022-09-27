@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import "./GeneratePlayList.css"
 export default function GeneratePlayList({ generatePlayListInput, callback }) {
     const [playListName, updatePlayListName] = useState('');
 
@@ -25,7 +25,7 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
 
     return (
         <>
-            <div style={{ background: "gray" }}>
+            <div className="allSongs">
                 <h1>Generate Playlist</h1>
                 <p>SONG LIST</p>
                 <ul>
@@ -39,7 +39,9 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
                         <li key={item}>{item}</li>
                     ))}
                 </ul>
-                <input type="text" value={playListName} onChange={handlePlayListNameChange} />
+				<label class="input">
+					<input class="input__field" type="text" value={playListName} onChange={handlePlayListNameChange} />
+				</label>
                 <p>playlist name to submit</p>
                 <button className="Button" onClick={sendPlayList}>Generate Playlist</button>
             </div>

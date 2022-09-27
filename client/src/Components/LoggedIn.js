@@ -148,8 +148,6 @@ class LoggedIn extends Component {
               <div className="foreground">
                 <div className="Contents">
                   {this.isLoading() && <><BounceLoader className="loader" color="wheat" /> {ForegroundChange("foreground", 500, "darken")}</>}
-
-
                   {!this.state.imageStepCallback &&
                     <ImageStep callback={this.imageStepCallback} />
                   }

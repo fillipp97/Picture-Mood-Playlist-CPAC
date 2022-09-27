@@ -14,3 +14,7 @@
     color: wheat;
 }
 
+.Contents > span{
+	position: relative;
+	transform: translate(-800%);
+}
