@@ -144,7 +144,7 @@ def Step1():
     # mood = None
     # objects = ["Sun", "leg", "sea", "car"]
     # Get possible seeds for the user to chose
-
+    print("======================run Step1()=======================")
     # Get most listened tracks mixed with other tracks to insert variation
     most_listened_tracks = get_most_listened_tracks(
         limit=10, offset=0, time_range="medium_term"
@@ -249,7 +249,7 @@ def remove_human(objects):
 @app.route("/getSongs", methods=["POST"])
 def Step2():
     data = request.get_json()
-
+    print("======================run step2()=======================")   
     mood = data.get("mood")
     objects = data.get("objects")
     moodLLF = data.get("moodLLF")
@@ -343,6 +343,7 @@ def Step2():
 
         scored_songs, lyrics = get_scored_list(recommendations_by_objects, objects)
         lyrics_as_list_of_words = [str2nestedlist(lyr) for lyr in lyrics]
+        print("scored_songs",scored_songs)
         # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
         return {
             "result": "ok",
