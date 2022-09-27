@@ -19,6 +19,7 @@ const animation = keyframes`
 
 const Animation = styled.h1`
     opacity: 0;
+	color: rgb(246,215,171);
     position: relative;
     animation-name: ${animation};
     animation-duration: 1s;
