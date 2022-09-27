@@ -43,29 +43,43 @@ input#file+label {
 	font-weight: 400;
 	font-size: 0.8rem;
 	display: inline-block;
-	color: black;
+	color: rgba(212, 225, 210, 1);
 	vertical-align: middle;
 	border-left: 2px solid dimgray;
 	border-top: 2px solid dimgray;
 	border-right: 2px solid black;
 	border-bottom: 2px solid black;
-	height: 1.8rem;
-	width: 7rem;
-	line-height: 258%;
-	border-radius: 20px;
-	background: linear-gradient(10deg, rgb(149, 228, 149), #55e7fc);
-	box-shadow: 0 4px 10px 0 rgba(49, 196, 190, 0.75);
+	border-radius: 34px;
+	height: 46.19px;
+	width: 63.19px;
+	padding-top: 17px;
+	/* text-align: center; */
+	text-align: inherit;
+	vertical-align:middle;
+	/* line-height: 400%; */
+	background: linear-gradient(-15deg, rgb(0, 0, 0), rgba(107, 111, 114, 1));
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.75);
+	margin-top: 0.4rem;
+	margin-bottom: 0.5rem;
+	margin-left: 1rem;
+	margin-right: 1rem;
 }
 
 input#file+label:hover {
+	transform: translateY(-3px);
 	color: white;
+	/* border: 0; */
+	background-color: rgba(107, 111, 114, 1);
+	-webkit-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
+	-moz-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
+	box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
 }
 
 
 input#file+label:active {
 	background:
-		linear-gradient(rgb(149, 228, 149), rgb(149, 228, 149)) padding-box,
-		linear-gradient(to bottom, rgb(39, 39, 39), rgb(158, 158, 158)) border-box;
+		linear-gradient(rgb(0, 0, 0), rgba(107, 111, 114, 1)) padding-box,
+		/* linear-gradient(to bottom, rgb(39, 39, 39), rgb(158, 158, 158)) border-box; */
 }
 
 .InputContainer > button{
@@ -75,11 +89,13 @@ input#file+label:active {
 	cursor: pointer;
 	transition: transform 0.3s ease;
 	border-radius: 20px;
+	color: wheat;
 	opacity: 90%;
-	background: linear-gradient(10deg, rgb(149, 228, 149), #55e7fc);
-	box-shadow: 0 4px 10px 0 rgba(49, 196, 190, 0.75);
-	height: 2rem;
-	width: 7rem;
+	background: linear-gradient(-15deg, rgb(0, 0, 0), rgba(107, 111, 114, 1));
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.75);
+	border-radius: 34px;
+	height: 4.2rem;
+	width: 4.2rem;
 	margin-top: 0.4rem;
 	margin-bottom: 0.5rem;
 	margin-left: 1rem;
@@ -87,11 +103,11 @@ input#file+label:active {
 }
 
 .InputContainer > button:hover {
-  transform: translateY(-3px);
-  color: white;
-  /* border: 0; */
-  background-color: #b9e769;
-  -webkit-box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
-  -moz-box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
-  box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
+	transform: translateY(-3px);
+	color: white;
+
+	background-color: rgba(107, 111, 114, 1);
+	-webkit-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
+	-moz-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
+	box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
 } 

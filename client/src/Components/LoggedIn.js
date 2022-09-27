@@ -146,7 +146,7 @@ class LoggedIn extends Component {
 
 
               <div className="foreground">
-                <div className="Content">
+                <div className="Contents">
                   {this.isLoading() && <><BounceLoader className="loader" color="wheat" /> {ForegroundChange("foreground", 500, "darken")}</>}
 
 

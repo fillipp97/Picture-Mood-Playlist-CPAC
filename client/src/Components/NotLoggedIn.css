@@ -1,1 +1,64 @@
+.root {
+	height: 100vh;
+	width: 100vw;
+	background-color: rgb(255, 255, 255);
+}
 
+.App {
+	text-align: center;
+}
+
+div > p {
+	color: rgb(120, 149, 178);
+	text-shadow: 1px 1px 1px black;
+	/* font-family: "Roboto", sans-serif; */
+	font-weight: 500;
+	font-size: 2rem;
+	align-self: center;
+	align-items: center;
+	
+}
+
+.NotLoggedInContainer {
+	align-self: center;
+	height: 100vh;
+	width: 100vw;
+	margin: 0;
+	align-items: center;
+	background-color: rgb(232, 223, 202);
+}
+
+.NotLoggedInContainer>button {
+	font-family: "Roboto", sans-serif;
+	font-weight: 400;
+	font-size: 0.8rem;
+	cursor: pointer;
+	transition: transform 0.3s ease;
+	border-radius: 20px;
+	opacity: 90%;
+	background: linear-gradient(10deg, rgb(174, 189, 202), rgb(120, 149, 178));
+	box-shadow: 0 4px 10px 0 rgba(120, 149, 178, 0.75);
+	height: 2rem;
+	width: 7rem;
+	display: block;
+	margin: 0 auto;
+}
+
+.NotLoggedInContainer>button:hover {
+	transform: translateY(-3px);
+	color: white;
+	border: 0;
+
+	background-color: rgb(174, 189, 202);
+	-webkit-box-shadow: 10px 10px 99px 6px rgb(174, 189, 202);
+	-moz-box-shadow: 10px 10px 99px 6px rgb(174, 189, 202);
+	box-shadow: 10px 10px 99px 6px rgb(174, 189, 202);
+}
+
+h1 {
+	color: rgb(120, 149, 178);
+	text-shadow: 1px 1px 2px black;
+	text-align: center;
+	background-color: rgb(232, 223, 202);
+	margin:0;
+}

@@ -3,8 +3,8 @@ export const PrimaryColor = "#2093a5"
 export const SecondaryColor = "#0e4750"
 export const TernaryColor = "#779cb1"
 export const QuaternaryColor = "#8dc2b8"
-export const BackgroundColor = "#797652 "
-export const Shadow = "#242526 "
+export const BackgroundColor = "rgb(232, 223, 202)"
+export const Shadow = "#242526"
 
 // Button Gradients
 export const GradientStart = "#95E495"

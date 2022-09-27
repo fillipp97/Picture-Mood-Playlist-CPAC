@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 /* .vignette{
     background: radial-gradient(#000000, #585858);
     position: absolute;
@@ -82,19 +83,23 @@
 
 }
 
-.Content {
-    /* background-color: aqua; */
-    position: absolute;
-    transform: translate(-50%);
-    left: calc(100vw/2);
-    height: 20rem;
-    width: 35rem;
+.Contents {
+	/* rgba(0,0,0,0.7); */
+	/* background-color:rgba(230, 218, 196, 0.8); */
+	display: inline-block;
+	height: auto;
+	width: 30rem;
+	position:relative;
+	top: 15%;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
 }
-
 .uploadFileContainer {
-    height: auto;
+	height: auto;
 }
 
 .InputContainer {
-    height: auto;
+	height: auto;
 }

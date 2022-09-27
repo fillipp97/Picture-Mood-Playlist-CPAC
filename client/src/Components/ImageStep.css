@@ -1,9 +1,12 @@
 .controlBar {
-	background: rgba(231, 238, 195, 1);
-	/* background: rgba(255, 244, 186, 1); */
+	background: rgba(0, 0, 0, 0.5);
+	/* background: rgba(104, 139, 167, 0.85); */
+	/* background: rgba(230, 218, 196, 1); */
 	/* opacity: 0.7; */
-	border-bottom-left-radius: 15px;
-	border-bottom-right-radius: 15px;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
 	margin-bottom: 1rem;
 	height: auto;
 	/* height: 3rem; */
@@ -26,34 +29,17 @@
 
 .controlBar>button {
 	font-family: "Roboto", sans-serif;
-	font-weight: 400;
+	font-weight: 600;
 	font-size: 0.8rem;
+	color: rgba(212, 225, 210, 1);
 	cursor: pointer;
 	transition: transform 0.3s ease;
-	border-radius: 20px;
+	border-radius: 34px;
 	opacity: 90%;
-	background: linear-gradient(10deg, rgb(149, 228, 149), #55e7fc);
-	box-shadow: 0 4px 10px 0 rgba(49, 196, 190, 0.75);
-	height: 2rem;
-	width: 7rem;
-	margin-top: 0.4rem;
-	margin-bottom: 0.5rem;
-	margin-left: 1rem;
-	margin-right: 1rem;
-}
-
-.cameraButtons>button {
-	font-family: "Roboto", sans-serif;
-	font-weight: 400;
-	font-size: 0.8rem;
-	cursor: pointer;
-	transition: transform 0.3s ease;
-	border-radius: 20px;
-	opacity: 90%;
-	background: linear-gradient(10deg, rgb(149, 228, 149), #55e7fc);
-	box-shadow: 0 4px 10px 0 rgba(49, 196, 190, 0.75);
-	height: 2rem;
-	width: 7rem;
+	background: linear-gradient(-15deg, rgb(0, 0, 0), rgba(107, 111, 114, 1));
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.75);
+	height: 4.2rem;
+	width: 4.2rem;
 	margin-top: 0.4rem;
 	margin-bottom: 0.5rem;
 	margin-left: 1rem;
@@ -64,20 +50,40 @@
 	transform: translateY(-3px);
 	color: white;
 	/* border: 0; */
-	background-color: #b9e769;
-	-webkit-box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
-	-moz-box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
-	box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
+	background-color: rgba(107, 111, 114, 1);
+	;
+	-webkit-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
+	-moz-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
+	box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
+}
+
+.cameraButtons>button {
+	font-family: "Roboto", sans-serif;
+	font-weight: 600;
+	font-size: 0.8rem;
+	color: rgba(212, 225, 210, 1);
+	cursor: pointer;
+	transition: transform 0.3s ease;
+	border-radius: 34px;
+	opacity: 90%;
+	background: linear-gradient(-15deg, rgb(0, 0, 0), rgba(107, 111, 114, 1));
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.75);
+	height: 4.2rem;
+	width: 4.2rem;
+	margin-top: 0.4rem;
+	margin-bottom: 0.5rem;
+	margin-left: 1rem;
+	margin-right: 1rem;
 }
 
 .cameraButtons>button:hover {
 	transform: translateY(-3px);
 	color: white;
 	/* border: 0; */
-	background-color: #b9e769;
-	-webkit-box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
-	-moz-box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
-	box-shadow: 10px 10px 99px 6px rgba(185, 231, 105, 1);
+	background-color: rgba(107, 111, 114, 1);
+	-webkit-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
+	-moz-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
+	box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
 }
 
 .notLoggedIn>button {
