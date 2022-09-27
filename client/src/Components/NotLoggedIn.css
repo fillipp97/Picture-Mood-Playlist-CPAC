@@ -48,13 +48,14 @@ div > p {
 	transform: translateY(-3px);
 	color: white;
 	border: 0;
+
 	background-color: rgb(174, 189, 202);
 	-webkit-box-shadow: 10px 10px 99px 6px rgb(174, 189, 202);
 	-moz-box-shadow: 10px 10px 99px 6px rgb(174, 189, 202);
 	box-shadow: 10px 10px 99px 6px rgb(174, 189, 202);
 }
 
-.NotLoggedInContainer > h1 {
+h1 {
 	color: rgb(120, 149, 178);
 	text-shadow: 1px 1px 2px black;
 	text-align: center;

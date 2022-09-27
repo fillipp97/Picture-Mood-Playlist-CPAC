@@ -1,3 +1,12 @@
+/* .vignette{
+    background: radial-gradient(#000000, #585858);
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    opacity: 75%;
+} */
 .cover-container {
     height: 100%;
     width: 100%;
@@ -78,10 +87,10 @@
     /* background-color:rgba(230, 218, 196, 0.8); */
     display: inline-block;
     height: auto;
-    top: 100px;
-    width: 30rem;
-    text-align: center;
+    width: 100%;
+    max-width: 61rem;
     position: relative;
+    top: 15%;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     border-bottom-left-radius: 15px;
