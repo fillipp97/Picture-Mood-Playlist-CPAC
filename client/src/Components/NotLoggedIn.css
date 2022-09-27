@@ -60,13 +60,7 @@ h6 {
   font-weight: 749;
   letter-spacing: 0.8px;
   padding: 6px 10px;
-  /* background: linear-gradient(
-      90.21deg,
-      rgba(170, 54, 124, 0.5) -5.91%,
-      rgba(74, 47, 189, 0.5) 111.58%
-    ); */
   background: linear-gradient(10deg, rgb(149, 228, 149), #55e7fc);
-  /* border: 1px solid rgba(255, 255, 255, 0.5); */
   border: 50px;
   font-size: 20px;
   margin-bottom: 20px;
