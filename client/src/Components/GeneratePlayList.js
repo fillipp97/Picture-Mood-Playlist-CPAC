@@ -21,7 +21,7 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
         });
     };
 
-    sortRecommendations()
+    // sortRecommendations()
 
     return (
         <>
@@ -39,9 +39,9 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
                         <li key={item}>{item}</li>
                     ))}
                 </ul>
-				<label class="input">
-					<input class="input__field" type="text" value={playListName} onChange={handlePlayListNameChange} />
-				</label>
+                <label class="input">
+                    <input class="input__field" type="text" value={playListName} onChange={handlePlayListNameChange} />
+                </label>
                 <p>playlist name to submit</p>
                 <button className="Button" onClick={sendPlayList}>Generate Playlist</button>
             </div>

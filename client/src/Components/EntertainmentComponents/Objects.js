@@ -62,10 +62,11 @@ class Objects extends Component {
     pushObject = (object) => {
         let { selectedObjects } = this.state
         selectedObjects.push(object)
-        this.setState({ selectedObjects: selectedObjects }, () => {
-            console.log("Chosen ObjectsselectedObjects Up to Now: ", selectedObjects)
+        this.setState({ selectedObjects: selectedObjects, step: this.state.step + 1 }, () => {
+            console.log(" selectedObjects Up to Now: ", selectedObjects)
             if (this.state.selectedObjects.length === 2) {
                 this.props.objectsToEntertainment(this.state.selectedObjects)
+                this.props.incrementStepper(1000)
             }
         })
     }

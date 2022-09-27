@@ -18,10 +18,10 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
         callback({
             mood: firstFilteringInput.mood,
             moodLLF: firstFilteringInput.moodLLF,
-            objects: selectedObjects.length > 0 ? selectedObjects : objects,
-            artistsSeed: selectedArtists.length > 0 ? selectedArtists : artists,
-            genresSeed: selectedGenres.length > 0 ? selectedGenres : genres,
-            tracksSeed: selectedTrack.length > 0 ? selectedTrack : tracks
+            objects: selectedObjects.length > 0 ? selectedObjects : [],//objects,
+            artistsSeed: selectedArtists.length > 0 ? selectedArtists : [], //artists,
+            genresSeed: selectedGenres.length > 0 ? selectedGenres : [], //genres,
+            tracksSeed: selectedTrack.length > 0 ? selectedTrack : [],//tracks
         });
 
     };
