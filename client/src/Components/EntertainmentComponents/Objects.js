@@ -11,7 +11,7 @@ class Objects extends Component {
         return (
             <div className="objectsContainer">
                 <FadeInLefth1 text="Objects not Implemented" />
-                {this.props.objects.map((object) => { return <div style={{ height: "20px", width: "30px", backgroundColor: "blue" }}></div> })}
+                {this.props.objects.map((object) => { return <div style={{ height: "20px", width: "30px", backgroundColor: "blue" }}>object</div> })}
             </div>
 
         )
