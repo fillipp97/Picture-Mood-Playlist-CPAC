@@ -1,64 +1,115 @@
-.root {
-	height: 100vh;
-	width: 100vw;
-	background-color: rgb(255, 255, 255);
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 .App {
 	text-align: center;
 }
 
-div > p {
-	color: rgb(120, 149, 178);
-	text-shadow: 1px 1px 1px black;
-	/* font-family: "Roboto", sans-serif; */
-	font-weight: 500;
-	font-size: 2rem;
-	align-self: center;
-	align-items: center;
-	
-}
-
 .NotLoggedInContainer {
-	align-self: center;
 	height: 100vh;
 	width: 100vw;
-	margin: 0;
-	align-items: center;
-	background-color: rgb(232, 223, 202);
+	background-color: #1DB954;
 }
 
-.NotLoggedInContainer>button {
-	font-family: "Roboto", sans-serif;
-	font-weight: 400;
-	font-size: 0.8rem;
-	cursor: pointer;
-	transition: transform 0.3s ease;
-	border-radius: 20px;
-	opacity: 90%;
-	background: linear-gradient(10deg, rgb(174, 189, 202), rgb(120, 149, 178));
-	box-shadow: 0 4px 10px 0 rgba(120, 149, 178, 0.75);
-	height: 2rem;
-	width: 7rem;
-	display: block;
-	margin: 0 auto;
-}
-
-.NotLoggedInContainer>button:hover {
-	transform: translateY(-3px);
-	color: white;
+.img-spotify {
+	position: absolute;
 	border: 0;
+	height: 45px;
+	top: 6%;
+	left: 50%;
+	transform: translateX(-50%);
+}
 
-	background-color: rgb(174, 189, 202);
-	-webkit-box-shadow: 10px 10px 99px 6px rgb(174, 189, 202);
-	-moz-box-shadow: 10px 10px 99px 6px rgb(174, 189, 202);
-	box-shadow: 10px 10px 99px 6px rgb(174, 189, 202);
+.div-body {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+	background: #4acf7a;
+	padding: 80px;
 }
 
 h1 {
-	color: rgb(120, 149, 178);
-	text-shadow: 1px 1px 2px black;
+	color: white;
 	text-align: center;
-	background-color: rgb(232, 223, 202);
-	margin:0;
+	font-size: 3rem;
 }
+
+div > p {
+	color: whitesmoke;
+	font-size: 1.7rem;
+	margin-top: 10px;
+}
+
+.div-wave {
+	position: absolute;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	bottom: 8%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+	.div-wave .wave {
+		position: relative;
+		background: white;
+		height: 100%;
+		width: 6px;
+		border-radius: 50px;
+		margin: 0 3px;
+		animation: animate 1.2s linear infinite;
+	}
+
+@keyframes animate {
+	50% {
+		height: 20%;
+	}
+	100% {
+		height: 100%;
+	}
+}
+.wave:nth-child(1) {
+	animation-delay: 0s;
+}
+.wave:nth-child(2) {
+	animation-delay: 0.3s;
+}
+.wave:nth-child(3) {
+	animation-delay: 0.6s;
+}
+.wave:nth-child(4) {
+	animation-delay: 0.9s;
+}
+.wave:nth-child(5) {
+	animation-delay: 0.6s;
+}
+.wave:nth-child(6) {
+	animation-delay: 0.3s;
+}
+.wave:nth-child(7) {
+	animation-delay: 0s;
+}
+
+.button-login {
+	cursor: pointer;
+	margin-top: 50px;
+	height: 45px;
+	width: 150px;
+	border-radius: 25px;
+	border: 0;
+	outline: 0;
+	background: #014024;
+	box-shadow: 2px 2px 10px #148f3f;
+	color: white;
+	font-size: 14px;
+}
+
+	.button-login:hover {
+		transform: scale(105%);
+		box-shadow: 4px 4px 20px #148f3f;
+	}
