@@ -83,7 +83,7 @@ class Entertainment extends Component {
 
                 {step === 0 && <Quotations mood={mood} sentences={this.state.sentences.mood} incrementStepper={this.incrementStepper} objectsToEntertainment={this.setSelectedObjects} />}
                 {step === 1 && <FadeInLefth1 text={"Now... Let us know you better"} callbacks={mood ? [() => this.incrementStepperQuotations(3000)] : [() => this.incrementStepper(3000)]}></FadeInLefth1>}
-                {step === 2 && <Objects objects={objects} sentences={this.state.questions.objects} incrementStepper={this.incrementStepper} />}
+                {step === 2 && objects !== undefined && <Objects objects={objects} sentences={this.state.questions.objects} incrementStepper={this.incrementStepper} objectsToEntertainment={this.setSelectedObjects} />}
                 {step === 3 && <Artists artists={artists} sentences={this.state.questions.artists} incrementStepper={this.incrementStepper} artistsToEntertainment={this.setSelectedArtists} />}
                 {step === 4 && <Tracks tracks={tracks} sentences={this.state.questions.tracks} incrementStepper={this.incrementStepper} tracksToEntertainment={this.setSelectedTracks} />}
 

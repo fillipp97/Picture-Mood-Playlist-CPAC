@@ -96,7 +96,11 @@ def get_tracks():
         print("Not Logged in")
         return redirect("http://localhost:3000")
         # return {"result": "bad"}
-    sp = spotipy.Spotify(auth=session.get("token_info").get("access_token"))
+    sp = spotipy.Spotify(
+        auth=session.get("token_info").get("access_token"),
+        requests_timeout=10,
+        retries=10,
+    )
     currGroup = sp.current_user_saved_tracks(limit=50, offset=0)["items"]
     return {"result": "ok", "songs": currGroup}
 
