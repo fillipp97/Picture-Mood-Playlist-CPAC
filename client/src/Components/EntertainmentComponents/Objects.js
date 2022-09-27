@@ -1,4 +1,5 @@
 import { Component } from "react";
+import FadeInLefth1 from "../../Styled/FadeInLefth1.styled";
 
 class Objects extends Component {
     constructor(props) {
@@ -6,8 +7,13 @@ class Objects extends Component {
     }
 
     render() {
+        console.log(this.props.objects)
         return (
-            <p>Objects Not Implemented yet</p>
+            <div className="objectsContainer">
+                <FadeInLefth1 text="Objects not Implemented" />
+                {this.props.objects.map((object) => { return <div style={{ height: "20px", width: "30px", backgroundColor: "blue" }}></div> })}
+            </div>
+
         )
     }
 

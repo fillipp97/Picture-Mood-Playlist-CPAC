@@ -24,26 +24,27 @@ export default (props) => {
 
     const preload = async (p5) => {
 
-        for (let i = 0; i < props.songs.length; i++) {
-            await p5.loadImage(props.songs[i].album.images[1].url, (image) => {
-                let _background = p5.createGraphics(160, 160);
-                // let imageProc = brightness(p5, image, 0.4)
-                let imageProc = image
-                _background.background(imageProc)
-                _background.textFont('Source Code Pro');
-                _background.textAlign(p5.CENTER, p5.CENTER);
-                _background.textSize(18);
-                _background.fill(3, 7, 11);
-                _background.stroke("black");
-                _background.strokeWeight(2)
-                _background.fill('wheat')
-                _background.text(props.songs[i].name.toUpperCase(), 30, 0, 110, 140);
-                textures.push(_background)
-                songs.push(props.songs[i])
-                callbackFunc = props.sendTrackToParent
-            })
+        // for (let i = 0; i < props.songs.length; i++) {
+        //     let image = await p5.loadImage(props.songs[i].album.images[1].url)
 
-        }
+        //     let _background = p5.createGraphics(160, 160);
+        //     // let imageProc = brightness(p5, image, 0.4)
+        //     let imageProc = image
+        //     _background.background(imageProc)
+        //     _background.textFont('Source Code Pro');
+        //     _background.textAlign(p5.CENTER, p5.CENTER);
+        //     _background.textSize(18);
+        //     _background.fill(3, 7, 11);
+        //     _background.stroke("black");
+        //     _background.strokeWeight(2)
+        //     _background.fill('wheat')
+        //     _background.text(props.songs[i].name.toUpperCase(), 30, 0, 110, 140);
+        //     textures.push(_background)
+        //     songs.push(props.songs[i])
+        //     callbackFunc = props.sendTrackToParent
+
+
+        // }
 
 
     }
@@ -54,11 +55,18 @@ export default (props) => {
         }
     }
     const mousePressed = (_p5, event) => {
+        console.log("MOUSE", _p5.mouseX, _p5.mouseY)
         if (event.button === 0) {
             for (let i = 0; i < props.songs.length; i++) {
-                balls[i].chosen(_p5.mouseX, _p5.mouseY);
+                if (balls[i].chosen(_p5.mouseX, _p5.mouseY)) {
+                    let index = balls.indexOf(balls[i])
+                    if (index > -1) {
+                        balls.splice(index, 1)
+                    }
+                };
             }
         }
+
         // if (event.button === 2) {
 
         //     for (let i = 0; i < props.songs.length; i++) {
@@ -110,17 +118,34 @@ export default (props) => {
         let dimension = 130
         // console.log(urls)
         for (let i = 0; i < props.songs.length; i++) {
+            let _background = p5.createGraphics(160, 160);
+            // let imageProc = brightness(p5, image, 0.4)
+            // let imageProc = image
+            // _background.background(imageProc)
+            _background.textFont('Source Code Pro');
+            _background.textAlign(p5.CENTER, p5.CENTER);
+            _background.textSize(18);
+            _background.fill(3, 7, 11);
+            _background.stroke("black");
+            _background.strokeWeight(2)
+            _background.fill('wheat')
+            console.log("start")
+            let song = props.songs[i]
+            console.log(song.name.toUpperCase())
+            _background.text(song.name.toUpperCase(), 30, 0, 110, 140);
 
 
             balls.push(new Ball(
                 p5.createVector(p5.random(-(p5.windowWidth / 2), (p5.windowWidth / 2)), p5.random(-(p5.windowHeight / 2), (p5.windowHeight / 2))),
                 p5.constructor.Vector.random2D().mult(p5.random(10)),
                 80,
-                textures[i],
-                songs[i],
-                callbackFunc,
+                _background,
+                song,
+                props.sendTrackToParent,
                 p5
             ));
+            console.log(props.songs[i].name)
+            console.log("-------------------------------------------------------------------------")
 
 
         }
@@ -164,12 +189,13 @@ class Ball {
         this.vel = vel;
         this.pvel = 0;
         this.radius = radius; // Can be interpreted as mass
-        this.color = [p5.random(255), p5.random(255), p5.random(255)];
+        // this.color = [p5.random(255), p5.random(255), p5.random(255)];
         this.p5 = p5;
         this.texture = texture;
         this.songEl = songEl;
         this.callbackFunc = callbackFunc;
         this.asleep = false;
+        console.log("Object created With", songEl.name)
     }
     collide(other) {
         if (other == this) {
@@ -218,7 +244,7 @@ class Ball {
         let d = this.p5.dist(X, Y, this.pos.x, this.pos.y)
         // console.log(d)
         if (d < this.radius) {
-            console.log("You clicked a Ball")
+            console.log("You clicked a Ball", this.songEl.name)
             this.dragging = true;
             this.pos.x = X;
             this.pos.y = Y;
@@ -233,12 +259,12 @@ class Ball {
         // console.log(d)
         if (d < this.radius) {
             console.log("You chose a Ball")
-            this.callbackFunc(this.songEl)
-
+            return true
         } else {
-            this.dragging = false;
+            return false
         }
     }
+
 
     released(x, y) {
         if (this.dragging) {
@@ -302,6 +328,9 @@ class Ball {
         this.p5.stroke(255)
         this.p5.strokeWeight(3)
         this.p5.texture(this.texture);
+        if (this.songEl.name === "peter pan") {
+            console.log(this.pos.x, this.pos.y)
+        }
         // this.p5.texture(this.text)
 
 

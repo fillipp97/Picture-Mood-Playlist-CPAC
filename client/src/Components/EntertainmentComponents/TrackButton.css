@@ -1,0 +1,59 @@
+.tracksChoice {
+    display: inline-block;
+}
+
+.trackButtons {
+    display: inline-block;
+    text-align: center;
+
+
+}
+
+.trackButtonContainer {
+    display: inline-block;
+    max-width: 160px;
+    max-height: 160px;
+    padding: 17px;
+    vertical-align: middle;
+}
+
+.trackButtonContainer>img {
+    height: 160px;
+    width: 160px;
+    object-fit: cover;
+
+}
+
+.trackButtonContainer>img:hover {
+    filter: brightness(1.2);
+    transform: scale(1.1);
+}
+
+.trackButtonImage {
+    border-radius: 20%;
+    filter: brightness(1);
+}
+
+.trackButtonImageDisabled {
+    border-radius: 20%;
+    filter: brightness(0.3);
+}
+
+.trackButtonText {
+    color: wheat;
+    font-size: 130%;
+    height: 176px;
+    width: 176px;
+    background-color: rgba(51, 51, 51, 0.479);
+    border-radius: 20%;
+    position: relative;
+    pointer-events: none;
+    bottom: 171px;
+    left: -5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    align-content: center;
+
+}
