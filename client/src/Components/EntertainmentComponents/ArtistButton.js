@@ -12,13 +12,13 @@ class ArtistButton extends Component {
         this.setState({ showName: showName === "true" ? true : false })
     }
     componentDidMount() {
-        console.log(this.props)
+        console.log("Props of Artist Button", this.props)
     }
     render() {
 
         return (
             <div className="artistButtonContainer">
-                <img className="artistButtonImage" onMouseOver={() => this.setShowName("true")} onMouseOut={() => this.setShowName("false")} src={this.props.artist.images[2].url} onClick={this.props.selectArtist} />
+                <img className="artistButtonImage" onMouseOver={() => this.setShowName("true")} onMouseOut={() => this.setShowName("false")} src={this.props.artist.images[2].url} onClick={this.props.returnArtist} />
                 {this.state.showName && <div className="artistButtonText">{this.props.artist.name}</div>}
             </div >
 

@@ -163,11 +163,11 @@ class LoggedIn extends Component {
                 </div>
               </div>
               <div className="cover-container">
-                {this.props.songs.length > 0 && <Balls songs={this.props.songs} />}
+                {/* {this.props.songs.length > 0 && <Balls songs={this.props.songs} />} */}
 
 
 
-                {/* <RenderCovers songs={this.props.songs}></RenderCovers> */}
+                <RenderCovers songs={this.props.songs}></RenderCovers>
               </div>
             </div>
           </>

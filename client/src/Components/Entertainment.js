@@ -6,6 +6,7 @@ import Tracks from "./EntertainmentComponents/Tracks";
 import "./Entertainment.css"
 import ForegroundChange from "../Styled/ForegroundChange.styled";
 import ButtonComp from "../Styled/Button.styled";
+import FadeInLefth1 from "../Styled/FadeInLefth1.styled";
 class Entertainment extends Component {
     constructor(props) {
         super(props)
@@ -33,8 +34,8 @@ class Entertainment extends Component {
             },
             questions: {
                 "objects": ['Sometimes I really feel like a ______', 'Three things really matter in life, they are Love, Beer and ______', "Sometimes I really feel like a ______", "It would be great to be killed by a ______", "Give me a ______ and I'll lift the world"],
-                "artists": [{ "q": "How about dating -?", "r": ["Hell Yeah", "Absolutely not"] }],//[{ "q": "Do you feel more - or -?", "r": [] }, { "q": "How about dating -?", "r": ["Hell Yeah", "Absolutely not"] }, { "q": "Who will you save from a fire?", "r": [] }, { "q": "Who would you like to be your parent 1?", "r": [] }],
-                "tracks": ["You seem to like many songs... Tell me your favourite"]
+                "artists": [{ "q": "Do you feel more - or -?", "r": [] }, { "q": "How about dating -?", "r": ["Hell Yeah", "Absolutely not"] }, { "q": "Who will you save from a fire?", "r": [] }, { "q": "Who would you like to be your parent 1?", "r": [] }],
+                "tracks": ["You seem to like many songs... Tell me your favourite ones", "Final step... Let's see if you can rate your favourite songs!"]
             },
             selectedArtists: [],
             selectedTracks: [],
@@ -45,9 +46,9 @@ class Entertainment extends Component {
     componentDidMount() {
 
         if (this.props.mood) {
-            this.setState({ step: 0 }, () => { console.log(this.state.step) }) // Quotations only when face is present
+            this.setState({ step: 0 }) // Quotations only when face is present
         } else {
-            this.setState({ step: 1 }, () => { console.log(this.state.step) }) // Objects selection only when face is not present
+            this.setState({ step: 1 }) // Objects selection only when face is not present
         }
         ForegroundChange("foreground", 500, "darken")
     }
@@ -58,17 +59,19 @@ class Entertainment extends Component {
     incrementStepperQuotations = (delay) => {
         setTimeout(() => { this.setState({ step: this.state.step + 2 }, () => { console.log("Entertainment step", this.state.step) }) }, delay)
     }
-
+    setSelectedArtists = (selectedArtists) => {
+        this.setState({ selectedArtists: selectedArtists })
+    }
 
     render() {
         let { mood, moodLLF, objects, artists, tracks } = this.props
         let { step } = this.state
         return (
             <div className="entertainment">
-
+                {/* {step ===-1 && <FadeInLefth1 text={"Now... Let us know you better"} callbacks={()=>this.incrementStepper(2000)}></FadeInLefth1>} */}
                 {step === 0 && <Quotations mood={mood} sentences={this.state.sentences.mood} incrementStepper={this.incrementStepperQuotations} />}
                 {step === 1 && <Objects objects={objects} sentences={this.state.questions.objects} incrementStepper={this.incrementStepper} />}
-                {step === 2 && <Artists artists={artists} sentences={this.state.questions.artists} incrementStepper={this.incrementStepper} />}
+                {step === 2 && <Artists artists={artists} sentences={this.state.questions.artists} incrementStepper={this.incrementStepper} artistsToEntertainment={this.setSelectedArtists} />}
                 {step === 3 && <Tracks tracks={tracks} sentences={this.state.questions.tracks} incrementStepper={this.incrementStepper} />}
 
             </div>

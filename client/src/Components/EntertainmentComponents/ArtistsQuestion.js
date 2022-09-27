@@ -10,16 +10,17 @@ class ArtistsQuestion extends Component {
         super(props)
         this.state = {
             answerIsArtist: undefined,
+            renderok: true
         }
     }
 
     componentDidMount() {
-        console.log("ArtistsQuestion Props", this.props)
+
         if (this.props.sentence.r.length !== 0) {
-            this.setState({ answerIsArtist: false, artists: this.props.artists(this.props.sentence.q) }, (state) => console.log(state))
-            console.log("Answer Buttons Are Required, not yet implemented")
+            this.setState({ answerIsArtist: false, artists: this.props.artists(this.props.sentence.q) })
+
         } else {
-            this.setState({ answerIsArtist: true, artists: this.props.artists(this.props.sentence.q) }, (state) => console.log(state))
+            this.setState({ answerIsArtist: true, artists: this.props.artists(this.props.sentence.q) })
         }
     }
 
@@ -40,22 +41,56 @@ class ArtistsQuestion extends Component {
 
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.artists !== prevProps.artists) {
+            this.setState({ renderok: true })
+        }
+
+    }
+
+    sendArtistToParent = (artist) => {
+        this.setState({ renderok: false })
+        this.props.artistCallback(artist)
+        this.props.displayNext()
+
+        if (this.props.incrementStepper !== undefined) {
+            this.props.incrementStepper()
+
+        }
+    }
+
+    clickedText = (text, artist) => {
+        if (text === this.props.sentence.r[0]) {
+            // Positive answer
+            this.sendArtistToParent(artist)
+        } else if (text === this.props.sentence.r[1]) {
+
+
+            if (this.props.incrementStepper !== undefined) {
+                this.props.incrementStepper()
+
+            } else {
+                this.props.displayNext()
+            }
+        }
+    }
+
     render() {
         let { sentence } = this.props
-        let { answerIsArtist, artists } = this.state
+        let { answerIsArtist, artists, renderok } = this.state
         return (
             <div className="question">
-                {answerIsArtist && artists !== undefined && <div className="artistAnswer">
+                {renderok && <>{answerIsArtist && artists !== undefined && sentence !== undefined && <div className="artistAnswer">
                     <FadeInLefth1 text={this.replaceArtists(sentence.q, artists)} />
                     <div className="artistsButtons">
-                        {artists.map((artist, key) => { return <ArtistButton key={key} artist={artist} /> })}
+                        {artists.map((artist, key) => { return <ArtistButton key={key} artist={artist} returnArtist={() => this.sendArtistToParent(artist)} /> })}
                     </div>
                 </div>}
-                {!answerIsArtist && artists !== undefined && <div className="textAnswer">
-                    <FadeInLefth1 text={this.replaceArtists(sentence.q, artists)} />
-                    {sentence.r.map((text) => { return <button className="textButton" >{text}</button> })}
+                    {!answerIsArtist && artists !== undefined && sentence !== undefined && <div className="textAnswer">
+                        <FadeInLefth1 text={this.replaceArtists(sentence.q, artists)} />
+                        {sentence.r.map((text, key) => { return <button className="textButton" onClick={() => this.clickedText(text, artists[0])} key={key}>{text}</button> })}
 
-                </div>}
+                    </div>}</>}
 
             </div>
 

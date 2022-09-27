@@ -31,7 +31,7 @@ class Quotations extends Component {
             <div className="quotations">
                 {step >= 0 && <FadeInLefth1 className="citation" text={sentences[mood][index][0]} callbacks={step === 0 ? [() => this.displayNextTimer(3000)] : undefined} />}
                 {step >= 1 && <FadeInLefth2 className="author" text={sentences[mood][index][1]} callbacks={step === 1 ? [() => this.displayNextTimer(4000)] : undefined} />}
-                {step >= 2 && <span style={{ position: "relative", top: "20px" }}><FadeInLefth3 className="res" text={sentences[mood + "_res"][indexRes]} callbacks={step === 2 ? [() => this.props.incrementStepper(7000), () => this.displayNextTimer(6900)] : undefined} /></span>}
+                {step >= 2 && <span style={{ position: "relative", top: "10px" }}><FadeInLefth3 className="res" text={sentences[mood + "_res"][indexRes]} callbacks={step === 2 ? [() => this.props.incrementStepper(5000), () => this.displayNextTimer(4900)] : undefined} /></span>}
             </div>
 
         )

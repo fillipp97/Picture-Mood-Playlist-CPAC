@@ -1,0 +1,28 @@
+/* .tracksChoice>canvas {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+} */
+
+canvas#defaultCanvas0 {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.tracksChoice h1 {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: wheat;
+}
+
+.tracksChoice h2 {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: wheat;
+}
+
+.tracksChoice h3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 180%;
+    color: wheat;
+}

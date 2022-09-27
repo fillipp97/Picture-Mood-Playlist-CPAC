@@ -57,6 +57,8 @@ export const GlobalStyle = createGlobalStyle`
   top: 50%;
   left:50%;
 }
+
+
 /*
 .App {
   text-align: center;

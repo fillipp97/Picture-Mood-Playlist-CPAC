@@ -7,6 +7,7 @@ class Artists extends Component {
         this.state = {
             step: -1,
             questionsNumber: 1,
+            selectedArtists: [],
             artists: []
         }
     }
@@ -16,7 +17,7 @@ class Artists extends Component {
         this.displayNextTimer(500)
     }
     displayNextTimer = (delay) => {
-        setTimeout((delay) => {
+        setTimeout(() => {
             this.setState({ step: this.state.step + 1 })
         }, delay) // delay
     }
@@ -31,25 +32,37 @@ class Artists extends Component {
         }
         return a;
     }
+
+    pushArtist = (artist) => {
+        let { selectedArtists } = this.state
+        selectedArtists.push(artist)
+        this.setState({ selectedArtists: selectedArtists }, () => {
+            console.log("Chosen Artists Up to Now: ", selectedArtists)
+            if (this.state.selectedArtists.length === 2) {
+                this.props.artistsToEntertainment(this.state.selectedArtists)
+            }
+        })
+    }
     getArtists = (sentence) => {
-        console.log("Lunghezza degli Artisti INGRESSO", this.state.artists.length)
+
         let numArtists = Math.max(sentence.split("-").length - 1, 2)
+
         let artists = []
+
         for (let i = 0; i < numArtists; i++) {
             artists.push(this.state.artists.pop())
         }
-        console.log("The selected artists are: ", artists)
-        console.log("Lunghezza degli Artisti", this.state.artists.length)
+
         return artists
     }
     render() {
         let { step } = this.state
-        let { artists, sentences, incrementStepper } = this.props
+        let { sentences, incrementStepper } = this.props
         let shuffledSentences = this.shuffle(sentences)
-        let shuffledArtists = this.shuffle(artists)
         return (
             <div className="artists">
-                {step === 0 && <ArtistsQuestion sentence={shuffledSentences.pop()} artists={this.getArtists}></ArtistsQuestion>}
+                {step === 0 && <ArtistsQuestion sentence={shuffledSentences.pop()} artists={this.getArtists} artistCallback={this.pushArtist} displayNext={() => this.displayNextTimer(1000)}></ArtistsQuestion>}
+                {step === 1 && <ArtistsQuestion sentence={shuffledSentences.pop()} artists={this.getArtists} artistCallback={this.pushArtist} displayNext={() => this.displayNextTimer(1000)} incrementStepper={() => incrementStepper(1000)}></ArtistsQuestion>}
             </div>
         )
     }

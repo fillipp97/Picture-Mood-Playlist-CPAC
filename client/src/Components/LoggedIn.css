@@ -7,70 +7,94 @@
     z-index: 1;
     opacity: 75%;
 } */
-/* .cover-container{
+.cover-container {
     height: 100%;
     width: 100%;
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     margin-top: 0px;
     overflow: hidden;
     position: absolute;
     top: 0;
+
     z-index: 0;
-} */
-/* .cover-container-internal0{
-    
+}
+
+.cover-container-internal0 {
+
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
     object-fit: fill;
     position: relative;
     animation-name: even;
     animation-duration: 30s;
     animation-iteration-count: infinite;
     animation-fill-mode: both;
-    animation-timing-function: cubic-bezier(0.5,0.8,0.5,0.2);
-} */
-/* @keyframes even {
-    0% {left: -100px;}
-    50% {left: 0px;}
-    100% {left: -100px;}
+    animation-timing-function: cubic-bezier(0.5, 0.8, 0.5, 0.2);
+
 }
- */
-/* .cover-container-internal1{
-    
+
+@keyframes even {
+    0% {
+        left: -100px;
+    }
+
+    50% {
+        left: 0px;
+    }
+
+    100% {
+        left: -100px;
+    }
+}
+
+.cover-container-internal1 {
+
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
     object-fit: fill;
     position: relative;
     animation-name: odd;
     animation-duration: 30s;
     animation-iteration-count: infinite;
-    animation-timing-function: cubic-bezier(0.5,0.8,0.5,0.2);
+    animation-timing-function: cubic-bezier(0.5, 0.8, 0.5, 0.2);
 }
+
 @keyframes odd {
-    0% {left: 0px;}
-    50% {left: -100px;}
-    100% {left: 0px}
-    
-} */
-/* .cover-container img{
+    0% {
+        left: 0px;
+    }
+
+    50% {
+        left: -100px;
+    }
+
+    100% {
+        left: 0px
+    }
+
+}
+
+.cover-container img {
     height: 100px;
     width: auto;
-    
-} */
+    border-radius: 10px;
 
-.Content{
-	/* background-color: aqua; */
-	position: absolute;
+}
+
+.Content {
+    /* background-color: aqua; */
+    position: absolute;
     transform: translate(-50%);
     left: calc(100vw/2);
-	height: 20rem;
-	width: 35rem;
+    height: 20rem;
+    width: 35rem;
 }
 
-.uploadFileContainer{
-	height:auto;
+.uploadFileContainer {
+    height: auto;
 }
-.InputContainer{
-	height:auto;
+
+.InputContainer {
+    height: auto;
 }
