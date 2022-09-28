@@ -1,20 +1,24 @@
 .quotations h1 {
-    font-family: 'Dancing Script', cursive;
-    color: wheat;
+    color: white;
 }
 
 .quotations h2 {
-    font-family: 'Dancing Script', cursive;
-    color: wheat;
+    color: white;
 }
 
 .quotations h3 {
-    font-family: 'Source Sans Pro', sans-serif;
     font-size: 180%;
-    color: wheat;
+    color: white;
 }
 
 .Contents > span{
 	position: relative;
 	transform: translate(-800%);
+}
+
+.entertainment {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
