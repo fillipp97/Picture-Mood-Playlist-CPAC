@@ -37,6 +37,7 @@ from Spotify import (
     get_recommendation_by_objects,
     get_most_listened_tracks,
     create_new_playlist,
+    delete_duplicates,
 )
 
 
@@ -70,7 +71,6 @@ def login():
     auth_url = sp_oauth.get_authorize_url()
     return auth_url
 
-
 @app.route("/authorize")
 def authorize():
     sp_oauth = create_spotify_oauth()
@@ -79,7 +79,6 @@ def authorize():
     token_info = sp_oauth.get_access_token(code)
     session["token_info"] = token_info
     return redirect("http://localhost:3000")
-
 
 @app.route("/logout")
 def logout():
@@ -257,7 +256,7 @@ def remove_human(objects):
 def Step2():
     print("=======================run Step2()")
     data = request.get_json()
-    print("======================= data:",data)
+    # print("======================= data:",data)
     mood = data.get("mood")
     objects = data.get("objects")
     moodLLF = data.get("moodLLF")
@@ -350,12 +349,14 @@ def Step2():
 
         # Mix all the results and get the first 20 OR CREATE A SCORING FUNCTION THAT USES THE TEXT
         recommendations_by_objects.extend(recommendations_moodLLF.get("tracks"))
-        print("=======================recommendations_by_objects",recommendations_by_objects)
-        print("=======================objects",objects)
         scored_songs, lyrics = get_scored_list(recommendations_by_objects, objects)
-        print("=======================scored_songs",scored_songs)
+        # print("=======================scored_songs",scored_songs)
+        song_titles=[scored_songs[i]['name'] for i in range(len(scored_songs))]
+        song_artists=[scored_songs[i]['artists'][0]['name'] for i in range(len(scored_songs))]
         lyrics_as_list_of_words = [str2nestedlist(lyr) for lyr in lyrics]
-        print("=======================Finish Step2()==== mood is None====")
+        # print("================delete duplicate==============song_titles:",song_titles,"==============song_artists",song_artists)
+        delete_duplicates(song_titles,song_artists)
+        print("=======================Finish Step2()========")
         # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
         return {
             "result": "ok",
