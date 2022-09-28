@@ -22,7 +22,7 @@ class SongCard extends Component {
         let previewUrl = this.props.song.preview_url //can be null
         return (
 
-            <div className="songCard">
+            <li className="songCard">
                 <img className="image" src={imageUrl} />
                 <div className="titleAndArtist">
                     <div className="title">{name}</div>
@@ -30,7 +30,7 @@ class SongCard extends Component {
                 </div>
                 <button className="songPreviewButton" disabled={previewUrl == null} onClick={() => this.props.playPause(previewUrl)}>{this.props.playing ? <MdPause /> : <FaPlay />}</button>
 
-            </div>
+            </li>
 
 
 

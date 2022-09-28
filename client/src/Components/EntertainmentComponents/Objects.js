@@ -1,6 +1,7 @@
 import { Component } from "react";
 import FadeInLefth1Group from "../../Styled/FadeInLefth1Group.styled";
 import ObjectsQuestion from "./ObjectsQuestion";
+import "./Objects.css"
 class Objects extends Component {
     constructor(props) {
         super(props)

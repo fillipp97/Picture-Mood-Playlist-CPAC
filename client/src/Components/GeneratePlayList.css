@@ -35,7 +35,11 @@ ul li::marker {
 	color: black;
 	font-size: 1.2rem;
 }
-
+ul li{
+	/* width:30rem; */
+	overflow-wrap:break-word;
+	text-align:left;
+}
 .allSongs>.Button {
 	position: relative;
 	font-family: "Roboto", sans-serif;

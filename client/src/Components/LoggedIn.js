@@ -113,7 +113,7 @@ class LoggedIn extends Component {
     getRecommendedSongs(this.state.firstFilteringCallback)
       .then((response) => {
         if (response.result === 'ok') {
-          console.log(response)
+		  console.log("firstFilteringResults:response:",response)
           this.setState({
             recommendedSongs: response.recommendations,
             recommendedLyrics: response.lyrics
@@ -129,8 +129,10 @@ class LoggedIn extends Component {
   handleSavePlaylist = () => {
     savePlaylist(this.state.playListGenerationCallback)
       .then((response) => {
+		  console.log("playListGenerationResults:response:",response)
         if (response.result === 'ok') {
-          this.setState({ playListGenerationResults: response });
+          this.setState({ playListGenerationResults: response,
+		  });
         }
       });
   }
