@@ -1,25 +1,21 @@
 .Informations {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-size: 1.5rem;
-  /* transition: transform 0.3s ease; */
-  border-radius: 5px;
-  background: linear-gradient(10deg, rgb(149, 228, 149), #55e7fc);
-  box-shadow: 0 4px 10px 0 rgba(49, 196, 190, 0.75);
-  margin: 0rem;
-  max-height: 80vh;
-  overflow: auto;
+	font-family: "Roboto", sans-serif;
+	font-weight: 700;
+	font-size: 1.5rem;
+	/* transition: transform 0.3s ease; */
+	border-radius: 5px;
+	background: red;
+	box-shadow: 0 4px 10px 0 rgba(49, 196, 190, 0.75);
+	margin: 0rem;
+	max-height: 80vh;
+	overflow: auto;
 }
 div.Informations > p{
 	/* float: right; */
 	margin: 1rem;
 	display: inline-flex;
 }
-.Information{
-	height:auto;
-	weight:auto;
-	float:left;
-}
+
 div.Informations label {
 	overflow: visible;
 	cursor: pointer;

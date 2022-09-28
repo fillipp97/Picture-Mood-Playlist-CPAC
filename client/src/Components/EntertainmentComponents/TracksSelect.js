@@ -30,8 +30,12 @@ class TracksSelect extends Component {
 
         return (
             <div className="trackSelection">
-                {this.props.songs.map((song, idx) => <TrackButton song={song} key={song.id} id={song.id} index={idx} disabled={this.state.selectedButtons[idx]} updateState={this.updateState} />)}
-                <button disabled={this.state.selectedTracks.length !== 2} onClick={() => this.props.sendStateToParent(this.state.selectedTracks)}>Submit Tracks</button>
+                <div>
+                    {this.props.songs.map((song, idx) => <TrackButton song={song} key={song.id} id={song.id} index={idx} disabled={this.state.selectedButtons[idx]} updateState={this.updateState} />)}
+                </div>
+                <div className="div-submit">
+                    <button disabled={this.state.selectedTracks.length !== 2} onClick={() => this.props.sendStateToParent(this.state.selectedTracks)}>Submit Tracks</button>
+                </div>
             </div>)
     }
 }
