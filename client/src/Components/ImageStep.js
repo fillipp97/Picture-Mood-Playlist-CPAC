@@ -13,22 +13,25 @@ export default function ImageStep({ callback }) {
     }
     const uploadButton = <button className='button-upload' onClick={() => chooseInput('UPLOAD')}>Choose image</button>;
     const cameraButton = <button className='button-camera' onClick={() => chooseInput('CAMERA')}>Take picture</button>;
-    const backButton = <button className='button-back' onClick={() => chooseInput(null)}>Back</button>;
+    const backButton = <button className='button-back' title="Back" onClick={() => chooseInput(null)}>
+        <img src="BackWhite.png" height="30" width="30" />
+                        </button>;
     // const uploadButton = <ButtonComp onClick={() => chooseInput('UPLOAD')} text="Choose image"></ButtonComp>;
     // const cameraButton = <ButtonComp onClick={() => chooseInput('CAMERA')} text="Take picture" ></ButtonComp>;
     // const backButton = <ButtonComp onClick={() => chooseInput(null)} text="Back" ></ButtonComp>;
     return (
         <div className="div-content">
 
-            <div className="div-wave">
-                <span className="wave"></span>
-                <span className="wave"></span>
-                <span className="wave"></span>
-                <span className="wave"></span>
-                <span className="wave"></span>
-                <span className="wave"></span>
-                <span className="wave"></span>
-            </div>
+
+                <div className="div-wave">
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                </div>
 
             <div className="div-action">
                 <h1>Get ready.</h1>
@@ -47,16 +50,15 @@ export default function ImageStep({ callback }) {
                     </div>
             </div>
 
-            <div className="div-wave">
-                <span className="wave"></span>
-                <span className="wave"></span>
-                <span className="wave"></span>
-                <span className="wave"></span>
-                <span className="wave"></span>
-                <span className="wave"></span>
-                <span className="wave"></span>
-            </div>
-
+                <div className="div-wave">
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                    <span className="wave"></span>
+                </div>
         </div>
     )
 }

@@ -80,14 +80,14 @@ export const WebcamCapture = ({ callback }) => {
             </div>
             <div >
                 {image !== '' ?
-                    (<div className='cameraButtons'>
+                    (<div className='div-camera-taken-pictures'>
                         <button onClick={(e) => {
                             e.preventDefault();
                             setImage('')
                         }}
-                            className="Button camera">
+                            className="button-camera-retake">
                             Retake Image</button>
-                        <button onClick={sendPicture} className="Button upload">Upload</button>
+                        <button onClick={sendPicture} className="button-camera-upload">Upload</button>
                     </div>
                     )
                     :
@@ -96,7 +96,7 @@ export const WebcamCapture = ({ callback }) => {
                             e.preventDefault();
                             capture();
                         }}
-                            className="Button camera">Capture</button>
+                            className="button-capture">Capture</button>
                     </div>
                 }
             </div>
