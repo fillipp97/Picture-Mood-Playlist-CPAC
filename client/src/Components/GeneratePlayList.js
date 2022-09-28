@@ -57,25 +57,37 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
 
     return (
         <>
-            <div className="allSongs">
+            <div className="div-generate-playlist-body">
                 <FadeInLefth1 text={["It's time to see the results!"]} />
-                <FadeInLefth2 text={["Here's a list of songs that our AI selected for you"]} />
 
-                {recommendations && recommendations.tracks.map((item, idx) => {
-                    return <SongCard key={idx} idx={idx} song={item} playPause={playPause} playing={playing}></SongCard>
-                })}
+                <div className="allSongs">
+                    <div className="div-songs-list">
+                        <FadeInLefth2 text={["Here's a list of songs that our AI selected for you"]} />
 
-                <p>RANDOM LYRICS</p>
-                <ul>
-                    {lyrics && lyrics.map((item) => (
-                        <li key={item}>{item}</li>
-                    ))}
-                </ul>
-                <label class="input">
-                    <input class="input__field" type="text" value={playListName} onChange={handlePlayListNameChange} />
-                </label>
-                <p>playlist name to submit</p>
-                <button className="Button" onClick={sendPlayList}>Save to Spotify</button>
+                        {recommendations && recommendations.tracks.map((item, idx) => {
+                            return <SongCard key={idx} idx={idx} song={item} playPause={playPause} playing={playing}></SongCard>
+                        })}
+                    </div>
+
+                    <div className="div-random-lyrics">
+                        <p>RANDOM LYRICS</p>
+                        <ul>
+                            {lyrics && lyrics.map((item) => (
+                                <li key={item}>{item}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    
+                </div>
+
+                <div className="div-submit">
+                    <p>Save now your Mood-Playlist!</p>
+                    <label class="input">
+                        <input placeholder="Name your playlist here..." class="input__field" type="text" value={playListName} onChange={handlePlayListNameChange} />
+                    </label>
+                    <button className="button-save" onClick={sendPlayList}>Save to Spotify</button>
+                </div>
+
             </div>
         </>
     )

@@ -3,38 +3,75 @@
 }
 
 .input__field {
-	box-sizing: border-box;
-	display: block;
-	width: 50%;
-	transform: translate(50%);
-	border: 3px solid currentColor;
-	color: currentColor;
-	background: wheat;
-	border-radius: 7px;
+	width: 300px;
+	height: 56px;
+	padding: 8px;
+	border: 0;
+	border-bottom: 1px solid white;
+	background: none;
+	outline: 0;
+	color: white;
+	font-size: 18px;
+	margin-top: -20px;
+	/*border: 3px solid white;
+	color: black;
+	background: white;
+	border-radius: 15px;
+	outline: 0;
+	font-size: 18px;*/
 }
 
-.input__field:focus {
-	outline: 2px solid rgb(96,130,156);
-	box-shadow: 3px 3px 3px rgb(96,130,156);
-	border: 3px solid rgb(96,130,156);
+	.input__field:focus {
+		border-bottom: 3px solid #1DB954;
+	}
+
+.div-generate-playlist-body > h1 {
+	margin-top: 30px;
 }
 
 .allSongs {
-	position: relative;
-	transform: translate(-50%);
-	left: 50%;
+	display: flex;
+	justify-content: space-around;
+	margin-top: 20px;
+}
+
+.div-songs-list {
 	background-color: antiquewhite;
 	border-radius: 20px;
 	opacity: 90%;
-	width: 30rem;
+	width: 35rem;
 	height: auto;
 	margin-bottom: 3rem;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-bottom: 10px;
 }
 
-ul li::marker {
-	color: black;
-	font-size: 1.2rem;
+.div-songs-list h2 {
+	padding: 20px;
 }
+
+.div-random-lyrics {
+	background-color: rgba(0,0,0,0.8);
+	opacity: 90%;
+	height: auto;
+	margin-bottom: 3rem;
+	padding: 30px;
+	color: white;
+	width: 60%;
+	border-radius: 30px;
+}
+
+	.div-random-lyrics ul {
+		font-size: 23px;
+		margin-top: 20px;
+	}
+
+	ul li::marker {
+		color: black;
+		font-size: 1.2rem;
+	}
 ul li{
 	/* width:30rem; */
 	overflow-wrap:break-word;
@@ -92,3 +129,31 @@ ul li{
 ::-webkit-scrollbar-thumb:window-inactive {
 	background: rgba(200, 204, 201, 1);
 }
+
+.div-submit {
+	height: max-content;
+	padding: 20px;
+	background: rgba(0,0,0,0.9);
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 40px;
+}
+
+	.div-submit > .button-save {
+		height: 55px;
+		width: 150px;
+		border-radius: 20px;
+		font-weight: 600;
+		font-size: 1rem;
+		border: 0;
+		box-shadow: 4px 4px 20px 0 rgba(0, 0, 0, 0.45);
+		cursor: pointer;
+		color: white;
+		background: black;
+		cursor: pointer;
+		border: 3px solid #1DB954;
+		box-shadow: 0 0 .1rem #fff, 0 0 .1rem #fff, 0 0 .1rem #1DB954, 0 0 0.2rem #1DB954, 0 0 .2rem #1DB954, 0 0 2.3rem #1DB954;
+	}
