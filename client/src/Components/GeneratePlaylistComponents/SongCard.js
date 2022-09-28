@@ -2,40 +2,17 @@ import { Component } from "react";
 import "./SongCard.css"
 import { FaPlay } from "react-icons/fa"
 import { MdPause } from "react-icons/md"
-import { Howl } from "howler"
+
 class SongCard extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            playing: false,
-            playingSong: null // url + songObj
-        }
+        // this.state = {
+        //     playing: false,
+        //     playingSong: null // url + songObj
+        // }
     }
 
-    playPause = (src) => {
-        if (this.state.playing && this.state.playingSong.url === src) {
-            this.state.playingSong.sound.pause()
-            this.setState({ playingSong: null, playing: false })
-        } else if (this.state.playing && this.state.playingSong.url != src) {
-            this.state.playingSong.sound.pause()
-            const sound = new Howl({
-                src,
-                html5: true
-            })
-            this.setState({ playingSong: { url: src, sound: sound }, playing: true })
-            sound.play()
-        } else if (!this.state.playing) {
-            const sound = new Howl({
-                src,
-                html5: true
-            })
-            this.setState({ playingSong: { url: src, sound: sound }, playing: true })
-            sound.play()
 
-
-
-        }
-    }
 
 
     render() {
@@ -51,7 +28,7 @@ class SongCard extends Component {
                     <div className="title">{name}</div>
                     <div className="artist">{artistName}</div>
                 </div>
-                <button className="songPreviewButton" disabled={previewUrl == null} onClick={() => this.playPause(previewUrl)}>{this.state.playing ? <MdPause /> : <FaPlay />}</button>
+                <button className="songPreviewButton" disabled={previewUrl == null} onClick={() => this.props.playPause(previewUrl)}>{this.props.playing ? <MdPause /> : <FaPlay />}</button>
 
             </div>
 

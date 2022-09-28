@@ -34,8 +34,8 @@ class Entertainment extends Component {
             },
             questions: {
                 "objects": ['Sometimes I really feel like a ______', 'Three things really matter in life, they are Love, Beer and ______', "It would be great to be killed by a ______", "Give me a ______ and I'll lift the world", "I swear I saw a flying ______"],
-                "artists": [{ "q": "Do you feel more - or -?", "r": [] }, { "q": "How about dating -?", "r": ["Hell Yeah", "Absolutely not"] }, { "q": "Who will you save from a fire?", "r": [] }, { "q": "Who would you like to be your parent 1?", "r": [] }],
-                "tracks": ["You seem to like many songs... Tell me your favourite ones", "Final step... Let's see if you can rate your favourite songs!"]
+                "artists": [[{ q: "Who would you invite to a romantic candlelight dinner?", "r": [] }, { q: "Who sings better between - and -?", r: [] }, { q: "Do you prefer a - or - concert?", r: [] }, { q: "Between - and -, who do you prefer not to listen to?", r: [] }, { q: "Who would you rather share a room with?", r: [] }, { q: "Who do you prefer being stuck in the elevator with, - or -?", r: [] }, { q: "Would you rather live with - or -?", r: [] }, { q: "Who would you give the last parachute to?", r: [] }], { q: "would you like to play with -?", r: ["Immediatly!", "Not a chance"] }, { q: "Do you like -'s songs?", r: ["Yes", "No"] }, { q: "Does -'s music makes sense to you?", r: ["Yes", "Why? Should it?"] }, { q: "Would you go live with -?", r: ["Immediatly", "Rather I remain alone"] }, { q: "Going to a concert and hold - while stage diving", r: ["I would do it!", "No, why should I?"] }, { q: "Do you like -'s hair?", r: ["They are fabulous", "Mine are better"] }, { q: "Do you want to do a duet with -?", r: ["Yes, it's my dream", "Nah, I'm a soloist"] }, { q: "Would you wear -'s clothes?", r: ["I coould try them", "Mine are better"] }, { q: "Would you jump off a bridge for -?", r: ["For him/her this and more", "Hell NO!"] }, { q: "Do you feel more - or -?", r: [] }, { q: "How about dating -?", r: ["Hell Yeah", "Absolutely not"] }, { q: "Who will you save from a fire?", r: [] }, { q: "Who would you like to be your parent 1?", r: [] }],
+                "tracks": ["You seem to like many songs... Tell me your favourite two", "Final step... Let's see if you can rate your favourite songs!", "Finally select two tracks"]
             },
             selectedArtists: [],
             selectedTracks: [],
@@ -55,7 +55,7 @@ class Entertainment extends Component {
         } else {
             this.setState({ step: 1 }) // Objects selection only when face is not present
         }
-        ForegroundChange("foreground", 500, "darken")
+        // ForegroundChange("foreground", 500, "darken")
     }
 
     incrementStepper = (delay) => {
@@ -65,14 +65,18 @@ class Entertainment extends Component {
         setTimeout(() => { this.setState({ step: this.state.step + 2 }, () => { console.log("Entertainment step", this.state.step) }) }, delay)
     }
     setSelectedArtists = (selectedArtists) => {
-        this.setState({ selectedArtists: selectedArtists })
+        console.log("SELECTED ARTISTS", selectedArtists)
+        this.props.updateSelectedArtists(selectedArtists)
+        // this.setState({ selectedArtists: selectedArtists })
     }
     setSelectedTracks = (selectedTracks) => {
-        this.setState({ selectedTracks: selectedTracks })
+        this.props.updateSelectedTrack(selectedTracks)
+        // this.setState({ selectedTracks: selectedTracks })
     }
 
     setSelectedObjects = (selectedObjects) => {
-        this.setState({ selectedObjects: selectedObjects })
+        this.props.updateSelectedObjects(selectedObjects)
+        // this.setState({ selectedObjects: selectedObjects })
     }
     render() {
         let { mood, moodLLF, objects, artists, tracks } = this.props

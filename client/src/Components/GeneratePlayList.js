@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import "./GeneratePlayList.css"
 import SongCard from "../Components/GeneratePlaylistComponents/SongCard"
+import FadeInLefth1 from '../Styled/FadeInLefth1.styled';
+import FadeInLefth2 from '../Styled/FadeInLefth2.styled';
+import { Howl } from "howler"
+
+
 export default function GeneratePlayList({ generatePlayListInput, callback }) {
     const [playListName, updatePlayListName] = useState('');
-
+    const [playing, switchPlaying] = useState(false);
+    const [currentPlayingSong, modifyPlayingSong] = useState(null); // url + songObj
     const lyrics = generatePlayListInput.lyrics;
     const recommendations = generatePlayListInput.recommendations;
 
@@ -23,17 +29,42 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
     };
 
     // sortRecommendations()
+    const playPause = (src, buttonNumber) => {
+        if (playing && currentPlayingSong.url === src) {
+            currentPlayingSong.sound.pause()
+            modifyPlayingSong(null)
+            switchPlaying(false)
+        } else if (playing && currentPlayingSong.url != src) {
+            currentPlayingSong.sound.pause()
+            const sound = new Howl({
+                src,
+                html5: true
+            })
+            modifyPlayingSong({ url: src, sound: sound })
+            switchPlaying(true)
+            sound.play()
+        } else if (!playing) {
+            const sound = new Howl({
+                src,
+                html5: true
+            })
+            modifyPlayingSong({ url: src, sound: sound })
+            switchPlaying(true)
+            sound.play()
+
+        }
+    }
 
     return (
         <>
             <div className="allSongs">
-                <h1>Generate Playlist</h1>
-                <p>SONG LIST</p>
-                <ul>
-                    {recommendations && recommendations.tracks.map((item) => {
-                        return <SongCard song={item}  ></SongCard>
-                    })}
-                </ul>
+                <FadeInLefth1 text={["It's time to see the results!"]} />
+                <FadeInLefth2 text={["Here's a list of songs that our AI selected for you"]} />
+
+                {recommendations && recommendations.tracks.map((item, idx) => {
+                    return <SongCard key={idx} idx={idx} song={item} playPause={playPause} playing={playing}></SongCard>
+                })}
+
                 <p>RANDOM LYRICS</p>
                 <ul>
                     {lyrics && lyrics.map((item) => (
@@ -44,7 +75,7 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
                     <input class="input__field" type="text" value={playListName} onChange={handlePlayListNameChange} />
                 </label>
                 <p>playlist name to submit</p>
-                <button className="Button" onClick={sendPlayList}>Generate Playlist</button>
+                <button className="Button" onClick={sendPlayList}>Save to Spotify</button>
             </div>
         </>
     )
