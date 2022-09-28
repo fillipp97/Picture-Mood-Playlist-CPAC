@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./GeneratePlayList.css"
+import SongCard from "../Components/GeneratePlaylistComponents/SongCard"
 export default function GeneratePlayList({ generatePlayListInput, callback }) {
     const [playListName, updatePlayListName] = useState('');
 
@@ -29,9 +30,9 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
                 <h1>Generate Playlist</h1>
                 <p>SONG LIST</p>
                 <ul>
-                    {recommendations && recommendations.tracks.map((item) => (
-                        <li key={item.id}>{item.name}</li>
-                    ))}
+                    {recommendations && recommendations.tracks.map((item) => {
+                        return <SongCard song={item}  ></SongCard>
+                    })}
                 </ul>
                 <p>RANDOM LYRICS</p>
                 <ul>

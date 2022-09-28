@@ -69,7 +69,13 @@ def get_par_from_mood(mood, genres, tracks):
     elif mood == "fearful" or mood == "anxious" or mood == "terror":
         # related_genres = ["black-metal", "death-metal", "grindcore", "pop-music"]
         tracks.append(
-            random.choice(["5g8eyYQqxmudGG4lt6xOvF", "2L1OXzqVPpVxotHfLglUcB",'0v7IcP1aFArv5ZQCEeGhJy'])
+            random.choice(
+                [
+                    "5g8eyYQqxmudGG4lt6xOvF",
+                    "2L1OXzqVPpVxotHfLglUcB",
+                    "0v7IcP1aFArv5ZQCEeGhJy",
+                ]
+            )
         )
         max_energy = 0.5
         max_valence = 0.4
@@ -110,7 +116,7 @@ def get_par_from_mood(mood, genres, tracks):
             "bossanova",
             "detroit-techno",
             "jazz",
-            "guitar",
+            # "guitar",
         ]
         min_energy = 0.2
         max_energy = 0.6
@@ -178,7 +184,7 @@ def get_par_from_mood(mood, genres, tracks):
         parameters = dict_of(max_energy, max_valence)
         genres.append(random.choice(related_genres))
 
-    return parameters, genres,tracks
+    return parameters, genres, tracks
 
 
 def image_is_plain(path):
