@@ -13,7 +13,7 @@ class NotLoggedIn extends Component {
 
                 <div className="div-body">
                     <FadeInLefth1 text="Picture-Mood-Playlist." />
-                    <FadeInLeftp text="Welcome to our app, this is an app created by YanYan, Haokun Song and Pippo. This is just a test!!" />
+                    <FadeInLeftp text="You picure... We playlist" />
                     <button className="button-login" onClick={this.props.onClick}>LOGIN</button>
                 </div>
 

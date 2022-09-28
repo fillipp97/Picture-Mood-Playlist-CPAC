@@ -16,6 +16,7 @@ import Stepper from "./Stepper";
 import { BounceLoader } from 'react-spinners'
 import Balls from "./Balls";
 import ForegroundChange from "../Styled/ForegroundChange.styled";
+import FadeInLefth1 from "../Styled/FadeInLefth1.styled";
 
 class LoggedIn extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class LoggedIn extends Component {
       playListGenerationResults: null,
       songsStepResults: null,
       songsStepController: 0,
+
     }
   }
   getStepperSteps = (state) => {
@@ -46,15 +48,21 @@ class LoggedIn extends Component {
     console.log(step.name)
     switch (step.name) {
       case 'Picture':
+        this.resetPlayListGeneration()
+        this.resetFirstFiltering()
         this.resetImageStep();
         ForegroundChange("foreground", 500, "brighten")
-        return
+        break
       case 'Make choices':
-        return this.resetFirstFiltering();
+        this.resetPlayListGeneration()
+        this.resetFirstFiltering();
+        break
       case 'Create playlist':
-        return this.resetPlayListGeneration();
+        this.resetPlayListGeneration();
+        break
       case 'Logout':
-        return this.props.logout();
+        this.props.logout();
+        break
 
 
     }
@@ -113,12 +121,12 @@ class LoggedIn extends Component {
     getRecommendedSongs(this.state.firstFilteringCallback)
       .then((response) => {
         if (response.result === 'ok') {
-		  console.log("firstFilteringResults:response:",response)
+          console.log("firstFilteringResults:response:", response)
           this.setState({
             recommendedSongs: response.recommendations,
             recommendedLyrics: response.lyrics
           })
-          this.setState({ firstFilteringResults: response });
+          this.setState({ firstFilteringResults: response, showGeneratePlaylist: true });
         }
       });
   }
@@ -129,10 +137,11 @@ class LoggedIn extends Component {
   handleSavePlaylist = () => {
     savePlaylist(this.state.playListGenerationCallback)
       .then((response) => {
-		  console.log("playListGenerationResults:response:",response)
+        console.log("playListGenerationResults:response:", response)
         if (response.result === 'ok') {
-          this.setState({ playListGenerationResults: response,
-		  });
+          this.setState({
+            playListGenerationResults: response,
+          });
         }
       });
   }
@@ -144,27 +153,27 @@ class LoggedIn extends Component {
         {
           <>
             <div className="logged-container">
-                <header id="App-header" className="App-header"> <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} /> </header>
+              <header id="App-header" className="App-header"> <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} /> </header>
 
-                <div className="foreground">
-                            <div className="Contents">
-                                <div className="div-loader">
-                                    {this.isLoading() && <><BounceLoader className="loader" color="white" /> {ForegroundChange("foreground", 500, "darken")}</>}
-                                </div>
+              <div className="foreground">
+                <div className="Contents">
+                  <div className="div-loader">
+                    {this.isLoading() && <><BounceLoader className="loader" color="white" /> {ForegroundChange("foreground", 500, "darken")}</>}
+                  </div>
 
 
-                        {!this.state.imageStepCallback &&
-                        <ImageStep callback={this.imageStepCallback} />
-                        }
-                        {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
-                        <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={this.firstFilteringCallback} />
-                        }
-                        {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
-                        <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={this.generatePlayListCallback} />
-                        }
-                        {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
-                    </div>
+                  {!this.state.imageStepCallback &&
+                    <ImageStep callback={this.imageStepCallback} />
+                  }
+                  {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
+                    <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={this.firstFilteringCallback} />
+                  }
+                  {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
+                    <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={this.generatePlayListCallback} show={this.state.showGeneratePlaylist} />
+                  }
+                  {this.state.playListGenerationResults && <FadeInLefth1 text={"The song has been generated"} />}
                 </div>
+              </div>
 
               <div className="cover-container">
                 {/* {this.props.songs.length > 0 && <Balls songs={this.props.songs} />} */}
