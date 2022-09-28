@@ -45,7 +45,7 @@ div > p {
 	margin-top: 10px;
 }
 
-.div-wave {
+.NotLoggedInContainer>.div-wave {
 	position: absolute;
 	height: 40px;
 	display: flex;
@@ -55,7 +55,7 @@ div > p {
 	transform: translateX(-50%);
 }
 
-	.div-wave .wave {
+	.NotLoggedInContainer > .div-wave .wave {
 		position: relative;
 		background: white;
 		height: 100%;
@@ -73,25 +73,25 @@ div > p {
 		height: 100%;
 	}
 }
-.wave:nth-child(1) {
+.NotLoggedInContainer > .div-wave > .wave:nth-child(1) {
 	animation-delay: 0s;
 }
-.wave:nth-child(2) {
+.NotLoggedInContainer > .div-wave > .wave:nth-child(2) {
 	animation-delay: 0.3s;
 }
-.wave:nth-child(3) {
+.NotLoggedInContainer > .div-wave > .wave:nth-child(3) {
 	animation-delay: 0.6s;
 }
-.wave:nth-child(4) {
+.NotLoggedInContainer > .div-wave > .wave:nth-child(4) {
 	animation-delay: 0.9s;
 }
-.wave:nth-child(5) {
+.NotLoggedInContainer > .div-wave > .wave:nth-child(5) {
 	animation-delay: 0.6s;
 }
-.wave:nth-child(6) {
+.NotLoggedInContainer > .div-wave > .wave:nth-child(6) {
 	animation-delay: 0.3s;
 }
-.wave:nth-child(7) {
+.NotLoggedInContainer > .wave:nth-child(7) {
 	animation-delay: 0s;
 }
 

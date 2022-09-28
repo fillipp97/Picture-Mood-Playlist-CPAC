@@ -142,26 +142,26 @@ class LoggedIn extends Component {
         {
           <>
             <div className="logged-container">
-              <header id="App-header" className="App-header"> <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} /> </header>
+                <header id="App-header" className="App-header"> <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} /> </header>
+
+                <div className="foreground">
+                    <div className="Contents">
+                                {this.isLoading() && <><BounceLoader className="loader" color="wheat" /> {ForegroundChange("foreground", 500, "darken")}</>}
 
 
-              <div className="foreground">
-                <div className="Contents">
-                  {this.isLoading() && <><BounceLoader className="loader" color="wheat" /> {ForegroundChange("foreground", 500, "darken")}</>}
-
-
-                  {!this.state.imageStepCallback &&
-                    <ImageStep callback={this.imageStepCallback} />
-                  }
-                  {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
-                    <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={this.firstFilteringCallback} />
-                  }
-                  {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
-                    <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={this.generatePlayListCallback} />
-                  }
-                  {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
+                        {!this.state.imageStepCallback &&
+                        <ImageStep callback={this.imageStepCallback} />
+                        }
+                        {(this.state.imageStepResults && !this.state.firstFilteringCallback) &&
+                        <FirstFiltering firstFilteringInput={this.state.imageStepResults} callback={this.firstFilteringCallback} />
+                        }
+                        {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
+                        <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={this.generatePlayListCallback} />
+                        }
+                        {this.state.playListGenerationResults && JSON.stringify(this.state.playListGenerationResults)}
+                    </div>
                 </div>
-              </div>
+
               <div className="cover-container">
                 {/* {this.props.songs.length > 0 && <Balls songs={this.props.songs} />} */}
 
