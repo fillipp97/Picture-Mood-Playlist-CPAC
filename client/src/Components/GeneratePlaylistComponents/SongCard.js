@@ -28,7 +28,7 @@ class SongCard extends Component {
                     <div className="title">{name}</div>
                     <div className="artist">{artistName}</div>
                 </div>
-                <button className="songPreviewButton" disabled={previewUrl == null} onClick={() => this.props.playPause(previewUrl)}>{this.props.playing ? <MdPause /> : <FaPlay />}</button>
+                <button className="songPreviewButton" disabled={previewUrl == null} onClick={() => this.props.playPause(previewUrl, this.props.idx)}>{this.props.playingId == this.props.idx ? <MdPause /> : <FaPlay />}</button>
 
             </li>
 

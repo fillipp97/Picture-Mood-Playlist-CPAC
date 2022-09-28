@@ -10,6 +10,7 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
     const [playListName, updatePlayListName] = useState('');
     const [playing, switchPlaying] = useState(false);
     const [currentPlayingSong, modifyPlayingSong] = useState(null); // url + songObj
+    const [playingNumber, switchPlayingNumber] = useState(null);
     const lyrics = generatePlayListInput.lyrics;
     const recommendations = generatePlayListInput.recommendations;
 
@@ -29,11 +30,13 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
     };
 
     // sortRecommendations()
+
     const playPause = (src, buttonNumber) => {
         if (playing && currentPlayingSong.url === src) {
             currentPlayingSong.sound.pause()
             modifyPlayingSong(null)
             switchPlaying(false)
+            switchPlayingNumber(null)
         } else if (playing && currentPlayingSong.url != src) {
             currentPlayingSong.sound.pause()
             const sound = new Howl({
@@ -42,7 +45,9 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
             })
             modifyPlayingSong({ url: src, sound: sound })
             switchPlaying(true)
+            switchPlayingNumber(buttonNumber)
             sound.play()
+
         } else if (!playing) {
             const sound = new Howl({
                 src,
@@ -50,6 +55,7 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
             })
             modifyPlayingSong({ url: src, sound: sound })
             switchPlaying(true)
+            switchPlayingNumber(buttonNumber)
             sound.play()
 
         }

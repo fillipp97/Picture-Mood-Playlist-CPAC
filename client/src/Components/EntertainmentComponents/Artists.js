@@ -59,6 +59,7 @@ class Artists extends Component {
         let { step } = this.state
         let { sentences, incrementStepper } = this.props
         let shuffledSentences = this.shuffle(sentences)
+
         return (
             <div className="artists">
                 {step === 0 && <ArtistsQuestion sentence={shuffledSentences.pop()} artists={this.getArtists} artistCallback={this.pushArtist} displayNext={() => this.displayNextTimer(1000)}></ArtistsQuestion>}
