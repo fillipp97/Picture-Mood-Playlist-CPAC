@@ -258,39 +258,39 @@ def assign_score(words, text):
     return score
 
 
-def score_func(songs_and_texts, words):
-    # takes as input songs and lyrics and scores songs by counting the number of times words appear in the lyrics
-    print("Working on texts")
-    # GET THE NEEDED LANGUAGES
-    languages = set()
-    for song in songs_and_texts:
-        try:
-            languages.add(detect(song[2]))
-        except:
-            print(
-                "Impossible to detect the language of: {},{} ---> SKIPPED".format(
-                    song[0], song[1]
-                )
-            )
-    print(languages)
-    # TRANSLATE THE WORDS JUST ONE TIME
-    trans_words = ""
-    for word in words:
-        for lang in languages:
-            trans_words += GoogleTranslator(source="auto", target=lang).translate(word)
-            trans_words += "-"
-    words = trans_words.lower().split("-")
-    words = words[:-1]
-    print(words)
-    for song in songs_and_texts:
-        if song[2] == "" or song[2] == "notext":
-            song[2] = song[0]  # for instrumentals or notext consider title as a lyric
-        if song[2] != "notext":
-            # print(song[0],song[1])
-            song[3] = assign_score(words, song[2])
+# def score_func(songs_and_texts, words):
+#     # takes as input songs and lyrics and scores songs by counting the number of times words appear in the lyrics
+#     print("Working on texts")
+#     # GET THE NEEDED LANGUAGES
+#     languages = set()
+#     for song in songs_and_texts:
+#         try:
+#             languages.add(detect(song[2]))
+#         except:
+#             print(
+#                 "Impossible to detect the language of: {},{} ---> SKIPPED".format(
+#                     song[0], song[1]
+#                 )
+#             )
+#     print(languages)
+#     # TRANSLATE THE WORDS JUST ONE TIME
+#     trans_words = ""
+#     for word in words:
+#         for lang in languages:
+#             trans_words += GoogleTranslator(source="auto", target=lang).translate(word)
+#             trans_words += "-"
+#     words = trans_words.lower().split("-")
+#     words = words[:-1]
+#     print(words)
+#     for song in songs_and_texts:
+#         if song[2] == "" or song[2] == "notext":
+#             song[2] = song[0]  # for instrumentals or notext consider title as a lyric
+#         if song[2] != "notext":
+#             # print(song[0],song[1])
+#             song[3] = assign_score(words, song[2])
 
-            # print(song[0],song[1],song[3])
-    return songs_and_texts
+#             # print(song[0],song[1],song[3])
+#     return songs_and_texts
 
 
 # def retrieve_lyrics(unique_songs, horror=0):

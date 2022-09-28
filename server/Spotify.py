@@ -4,7 +4,7 @@
 from pathlib import Path
 import sys
 from sorcery import dict_of
-
+import re
 sys.path.append(str(Path(__file__).parent))
 
 from flask import session, redirect
@@ -224,11 +224,12 @@ def get_recommendation_by_objects(objects, mood):
     )
 
     for obj in objects:
-
         res = spotify.search(q=obj, limit=3, type="track")
         res = res["tracks"]["items"]
         for song in res:
-            if obj in song["name"] and "hair dryer" not in song["name"].lower():
+            x = song["name"]
+            x_split = re.split(" ",x)
+            if obj in x_split and "hair dryer" not in x.lower():
                 songs.append(song)
         # Select only the results which are closer to the mood
     ids = [el["id"] for el in songs]
