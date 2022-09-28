@@ -225,28 +225,41 @@ def get_recommendation_by_objects(objects, mood):
 
     for obj in objects:
 
-        res = spotify.search(q=obj, limit=20, type="track")
+        res = spotify.search(q=obj, limit=3, type="track")
         res = res["tracks"]["items"]
         for song in res:
             if obj in song["name"] and "hair dryer" not in song["name"].lower():
                 songs.append(song)
         # Select only the results which are closer to the mood
     ids = [el["id"] for el in songs]
-    print(ids)
     tracks_features = spotify.audio_features(tracks=ids)
-    print("Track Features", tracks_features)
-    # scores = [get_score_from_params(song_el, mood) for song_el in tracks_features]
-
+    # print("===========For score test===========Track Features: ", tracks_features[0])
+    # print("===========For score test===========objects: ", objects)
+    # print("===========For score test===========mood: ", mood)
+    ## ===================== works below =====================
+    scores = [get_score_from_params(song_el, mood) for song_el in tracks_features]
+    # print("===========For score test===========Final score is : ", scores)
     # songs_ids_sorted = [x for _, x in sorted(zip(scores, ids))]
-
+    # print("===========For score test===========Before score(in descending order) is : ", scores)
+    # print("===========For score test===========Before ids(in descending order) is : ", ids) 
     songs_sorted_by_score = []
+    ### Sort ids in descending order by scores
+
+    for i in range(len(scores)):
+        for j in range(0,len(scores)-i-1):
+            if scores[j] < scores[j+1]:
+                scores[j],scores[j+1] = scores[j+1],scores[j]
+                songs[j],songs[j+1] = songs[j+1], songs[j]
+    #####success songs change!!
+    ### Assign values to the array "songs_sorted_by_score" based on "ids"
+
+
     for sp_id in ids:
         for song in songs:
             if sp_id == song["id"]:
                 songs_sorted_by_score.append(song)
 
     out = songs_sorted_by_score[:3]
-
     if not songs_sorted_by_score:
         out = songs[0]
 
@@ -271,12 +284,13 @@ def get_score_from_params(song, mood):
         "min_valence": 0,
         "max_valence": 1,
     }
-    print(mood)
-    mood_pars, _ = get_par_from_mood(mood=mood, genres=["any"])
-
+    mood_pars, _ = get_par_from_mood(mood=mood, genres=["any"]) 
+    # print("===========For score test===========mood_pars: ", mood_pars)
     standard_pars.update(mood_pars)
-
     par_names = list(set(map(lambda x: x.split("_")[-1], list(standard_pars.keys()))))
+    # print("===========For score test===========mood_pars: (After Update)", mood_pars)
+    # print("===========For score test===========par_names: ", par_names)
+    ## works below 
     score = 0
     for par in par_names:
         if song:
@@ -288,7 +302,6 @@ def get_score_from_params(song, mood):
                 ):
                     score += 1
     return score
-
 
 def create_new_playlist(
     playlist_title: str,
