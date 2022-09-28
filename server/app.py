@@ -330,6 +330,7 @@ def Step2():
             "lyrics": lyrics_as_list_of_words,
         }
     else:
+        # No Face
         # Get 2 recommendations from each object in the image
         print("=======================objects",objects)
         recommendations_by_objects = get_recommendation_by_objects(objects, moodLLF)

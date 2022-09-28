@@ -44,6 +44,7 @@ from PIL import ImageColor
 from PIL import ImageDraw
 from PIL import ImageFont
 from PIL import ImageOps
+import re
 
 object_result = []
 # For measuring the inference time.
@@ -57,6 +58,14 @@ def display_image(image):
     plt.grid(False)
     plt.imshow(image)
 
+def divide_objects():
+    for ob in object_result:
+        x = re.split(' ', ob)
+        index = object_result.index(ob)
+        if len(x)>=2:
+            object_result.remove(ob)
+            for i in x:
+                object_result.insert(index,i)
 
 def download_and_resize_image(image_data, new_width=256, new_height=256, display=False):
     _, filename = tempfile.mkstemp(suffix=".jpg")
@@ -71,7 +80,6 @@ def download_and_resize_image(image_data, new_width=256, new_height=256, display
     # if display:
     #     display_image(pil_image)
     return filename
-
 
 def draw_bounding_box_on_image(
     image, ymin, xmin, ymax, xmax, color, font, thickness=4, display_str_list=()
@@ -201,6 +209,9 @@ def run_detector(detector, path):
     for i in range(len(result["detection_class_entities"])):
         object_result.append(result["detection_class_entities"][i].decode("ascii"))
     object_number = len(result["detection_scores"])
+    divide_objects()
+    # object_number = len(object_result)
+    print("========================= number and objects =======================",object_number,object_result)
 
     # print("Similarest Result of Recognition : ",
     #       result["detection_class_entities"][0].decode("ascii"))
@@ -222,7 +233,9 @@ def detect_img(image_path):
 
     run_detector(detector, image_path)
     end_time = time.time()
+    
     print("Inference time:", end_time - start_time)
+    print()
     print("=========================Object Detection Finished=======================")
 
 
