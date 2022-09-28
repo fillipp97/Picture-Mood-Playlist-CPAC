@@ -38,7 +38,7 @@ export default function FirstFiltering({ firstFilteringInput, callback }) {
                 {console.log("FF STATE", selectedArtists, selectedObjects, selectedTrack)}
                 {step === 0 && <Entertainment mood={mood} moodLLF={moodLLF} objects={objects} artists={artists} tracks={tracks} incrementFirstFilterStep={incrementFFStep} updateSelectedArtists={updateSelectedArtists} updateSelectedObjects={updateSelectedObjects} updateSelectedTrack={updateSelectedTrack}></Entertainment>}
                 {step >= 1 && <FadeInLefth1 text="Now it's time to submit your choices and trust the AI" callbacks={[() => { setTimeout(() => { incrementFFStep() }, 2000) }]} />}
-                {step >= 2 && <button className="Button" onClick={sendPreferences}>Send Song Request</button>}
+                {step >= 2 && <button className="button-send-song" onClick={sendPreferences}>Send Song Request</button>}
             </div>
 
         </>

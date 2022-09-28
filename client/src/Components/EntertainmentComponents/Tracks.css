@@ -11,18 +11,25 @@
     left: 0px;
 } */
 
+.tracksChoice {
+    background: rgba(0,0,0,0.6);
+    border-radius: 30px;
+    padding: 20px;
+    
+}
+
 .tracksChoice h1 {
-    font-family: 'Source Sans Pro', sans-serif;
-    color: wheat;
+    margin-bottom: 20px;
+    color: white;
 }
 
-.tracksChoice h2 {
-    font-family: 'Source Sans Pro', sans-serif;
-    color: wheat;
-}
+    .tracksChoice h2 {
+        margin-bottom: 20px;
+        color: white;
+    }
 
-.tracksChoice h3 {
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 180%;
-    color: wheat;
-}
+    .tracksChoice h3 {
+        margin-bottom: 20px;
+        font-size: 180%;
+        color: white;
+    }

@@ -5,42 +5,44 @@
 .trackButtons {
     display: inline-block;
     text-align: center;
-
-
 }
 
 .trackButtonContainer {
     display: inline-block;
-    max-width: 160px;
-    max-height: 160px;
-    padding: 17px;
+    max-width: 140px;
+    max-height: 140px;
+    margin: 20px;
+    margin-bottom: 40px;
     vertical-align: middle;
+	position: relative;
 }
 
 .trackButtonContainer>img {
-    height: 160px;
-    width: 160px;
+    height: 140px;
+    width: 140px;
     object-fit: cover;
-
 }
 
 .trackButtonContainer>img:hover {
     filter: brightness(1.2);
-    transform: scale(1.1);
 }
 
 .trackButtonImage {
     border-radius: 20%;
+	transform: scale(110%);
     filter: brightness(1);
 }
 
 .trackButtonImageDisabled {
     border-radius: 20%;
-    filter: brightness(0.3);
+    filter: brightness(0.6);
 }
 
 .trackButtonText {
-    color: wheat;
+	color: white;
+	margin-top: 15px;
+	font-size: .8rem;
+    /*color: wheat;
     font-size: 130%;
     height: 176px;
     width: 176px;
@@ -54,12 +56,30 @@
     justify-content: center;
     align-items: center;
     vertical-align: middle;
-    align-content: center;
-
+    align-content: center;*/
 }
 
-.trackSelection > button{
-	position:relative;
+.trackSelection {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.trackSelection > .div-submit > button {
+	height: 55px;
+	width: 150px;
+	border-radius: 20px;
+	font-weight: 600;
+	font-size: 1rem;
+	border: 0;
+	box-shadow: 4px 4px 20px 0 rgba(0, 0, 0, 0.45);
+	cursor: pointer;
+	color: white;
+	background: black;
+	cursor: pointer;
+	border: 3px solid #1DB954;
+	box-shadow: 0 0 .1rem #fff, 0 0 .1rem #fff, 0 0 .1rem #1DB954, 0 0 0.2rem #1DB954, 0 0 .2rem #1DB954, 0 0 2.3rem #1DB954;
+	/*position:relative;
 	font-family: "Roboto", sans-serif;
 	font-weight: 600;
 	font-size: 0.8rem;
@@ -75,40 +95,59 @@
 	margin-top: 0.4rem;
 	margin-bottom: 0.5rem;
 	margin-left: 1rem;
-	margin-right: 1rem;
+	margin-right: 1rem;*/
 }
-.trackSelection > button:hover {
-	color: white;
-	filter:brightness(1.3);
-	background-color: rgba(107, 111, 114, 1);
-	-webkit-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
-	-moz-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
-	box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
+	.trackSelection > button:hover {
+		filter: brightness(1.3);
+		transform: scale(105%);
+	}
+
+.Informations {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	align-items: center;
+	width: 100%;
 }
-.Informations > Button{
-	position:relative;
-	font-family: "Roboto", sans-serif;
-	font-weight: 600;
-	font-size: 0.8rem;
-	color: rgba(212, 225, 210, 1);
-	cursor: pointer;
-	transition: transform 0.3s ease;
-	border-radius: 40px;
-	opacity: 90%;
-	background: linear-gradient(-15deg, rgb(0, 0, 0), rgba(107, 111, 114, 1));
-	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.75);
-	height: 5rem;
-	width: 5rem;
-	margin-top: 0.4rem;
-	margin-bottom: 0.5rem;
-	margin-left: 1rem;
-	margin-right: 1rem;
-}
-.Informations > Button:hover {
-	color: white;
-	filter:brightness(1.3);
-	background-color: rgba(107, 111, 114, 1);
-	-webkit-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
-	-moz-box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
-	box-shadow: 10px 10px 99px 6px rgba(107, 111, 114, 1);
-}
+
+	.Informations > Button {
+		height: 55px;
+		width: max-content;
+		padding: 0 20px;
+		border-radius: 20px;
+		font-weight: 600;
+		font-size: 1rem;
+		border: 0;
+		box-shadow: 4px 4px 20px 0 rgba(0, 0, 0, 0.45);
+		cursor: pointer;
+		color: white;
+		background: black;
+		cursor: pointer;
+		border: 3px solid #1DB954;
+		box-shadow: 0 0 .1rem #fff, 0 0 .1rem #fff, 0 0 .1rem #1DB954, 0 0 0.2rem #1DB954, 0 0 .2rem #1DB954, 0 0 2.3rem #1DB954;
+		/*position:relative;
+		font-family: "Roboto", sans-serif;
+		font-weight: 600;
+		font-size: 0.8rem;
+		color: rgba(212, 225, 210, 1);
+		cursor: pointer;
+		transition: transform 0.3s ease;
+		border-radius: 40px;
+		opacity: 90%;
+		background: linear-gradient(-15deg, rgb(0, 0, 0), rgba(107, 111, 114, 1));
+		box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.75);
+		height: 5rem;
+		width: 5rem;
+		margin-top: 0.4rem;
+		margin-bottom: 0.5rem;
+		margin-left: 1rem;
+		margin-right: 1rem;*/
+	}
+		.Informations > Button:hover {
+			filter: brightness(1.3);
+			transform: scale(105%);
+		}

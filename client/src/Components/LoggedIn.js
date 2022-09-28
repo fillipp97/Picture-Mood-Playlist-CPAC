@@ -147,8 +147,10 @@ class LoggedIn extends Component {
                 <header id="App-header" className="App-header"> <Stepper steps={this.getStepperSteps(this.state)} callback={this.handleStepperCallback} /> </header>
 
                 <div className="foreground">
-                    <div className="Contents">
-                                {this.isLoading() && <><BounceLoader className="loader" color="wheat" /> {ForegroundChange("foreground", 500, "darken")}</>}
+                            <div className="Contents">
+                                <div className="div-loader">
+                                    {this.isLoading() && <><BounceLoader className="loader" color="white" /> {ForegroundChange("foreground", 500, "darken")}</>}
+                                </div>
 
 
                         {!this.state.imageStepCallback &&
