@@ -224,6 +224,7 @@ def get_recommendation_by_objects(objects, mood):
     )
 
     for obj in objects:
+
         res = spotify.search(q=obj, limit=20, type="track")
         res = res["tracks"]["items"]
         for song in res:
@@ -231,8 +232,10 @@ def get_recommendation_by_objects(objects, mood):
                 songs.append(song)
         # Select only the results which are closer to the mood
     ids = [el["id"] for el in songs]
+    print(ids)
     tracks_features = spotify.audio_features(tracks=ids)
-    scores = [get_score_from_params(song_el, mood) for song_el in tracks_features]
+    print("Track Features", tracks_features)
+    # scores = [get_score_from_params(song_el, mood) for song_el in tracks_features]
 
     # songs_ids_sorted = [x for _, x in sorted(zip(scores, ids))]
 
@@ -276,9 +279,14 @@ def get_score_from_params(song, mood):
     par_names = list(set(map(lambda x: x.split("_")[-1], list(standard_pars.keys()))))
     score = 0
     for par in par_names:
-
-        if standard_pars[f"min_{par}"] < song[par] < standard_pars[f"max_{par}"]:
-            score += 1
+        if song:
+            if song[par]:
+                if (
+                    standard_pars[f"min_{par}"]
+                    < song[par]
+                    < standard_pars[f"max_{par}"]
+                ):
+                    score += 1
     return score
 
 

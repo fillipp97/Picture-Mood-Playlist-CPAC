@@ -1,15 +1,15 @@
 import React from "react"
 import styled, { keyframes } from "styled-components"
+import { useState, useEffect } from "react";
+export default function FadeInLefth1Group(props) {
 
-export default function FadeInLefth1(props) {
-    if (props.callbacks !== undefined) {
-        if (props.callbacks.length > 0) {
-            for (let i = 0; i < props.callbacks.length; i++) {
-                props.callbacks[i]()
-            }
-        }
+    if (props.goOn !== undefined && props.text.length <= props.step) {
+        props.goOn()
     }
-    return <Animation>{props.text}</Animation>
+
+    return (props.text.map((text, idx) => { return (props.step >= idx && <Animation key={idx}>{text}</Animation >) }
+    ))
+
 }
 const animation = keyframes`
     0% { opacity: 0; left: -7px}
@@ -19,7 +19,6 @@ const animation = keyframes`
 
 const Animation = styled.h1`
     opacity: 0;
-	color: rgb(246,215,171);
     position: relative;
     animation-name: ${animation};
     animation-duration: 1s;

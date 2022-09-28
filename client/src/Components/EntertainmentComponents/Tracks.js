@@ -16,6 +16,7 @@ class Tracks extends Component {
 
     componentDidMount() {
         this.displayTimer(4000)
+        this.setState({ sentence: this.randomChoice(this.props.sentences) })
     }
     displayTimer = (delay) => {
         setTimeout(() => {
@@ -39,12 +40,17 @@ class Tracks extends Component {
         this.props.tracksToEntertainment(update)
         this.props.incrementStepper()
     }
+
+    randomChoice = (sentences) => {
+        let idx = Math.floor(Math.random() * sentences.length)
+        return sentences[idx]
+    }
     render() {
         let { step } = this.state
         console.log("Tracks Step", step)
         return (
             <div className="tracksChoice">
-                {step >= 0 && <><FadeInLefth1 text={"Finally select two tracks"} callbacks={[() => this.showNext(4000)]}></FadeInLefth1></>}
+                {step >= 0 && <><FadeInLefth1 text={this.state.sentence} callbacks={[() => this.showNext(4000)]}></FadeInLefth1></>}
                 {/* {this.state.showSecond && <FadeInLefth2 text={"Don't worry, you can play with the balls by using the wheel button of the mouse"}></FadeInLefth2>}
                 {this.props.tracks.length > 0 && this.state.selectedTracks.length < 2 && <TrackBalls sendTrackToParent={this.ballClicked} songs={this.props.tracks} />} */}
                 {step >= 1 && <TracksSelect songs={this.props.tracks} sendStateToParent={this.sendStateToParent}></TracksSelect>}

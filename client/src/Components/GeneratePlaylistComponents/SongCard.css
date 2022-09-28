@@ -1,0 +1,31 @@
+.songCard {
+    max-width: 1000px;
+    width: 100%;
+    display: flex;
+    background-color: rgb(86, 209, 86);
+    align-items: center;
+    /* justify-content: */
+
+}
+
+.songCard>img {
+    max-width: 100px;
+    border-radius: 20px;
+    width: 100%;
+    margin: 10px;
+    box-shadow: rgb(1, 105, 27) 3px 3px 10px;
+}
+
+.songCard>button {
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    margin: 15px;
+    margin-right: 20px;
+}
+
+.titleAndArtist {
+    margin: 15px;
+    font-size: 150%;
+    color: wheat;
+}

@@ -96,7 +96,11 @@ def get_tracks():
         print("Not Logged in")
         return redirect("http://localhost:3000")
         # return {"result": "bad"}
-    sp = spotipy.Spotify(auth=session.get("token_info").get("access_token"))
+    sp = spotipy.Spotify(
+        auth=session.get("token_info").get("access_token"),
+        requests_timeout=10,
+        retries=10,
+    )
     currGroup = sp.current_user_saved_tracks(limit=50, offset=0)["items"]
     return {"result": "ok", "songs": currGroup}
 
@@ -191,6 +195,7 @@ def Step1():
     shuffle(genres)
     mixed_genres = genres[:10]
     if mood is None:
+        # In no-face is present the mood is found following psychological rules
         moodLLF = get_mood_from_LLF(image_path=image_path)
     else:
         moodLLF = None
@@ -287,6 +292,7 @@ def Step2():
     if len(objects) >= 3:
         shuffle(objects)
         objects = objects[:3]
+    print("INCOMING OBJECTS", objects)
     if mood is not None:
         # Proceed with the branch with face
         # Get parameters from mood
