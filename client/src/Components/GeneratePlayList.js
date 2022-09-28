@@ -10,6 +10,7 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
     const [playListName, updatePlayListName] = useState('');
     const [playing, switchPlaying] = useState(false);
     const [currentPlayingSong, modifyPlayingSong] = useState(null); // url + songObj
+    const [playingNumber, switchPlayingNumber] = useState(null);
     const lyrics = generatePlayListInput.lyrics;
     const recommendations = generatePlayListInput.recommendations;
 
@@ -29,11 +30,13 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
     };
 
     // sortRecommendations()
+
     const playPause = (src, buttonNumber) => {
         if (playing && currentPlayingSong.url === src) {
             currentPlayingSong.sound.pause()
             modifyPlayingSong(null)
             switchPlaying(false)
+            switchPlayingNumber(null)
         } else if (playing && currentPlayingSong.url != src) {
             currentPlayingSong.sound.pause()
             const sound = new Howl({
@@ -42,7 +45,9 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
             })
             modifyPlayingSong({ url: src, sound: sound })
             switchPlaying(true)
+            switchPlayingNumber(buttonNumber)
             sound.play()
+
         } else if (!playing) {
             const sound = new Howl({
                 src,
@@ -50,6 +55,7 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
             })
             modifyPlayingSong({ url: src, sound: sound })
             switchPlaying(true)
+            switchPlayingNumber(buttonNumber)
             sound.play()
 
         }
@@ -57,26 +63,21 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
 
     return (
         <>
-            <div className="allSongs">
+            {<div className="allSongs">
                 <FadeInLefth1 text={["It's time to see the results!"]} />
                 <FadeInLefth2 text={["Here's a list of songs that our AI selected for you"]} />
 
                 {recommendations && recommendations.tracks.map((item, idx) => {
-                    return <SongCard key={idx} idx={idx} song={item} playPause={playPause} playing={playing}></SongCard>
+                    return <SongCard key={idx} idx={idx} song={item} playPause={playPause} playingId={playingNumber}></SongCard>
                 })}
 
-                <p>RANDOM LYRICS</p>
-                <ul>
-                    {lyrics && lyrics.map((item) => (
-                        <li key={item}>{item}</li>
-                    ))}
-                </ul>
-                <label class="input">
-                    <input class="input__field" type="text" value={playListName} onChange={handlePlayListNameChange} />
+                <label className="input">
+                    <p>It's time! Chose a name for your playlist</p>
+                    <input className="input__field" type="text" value={playListName} onChange={handlePlayListNameChange} />
                 </label>
-                <p>playlist name to submit</p>
+
                 <button className="Button" onClick={sendPlayList}>Save to Spotify</button>
-            </div>
+            </div>}
         </>
     )
 }

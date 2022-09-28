@@ -225,7 +225,7 @@ def get_recommendation_by_objects(objects, mood):
 
     for obj in objects:
 
-        res = spotify.search(q=obj, limit=20, type="track")
+        res = spotify.search(q=obj, limit=10, type="track")
         res = res["tracks"]["items"]
         for song in res:
             if obj in song["name"] and "hair dryer" not in song["name"].lower():
