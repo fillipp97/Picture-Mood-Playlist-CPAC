@@ -1,31 +1,54 @@
 .songCard {
-    max-width: 1000px;
-    width: 100%;
-    display: flex;
-    background-color: rgb(86, 209, 86);
+	display: inline-block;
+	height: 5.3rem;
+    width: 90%;
+    position: relative;
+	border: 5px solid rgb(229, 209, 190);
+	border-color: gray;
+	border-radius: 1rem;
     align-items: center;
+	margin:5px;
+	
     /* justify-content: */
 
 }
 
 .songCard>img {
-    max-width: 100px;
+	display: inline-block;
+	position: absolute;
+	left: 0rem;
     border-radius: 20px;
-    width: 100%;
-    margin: 10px;
-    box-shadow: rgb(1, 105, 27) 3px 3px 10px;
+    width: 3rem;
+	height: 3rem;
+    margin: 1rem;
+    box-shadow: rgb(39, 40, 34) 3px 3px 10px;
 }
-
-.songCard>button {
-    border-radius: 50%;
-    height: 60px;
-    width: 60px;
-    margin: 15px;
-    margin-right: 20px;
-}
-
 .titleAndArtist {
-    margin: 15px;
-    font-size: 150%;
-    color: wheat;
+	width: 15rem;
+	height: 3rem;
+	left: 5rem;
+	display: inline-block;
+	position: absolute;
+    margin: 1rem;
+    font-size: 90%;
+	font-family: "Roboto", sans-serif;
+	font-weight: 700;
+    color: gray;
+}
+.titleAndArtist > .title{
+	margin-top: 0.3rem;
+}
+.titleAndArtist > .artist{
+	margin-top: 0.3rem;
+}
+.songCard>button {
+	display: inline-block;
+	position: absolute;
+	left: 21.5rem;
+	background-color: rgb(229, 209, 190);
+    border-radius: 1.5rem;
+    height: 3rem;
+    width: 3rem;
+    margin: 1rem;
+    margin-right: 20px;
 }

@@ -123,6 +123,7 @@ def get_tracks():
 
 @app.route("/uploadFile", methods=["POST"])
 def Step1():
+    print("=======================run Step()")
     # Download Image
     image = request.files["Image"].read()
     image_path = download_and_resize_image(image, 640, 480)
@@ -143,8 +144,8 @@ def Step1():
     else:
         objects = list(set(objects))
         objects = remove_human(objects)
-    print("\nThe emotion_result is: ", mood)
-    print("\nThe object_result is: ", objects)
+    # print("\nThe emotion_result is: ", mood)
+    # print("\nThe object_result is: ", objects)
     # mood = None
     # objects = ["Sun", "leg", "sea", "car"]
     # Get possible seeds for the user to chose
@@ -194,6 +195,7 @@ def Step1():
     #         artists_genres.append(new_gen)
     shuffle(genres)
     mixed_genres = genres[:10]
+    print("=======================Finish Step1()")
     if mood is None:
         # In no-face is present the mood is found following psychological rules
         moodLLF = get_mood_from_LLF(image_path=image_path)
@@ -253,8 +255,9 @@ def remove_human(objects):
 
 @app.route("/getSongs", methods=["POST"])
 def Step2():
+    print("=======================run Step2()")
     data = request.get_json()
-
+    print("======================= data:",data)
     mood = data.get("mood")
     objects = data.get("objects")
     moodLLF = data.get("moodLLF")
@@ -321,7 +324,7 @@ def Step2():
         ]
 
         lyrics_as_list_of_words = [str2nestedlist(lyr) for lyr in lyrics]
-
+        print("=======================Finish Step2()==== mood is not None====")
         return {
             "result": "ok",
             "recommendations": recommendations,
@@ -329,9 +332,10 @@ def Step2():
         }
     else:
         # Get 2 recommendations from each object in the image
+        print("=======================objects",objects)
         recommendations_by_objects = get_recommendation_by_objects(objects, moodLLF)
         # Get also parameters from a mood extracted by colors in the picture
-        print("Mood LLF: ", moodLLF)
+        print("=======================moodLLF",moodLLF)
         parameters_LLF, genres_sel, tracks_ids = get_par_from_mood(
             moodLLF, genres=genres_sel, tracks=tracks_ids
         )
@@ -346,9 +350,12 @@ def Step2():
 
         # Mix all the results and get the first 20 OR CREATE A SCORING FUNCTION THAT USES THE TEXT
         recommendations_by_objects.extend(recommendations_moodLLF.get("tracks"))
-
+        print("=======================recommendations_by_objects",recommendations_by_objects)
+        print("=======================objects",objects)
         scored_songs, lyrics = get_scored_list(recommendations_by_objects, objects)
+        print("=======================scored_songs",scored_songs)
         lyrics_as_list_of_words = [str2nestedlist(lyr) for lyr in lyrics]
+        print("=======================Finish Step2()==== mood is None====")
         # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
         return {
             "result": "ok",
