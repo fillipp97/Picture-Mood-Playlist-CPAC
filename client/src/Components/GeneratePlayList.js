@@ -71,19 +71,19 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
                         <FadeInLefth2 text={["Here's a list of songs that our AI selected for you"]} />
 
                         {recommendations && recommendations.tracks.map((item, idx) => {
-                            return <SongCard key={idx} idx={idx} song={item} playPause={playPause} playing={playing}></SongCard>
+                            return <SongCard key={idx} idx={idx} song={item} playPause={playPause} playingId={playingNumber}></SongCard>
                         })}
                     </div>
 
-                    <div className="div-random-lyrics">
+                    {/* <div className="div-random-lyrics">
                         <p>RANDOM LYRICS</p>
                         <ul>
                             {lyrics && lyrics.map((item) => (
                                 <li key={item}>{item}</li>
                             ))}
                         </ul>
-                    </div>
-                    
+                    </div> */}
+
                 </div>
 
                 <div className="div-submit">

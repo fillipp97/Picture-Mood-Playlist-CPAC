@@ -171,7 +171,7 @@ class LoggedIn extends Component {
                   {(this.state.firstFilteringResults && !this.state.playListGenerationCallback) &&
                     <GeneratePlayList generatePlayListInput={this.state.firstFilteringResults} callback={this.generatePlayListCallback} show={this.state.showGeneratePlaylist} />
                   }
-                  {this.state.playListGenerationResults && <FadeInLefth1 text={"The song has been generated"} />}
+                  {this.state.playListGenerationResults && <div className=".div-generated-playlist-body"><FadeInLefth1 text={"The song has been generated"} /> <FadeInLefth1 text={"ENJOY!"} /></div>}
                 </div>
               </div>
 
