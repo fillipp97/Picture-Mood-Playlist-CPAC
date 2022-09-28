@@ -155,5 +155,10 @@ ul li{
 		background: black;
 		cursor: pointer;
 		border: 3px solid #1DB954;
-		box-shadow: 0 0 .1rem #fff, 0 0 .1rem #fff, 0 0 .1rem #1DB954, 0 0 0.2rem #1DB954, 0 0 .2rem #1DB954, 0 0 2.3rem #1DB954;
+		box-shadow: 0 0 .1rem #fff, 0 0 .1rem #fff, 0 0 .1rem #1DB954, 0 0 0.1rem #1DB954, 0 0 .1rem #1DB954, 0 0 1.3rem #1DB954;
 	}
+
+		.div-submit > .button-save:hover {
+			filter: brightness(1.3);
+			transform: scale(105%);
+		}
