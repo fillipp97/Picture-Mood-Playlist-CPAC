@@ -64,7 +64,7 @@ def get_scored_list(songs, objects):
             score = 0
             for obj in objects:
                 if obj in title:
-                    score += 3
+                    score += 1
                 score = score + count_occurrences(obj, lyrics)
 
             song["score"] = score

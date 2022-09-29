@@ -202,7 +202,8 @@ def get_recommendations(
     print(f"ARTISTS: {seed_artists}")
     print(f"Genres: {seed_genres}")
     print(f"Tracks: {seed_tracks}")
-
+    # random_tracks = random.choices(seed_tracks)
+    # random_genres = random.choices(seed_genres)
     recommendations = sp.recommendations(
         seed_artists=seed_artists,
         seed_tracks=seed_tracks,
@@ -210,7 +211,24 @@ def get_recommendations(
         limit=limit,
         **kwargs,
     )
-
+    # while len([el.get("name")for el in recommendations.get("tracks")]) <= 5 :
+    #     x_track = random.choices(seed_tracks)
+    #     x_genres = random.choices(seed_genres)
+    #     x = sp.recommendations(
+    #     seed_artists=seed_artists,
+    #     seed_tracks=x_track,
+    #     seed_genres=x_genres,
+    #     limit=limit,
+    #     **kwargs,)
+    #     recommendations = x|recommendations
+    #     print(f"ARTISTS: {seed_artists}")
+    #     print(f"Genres: {seed_genres}")
+    #     print(f"Tracks: {seed_tracks}")
+    #     print("========recommendations:",recommendations)
+    
+    # print("==================== length recommendations:",len(recommendations))
+    # print(recommendations.get("tracks"))
+    # print(recommendations.get("tracks").get("name"))
     # items = recommendations["tracks"]
     # print("\n\nITEMS\n", items)
     return recommendations

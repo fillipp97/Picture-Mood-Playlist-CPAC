@@ -31,5 +31,6 @@ spotify = spotipy.Spotify(
     auth_manager=SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET)
 )
 
-res = spotify.search(q="ritual of summoning", limit=1, type="track")
+res = spotify.search(q="Killing In the Name", limit=1, type="track")
 res = res["tracks"]["items"]
+print(res)

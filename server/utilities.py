@@ -53,19 +53,41 @@ target_mode=1
 def get_par_from_mood(mood, genres, tracks):
 
     if mood == "angry" or mood == "nervous":
-        related_genres = [
-            "alt-rock",
-            "black-metal",
-            "death-metal",
-            "grindcore",
-            "hardcore",
-            "metal",
-        ]
-        min_energy = 0.8
-        min_speechiness = 0.5
-        max_valence = 0.3
+        # related_genres = [
+        #     "alt-rock",
+        #     "black-metal",
+        #     "death-metal",
+        #     "grindcore",
+        #     "hardcore",
+        #     "metal",
+        # ]
+        tracks.append(
+            random.choice(
+                [
+                    "2tRI6j8RxFwrxoRKs7dnV8",
+                    "23wfXwnsPZYe5A1xXRHb3J",
+                    "60a0Rd6pjrkxjPbaKzXjfq",
+                    "6KI1ZpZWYAJLvmVhCJz65G",
+                    "0mUd90cTQoB70DZotuePjF",
+                    "4CeeEOM32jQcH3eN9Q2dGj",
+                    "5cZqsjVs6MevCnAkasbEOX",
+                    "59WN2psjkt1tyaxjspN8fp",
+                    # Double Dare Ya: 2tRI6j8RxFwrxoRKs7dnV8
+                    # The Way I Am: 23wfXwnsPZYe5A1xXRHb3J
+                    # In The End: 60a0Rd6pjrkxjPbaKzXjfq
+                    # You Don't Own Me: 6KI1ZpZWYAJLvmVhCJz65G
+                    # Violet
+                    # Smells Like Teen Spirit
+                    # Break Stuff
+                    # Killing In the Name
+                ]
+            )
+        )
+        min_energy = 0.4
+        min_speechiness = 0.3
+        max_valence = 0.5
         parameters = dict_of(min_energy, max_valence, min_speechiness)
-        genres.append(random.choice(related_genres))
+        # genres.append(random.choice(related_genres))
     elif mood == "fearful" or mood == "anxious" or mood == "terror":
         # related_genres = ["black-metal", "death-metal", "grindcore", "pop-music"]
         tracks.append(

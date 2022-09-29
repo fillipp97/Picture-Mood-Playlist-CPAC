@@ -1,6 +1,7 @@
 from pathlib import Path
 from random import randint, random, shuffle, choice, uniform
 import sys
+import time
 
 sys.path.append(str(Path(__file__).parent))
 import spotipy
@@ -254,7 +255,8 @@ def remove_human(objects):
 
 @app.route("/getSongs", methods=["POST"])
 def Step2():
-    print("=======================run Step2()")
+    start_time = time.time()
+    print("=======================run Step2() start time:",start_time)
     data = request.get_json()
     # print("======================= data:",data)
     mood = data.get("mood")
@@ -266,7 +268,8 @@ def Step2():
     artists_seed = data.get("artistsSeed")
     # List[strings] of tracks ID
     tracks_seed = data.get("tracksSeed")
-
+    end_time1 = time.time()
+    print("=======================run Step2() data.get cost time:",(end_time1-start_time))
     tracks_ids = [el.get("id") for el in tracks_seed]
 
     artists_ids = [el.get("id") for el in artists_seed]
@@ -284,7 +287,8 @@ def Step2():
 
     shuffle(genres_seed)
     genres_sel = genres_seed[:5]
-
+    end_time2 = time.time()
+    print("=======================run Step2() before while loop cost time:",(end_time2-start_time))
     while len(artists_ids) + len(genres_sel) + len(tracks_ids) > 3:
         n = np.random.randint(0, 3)
         lists = [artists_ids, genres_sel, tracks_ids]
@@ -298,12 +302,12 @@ def Step2():
     if mood is not None:
         # Proceed with the branch with face
         # Get parameters from mood
-
+        len_track = len(tracks_ids)
+        len_genres = len(genres_sel)
         parameters, genres_sel, tracks_ids = get_par_from_mood(
             mood=mood, genres=genres_sel, tracks=tracks_ids
         )
         # Get recommendations according to parameters
-
         recommendations = get_recommendations(
             seed_artists=artists_ids,
             seed_genres=genres_sel,
@@ -311,6 +315,30 @@ def Step2():
             limit=30,
             **parameters,
         )
+        print(recommendations)
+        recommendations_name = [el.get("name")for el in recommendations.get("tracks")]
+        if len(tracks_ids) > len_track:
+            tracks_ids.pop(-1)
+        if len(genres_sel) > len_genres:
+            genres_sel.pop(-1)
+
+        while len(recommendations_name) <= 5 :
+            parameters, genres_sel, tracks_ids = get_par_from_mood(mood=mood, genres=genres_sel, tracks=tracks_ids)
+            x = get_recommendations(seed_artists=artists_ids,seed_genres=genres_sel,seed_tracks=tracks_ids,limit=30,**parameters,)
+            if len(tracks_ids) > len_track:
+                tracks_ids.pop(-1)
+            if len(genres_sel) > len_genres:
+                genres_sel.pop(-1)
+            x_name = [el.get("name")for el in x.get("tracks")]
+            print("x_name:",x_name)
+            recommendations = recommendations|x
+            recommendations_name = [el.get("name")for el in recommendations.get("tracks")]
+            print("recommendations_name",recommendations_name)
+        while len(recommendations_name) >= 16 :
+            print("reducing length:")
+            recommendations.get("tracks").pop(-1)
+            recommendations_name = [el.get("name")for el in recommendations.get("tracks")]
+            print("length: ",len(recommendations.get("tracks"))," ",len(recommendations_name))
         # scored_songs, lyrics = get_scored_list(recommendations.get("tracks"), objects)
 
         lyrics = [
@@ -321,6 +349,8 @@ def Step2():
             for el in recommendations.get("tracks")
             if uniform(0, 1) <= 0.3
         ]
+        # print(recommendations)
+        
 
         lyrics_as_list_of_words = [str2nestedlist(lyr) for lyr in lyrics]
         print("=======================Finish Step2()==== mood is not None====")
@@ -336,6 +366,8 @@ def Step2():
         recommendations_by_objects = get_recommendation_by_objects(objects, moodLLF)
         # Get also parameters from a mood extracted by colors in the picture
         print("=======================moodLLF",moodLLF)
+        start_time1 = time.time()
+        
         parameters_LLF, genres_sel, tracks_ids = get_par_from_mood(
             moodLLF, genres=genres_sel, tracks=tracks_ids
         )
@@ -347,7 +379,7 @@ def Step2():
             limit=20,
             **parameters_LLF,
         )
-
+        print("=======================run Step2() no face start time:",start_time1)
         # Mix all the results and get the first 20 OR CREATE A SCORING FUNCTION THAT USES THE TEXT
         recommendations_by_objects.extend(recommendations_moodLLF.get("tracks"))
         scored_songs, lyrics = get_scored_list(recommendations_by_objects, objects)
@@ -357,6 +389,8 @@ def Step2():
         lyrics_as_list_of_words = [str2nestedlist(lyr) for lyr in lyrics]
         # print("================delete duplicate==============song_titles:",song_titles,"==============song_artists",song_artists)
         delete_duplicates(song_titles,song_artists)
+        end_time3 = time.time()
+        print("=======================run Step2() no face finish time:",(end_time3-start_time1))
         print("=======================Finish Step2()========")
         # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
         return {
@@ -368,6 +402,7 @@ def Step2():
 
 @app.route("/savePlaylist", methods=["POST"])
 def Step3():
+    print("=======================Start Step3()========")
     data = request.get_json()
     # List[Spotify_data] the song IDs
     songs = data.get("songs").get("tracks")
@@ -376,6 +411,7 @@ def Step3():
     playlist_title = data.get("playlist_title")
 
     create_new_playlist(tracks=ids, playlist_title=playlist_title)
+    print("=======================Start Step3()========")
     return {"result": "ok"}, 200
 
 
