@@ -175,7 +175,7 @@ def get_par_from_mood(mood, genres, tracks):
         min_energy = 0.4
         min_valence = 0.6
         max_valence = 0.8
-        parameters = dict_of(min_energy, max_energy, min_valence, max_valence)
+        parameters = dict_of(min_energy, min_valence, max_valence)
         genres.append(random.choice(related_genres))
     elif mood == "darkness" or mood == "contempt":
         related_genres = ["alt-rock", "idm", "metal"]

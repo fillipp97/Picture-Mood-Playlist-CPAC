@@ -13,7 +13,6 @@ export default function GeneratePlayList({ generatePlayListInput, callback }) {
     const [playingNumber, switchPlayingNumber] = useState(null);
     const lyrics = generatePlayListInput.lyrics;
     const recommendations = generatePlayListInput.recommendations;
-
     const sortRecommendations = () => {
         (recommendations && recommendations[0] && recommendations[0].score != null) && recommendations.sort((a, b) => (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0))
     };
