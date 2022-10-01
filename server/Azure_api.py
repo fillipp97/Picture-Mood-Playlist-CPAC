@@ -57,7 +57,7 @@ def emotion_detect(image_path):
     global emotion_result
     image_data = open(image_path, "rb").read()
     headers = {
-        "Ocp-Apim-Subscription-Key": "2903f42966d24764a8523c77a947cbd9",
+        "Ocp-Apim-Subscription-Key": "04782997470b4548b01855e46da7412a",
         "Content-Type": "application/octet-stream",
     }
     response = requests.post(
