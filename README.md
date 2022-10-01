@@ -218,11 +218,11 @@ The back-end or <a href="https://github.com/fillipp97/Picture-Mood-Playlist-CPAC
 <!-- CONTACTS -->
 ## Contacts
 
-Jayan Cui - name@mail.polimi.it
+Jayan Cui - jiayan.cui@mail.polimi.it
 
 Filippo Gualtieri - filippo.gualtieri@mail.polimi.it
 
-Haokun Song - name@mail.polimi.it
+Haokun Song - haokun.song@mail.polimi.it
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
