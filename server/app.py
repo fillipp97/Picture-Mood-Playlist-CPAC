@@ -392,7 +392,13 @@ def Step2():
         end_time3 = time.time()
         print("=======================run Step2() no face finish time:",(end_time3-start_time1))
         print("=======================Finish Step2()========")
-        # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
+        # recommendations_name = [el.get("name")for el in recommendations.get("tracks")]
+        # while len(recommendations_name) >= 16 :
+        #     print("reducing length:")
+        #     recommendations.get("tracks").pop(-1)
+        #     recommendations_name = [el.get("name")for el in recommendations.get("tracks")]
+        #     print("length: ",len(recommendations.get("tracks"))," ",len(recommendations_name))
+        # # IF I ALSO RETURN THE TEXT THERE'S THE POSSIBILITY TO LET USER PLAY WITH LYRICS IN ORDER TO COMPOSE THE TITLE AND THE DESCRIPTION OF THE PLAYLIST
         return {
             "result": "ok",
             "recommendations": {"tracks": scored_songs},
